@@ -41,6 +41,62 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 
+
+	public function isadmin($group_id)
+		{
+			 $AdminGroups = Group::where('admin_id' , '='  , Auth::id())->get() ;
+
+			 $x =$AdminGroups->count() ; //including user group where he/she is admin
+			
+			 if($x){
+
+				 foreach ($AdminGroups as $UserGroup) {
+				 	
+				 	if($group_id == $UserGroup->id)
+				 		return true; 
+				 		
+				 }
+				 return false ;
+			
+			}else{
+			
+				return false ;
+				
+			}
+		}
+
+	public function group_lists()
+	{
+		 $UserGroups =  UserGroup::where('user_id' , '=' , $this->id )->where('active' , '=' , '1' )->get() ;
+		 $AdminGroups = Group::where('admin_id' , '='  , Auth::id())->get() ;
+
+		 $x = $UserGroups->count() + $AdminGroups->count() ; //including user group where he/she is admin
+		
+		 if($x){
+
+			 foreach($UserGroups as $UserGroup)
+			 {
+
+			 	$groupId[$x] = $UserGroup->group_id ;
+			 
+			 	$x--;
+			 }
+
+			 foreach ($AdminGroups as $UserGroup) {
+			 	
+			 	$groupId[$x] = $UserGroup->id ;
+			 
+			 	$x--;
+			 }
+			 return $groupId ;
+		
+		}else{
+		
+			return Null ;
+			
+		}
+	}
+
 	public function groups()
 	{
 	 

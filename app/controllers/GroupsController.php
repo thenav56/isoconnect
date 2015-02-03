@@ -90,36 +90,44 @@ class GroupsController extends \BaseController {
 	{
 
 		$user_id = Input::get('request_user_id') ;
-
-		switch (Input::get('button_submit')) {
-			case 'accept':
-				$result = UserGroup::where('user_id', '=', $user_id )->update(array('active' => 1));
-				$message = User::where('id' , '=' , $user_id)->first()->name.' has been sucessfully added to the Group' ;
-					break;
-
-			case 'reject':
-				$result = UserGroup::where('user_id', '=', $user_id )->delete();
-				$message = User::where('id' , '=' , $user_id)->first()->name.' request has been rejected' ;
-					break;
-
-			case 'delete':
-				$result = UserGroup::where('user_id', '=', $user_id )->where('active', '=', 1 )->delete();
-				$message = User::where('id' , '=' , $user_id)->first()->name.' has been sucessfully deleted from the Group' ;
-					break;
-
-			case 'block':
-			$result = UserGroup::where('user_id', '=', $user_id )->update(array('active' => 2));
-			 $message = User::where('id' , '=' , $user_id)->first()->name.' has been sucessfully blocked in this Group' ;
-					break;
-		}
+		$group_id = Input::get('group_id') ;
+		$permission = User::find(Auth::id())->isadmin($group_id) ;
 		
-		if($result){
-			return Redirect::back()->
-			with('flash_notice' , $message ) ;
+		if($permission){
+			switch (Input::get('button_submit')) {
+				case 'accept':
+					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 1));
+					$message = User::find($user_id)->name.' has been sucessfully added to the Group' ;
+						break;
+
+				case 'delete':
+					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->delete();
+					$message = User::find($user_id)->name.' request has been rejected' ;
+						break;
+ 
+
+				case 'block':
+				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 2));
+				 $message = User::find($user_id)->name.' has been sucessfully blocked in this Group' ;
+						break;
+
+				case 'unblock':
+				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 1));
+				 $message = User::find($user_id)->name.' has been sucessfully unblocked in this Group' ;
+						break;
+			}
+			
+			if($result){
+				return Redirect::back()->
+				with('flash_notice' , $message ) ;
+			}else{
+				return Redirect::back()->
+				with('flash_error' , 'Request was not Successfull:: Try Aagin later' ) ;
+			}
 		}else{
-			return Redirect::back()->
-			with('flash_error' , 'Request was not Successfull:: Try Aagin later' ) ;
-		}
+				return Redirect::back()->
+				with('flash_error' , 'Request was not Successfull:: Try Aagin later!!' ) ;
+			}
 	}
 
 	public function sendGroupRequest()
@@ -148,14 +156,19 @@ class GroupsController extends \BaseController {
 
 	public function createGroupPost()
 	{
+		$permission = false ;
+		$group_id = Input::get('post_group_id') ;
+
+		$group_list = User::find(Auth::id())->group_lists();
+			foreach ($group_list as $_group_id) {
+				if($_group_id == $group_id){
+					$permission = true ;//check if the group_id of post equals post_group_id
+					break;
+					}
+				}
 		
-		$rand = Session::get('rand_id_generate') ;
-		 
-		$randhash = hash('md4' , Input::get('post_group_id').$rand) ;
-		
-		$hashed_token = Input::get('post_group_id_token') ;
-		
-		if($randhash === $hashed_token){
+
+		if($permission){
 			$rules = array(
 				'user_post' => 'required|max:250' , 
 				'post_group_id' => 'exists:groups,id'
@@ -170,7 +183,7 @@ class GroupsController extends \BaseController {
 					->withErrors($validator) ; //send back all errors to the
 			}else{
 				$userPost = htmlentities(Input::get('user_post')) ;
-				$group_id = Input::get('post_group_id') ;
+				//$group_id = Input::get('post_group_id') ;
 				$user_id = Auth::id() ;
 				$status = Post::create([
 						'user_id'	=> $user_id ,
@@ -195,11 +208,7 @@ class GroupsController extends \BaseController {
 
 	public function showGroup($group_id)
 	{
-		//authticatoin for group_id
-		$rand = mt_rand() ;
-
-		Session::put('rand_id_generate',  $rand) ;
-
+	 
 		//if user is the admin	
 		$admin = (Group::where('id' , '=' ,$group_id)->first()->admin_id == Auth::id()) ? true : false ;
 
@@ -224,7 +233,7 @@ class GroupsController extends \BaseController {
 							$active = true ;
 
 							return View::make('groups.show')->with('group_id' , $group_id)->with('active' , $active )
-							->with('posts',$GroupPosts)->with('rand' , $rand)->with('pending' , $pending)
+							->with('posts',$GroupPosts)->with('pending' , $pending)
 							->with('admin' , $admin )->with('block' , $block) ;
 						}else{
 							$pending = true ;
@@ -245,11 +254,14 @@ class GroupsController extends \BaseController {
 				Paginator::setPageName('activeusers') ;
 				$activeUsers = UserGroup::where('group_id' , '=' , $group_id)->where('active',  '=' , '1' )->orderBy('id' , 'desc')->simplePaginate(5) ;
 				
+				Paginator::setPageName('blockedusers');
+				$blockedUsers = UserGroup::where('group_id' , '=' , $group_id)->where('active',  '=' , '2' )->orderBy('id' , 'desc')->simplePaginate(5) ;
 
 				return View::make('groups.show')->with('group_id' , $group_id)->with('active' , $active )
-				->with('posts',$GroupPosts)->with('rand' , $rand)->with('pending' , $pending)
+				->with('posts',$GroupPosts)->with('pending' , $pending)
 				->with('admin' , $admin )->with('usersPending' , $usersPending)
-				->with('activeUsers' , $activeUsers)->with('block' , $block) ;
+				->with('activeUsers' , $activeUsers)->with('block' , $block)
+				->with('blockedUsers' , $blockedUsers) ;
 			}
 		}else{
 			//for blocked users

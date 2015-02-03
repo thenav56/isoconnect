@@ -56,14 +56,24 @@ class PostsController extends \BaseController {
 
 	public function createComment()
 	{
+		$permission = false ;//permission to comment in the post
+		$post_id = Input::get('comment_post_id') ;
+		$group_id =Post::find($post_id)->group_id ;
+		if(!$group_id){//if the post is public than has permission by default
+			$permission = true ;
+		}else{
+			$group_list = User::find(Auth::id())->group_lists();
+			foreach ($group_list as $_group_id) {
+				if($_group_id == $group_id){
+					$permission = true ;//check if the group_id of post equals post_group_id
+					break;
+					}
+				}
+		}
 
-		$rand = Session::get('rand_id_generate') ;
-		 
-		$randhash = hash('md4' , Input::get('comment_post_id').$rand) ;
+
 		
-		$hashed_token = Input::get('comment_post_id_token') ;
-		
-		if($randhash === $hashed_token){
+		if($permission){
 			$rules = array(
 				'user_comment' => 'required|max:250' , 
 				'comment_post_id' => 'exists:posts,id'
@@ -78,7 +88,7 @@ class PostsController extends \BaseController {
 					->withErrors($validator) ; //send back all errors to the
 			}else{
 				$userComment = htmlentities(Input::get('user_comment')) ;
-				$post_id = Input::get('comment_post_id') ;
+				//$post_id = Input::get('comment_post_id') ;
 				$user_id = Auth::id() ;
 				$status = Comment::create([
 						'user_id'	=> $user_id ,

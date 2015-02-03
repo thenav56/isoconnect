@@ -47,7 +47,7 @@
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='accept' class="btn btn-success btn-xs">
                             Accept Request
-                            </button><button id='button_submit' name='button_submit' value ='reject' type="submit" class="btn btn-danger btn-xs ">
+                            </button><button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
                             Delete Request
                             </button>
                             <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
@@ -94,10 +94,39 @@
                    @else
                       No Member In The Group At The Moment
                     @endif
+
+                    <h2>Blocked Users</h2>
+                      @if($blockedUsers->count())
+                      <ul>
+                         @foreach($blockedUsers as $users)
+                         
+                            <li>{{User::where('id' , '=' , $users->user_id)->first()->name }}</li>
+                            
+                            {{ Form::open(array('url' => 'group/handle_request')) }}
+                            <button type="submit" id='button_submit' name='button_submit' value='unblock' class="btn btn-success btn-xs">
+                            Unblock Request
+                            </button><button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
+                            Delete Request
+                            </button>
+                            <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
+                            <input type='hidden' name='request_user_id' value="<?php echo $users->user_id ; ?>">
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                            {{ Form::close() }}
+
+                         @endforeach
+                    </ul>
+                    
+                    <?php  
+                    Paginator::setPageName('blockedusers') ;
+                    echo  $blockedUsers->appends(Request::except('blockedusers'))->links() 
+                    ?>
+                    @else
+                      No Pending At The Moment
+                    @endif
                    
 
                      @else
-
+                        //if user is the memeber of the group i.e not the admin
                      @endif
              </div>
           </div>
@@ -127,7 +156,6 @@
                     'class' => 'btn btn-primary'
                     )) }}</p>
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                <input type="hidden" name="post_group_id_token"  autocomplete="off" value="<?php echo hash('md4' ,$group->id.$rand); ?>">
                 <input type="hidden" name="post_group_id"  autocomplete="off" value="<?php echo  $group->id ; ?>">
 
 
@@ -182,7 +210,6 @@
                                           'class' => 'btn btn-primary'
                                           )) }}</p>
                                       <input type="hidden" name="comment_post_id"  autocomplete="off" value="<?php echo $post->id; ?>">
-                                      <input type="hidden" name="comment_post_id_token"  autocomplete="off" value="<?php echo hash('md4' ,$post->id.$rand); ?>">
                                       <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                       {{ Form::close() }}
                               </div>
