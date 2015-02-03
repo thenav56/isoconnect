@@ -121,7 +121,7 @@
                     echo  $blockedUsers->appends(Request::except('blockedusers'))->links() 
                     ?>
                     @else
-                      No Pending At The Moment
+                      No Blocked Users At The Moment
                     @endif
                    
 

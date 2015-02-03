@@ -30,7 +30,7 @@ nav {
 
  
 </head>
-<body style=”background-image:url({{asset('assests/icon/background.png')}}); background-repeat:repeat”>
+ 
 <div class="page">
     
       <div class="container-fluid">
