@@ -58,7 +58,8 @@ class PostsController extends \BaseController {
 	{
 		$permission = false ;//permission to comment in the post
 		$post_id = Input::get('comment_post_id') ;
-		$group_id =Post::find($post_id)->group_id ;
+		$Post = Post::find($post_id);
+		$group_id = $Post->group_id;
 		if(!$group_id){//if the post is public than has permission by default
 			$permission = true ;
 		}else{
@@ -99,6 +100,8 @@ class PostsController extends \BaseController {
 					]);
 
 				if($status){
+					if($Post->user_id != Auth::id())
+					Notification::send("comment" , $status );
 					return Redirect::back()->with('post_id_focus' , $post_id) ;
 				}else{
 					echo Redirect::back()->with('flash_error' , 'Comment Failed Try Again!') ;	

@@ -36,7 +36,7 @@
                             <input class="form-control" name="password" id="password" placeholder="Password" type="password">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="remember" id="remember"> Remember Me
+                                    <input type="checkbox" name="remember" id="remember" checked="true"> Remember Me
                                 </label>
                             </div>
                         </div>

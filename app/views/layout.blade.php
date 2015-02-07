@@ -27,7 +27,9 @@ nav {
 }
 
     </style>
- 
+       {{HTML::script(asset('assests/js/jquery.min.js'))}}
+       {{HTML::script(asset('assests/js/bootstrap.min.js'))}}
+        
 </head>
  
 <div class="page">
@@ -65,7 +67,7 @@ nav {
 
                     <ul class="nav navbar-nav navbar-right">
                               <li><form action="/"><button class="btn btn-primary btn-md " type="submit" >Messages <span class="badge">0</span></button></form></li>
-                              <li><form action="/user/notification/show"><button class="btn btn-primary btn-md " type="submit" >Notifications <span class="badge" >{{User::find(Auth::id())->NotificationUnseen()->count()}}</span></button></form></li> 
+                              <li><form action="/user/notification/show"><button class="btn btn-primary btn-md " type="submit" >Notifications <span class="badge" >{{Auth::user()->NotificationUnseen()->count()}}</span></button></form></li> 
                                 <li><button class="btn btn-primary dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></button>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
@@ -128,29 +130,31 @@ nav {
 </footer>
 
 
-{{HTML::script(asset('assests/js/jquery.min.js'))}}
-{{HTML::script(asset('assests/js/bootstrap.min.js'))}}
-  <script>
-          (function($){
-                window.onbeforeunload = function(e){    
-                  window.name += ' [' + $(window).scrollTop().toString() + '[' + $(window).scrollLeft().toString();
-                  };
-                $.maintainscroll = function() {
-                if(window.name.indexOf('[') > 0)
-                  {
-                  var parts = window.name.split('['); 
-                  window.name = $.trim(parts[0]);
-                  window.scrollTo(parseInt(parts[parts.length - 1]), parseInt(parts[parts.length - 2]));
-                  }   
-                };  
-                $.maintainscroll();
-                })(jQuery);
-    </script>
+
 @show
 </body>
 </html>
 
-
+<script>
+                (function($){
+                      window.onbeforeunload = function(e){    
+                        var pathname = window.location.href ;
+                        window.name = ' ['+pathname+'[' + $(window).scrollTop().toString() + '[' + $(window).scrollLeft().toString();
+                        };
+                      $.maintainscroll = function() {
+                      if(window.name.indexOf('[') > 0)
+                        {
+                        var pathname = window.location.href ;
+                        var parts = window.name.split('['); 
+                        if(parts[1] == pathname){
+                          window.name = $.trim(parts[0]);
+                          window.scrollTo(parseInt(parts[parts.length - 1]), parseInt(parts[parts.length - 2]));
+                          }
+                        }   
+                      };  
+                      $.maintainscroll();
+                      })(jQuery);
+          </script>
 
 <?php
 
