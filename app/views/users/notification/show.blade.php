@@ -16,11 +16,11 @@
 		            	@if(!$notification->seen)
 		            		<div class="form-group alert alert-warning">
 		            	@else
-			            	<div class="form-group alert alert-success">
+			            	<div class="form-group">
 			            @endif
-			            		<li><?php 
+			            		<li><h4><?php 
 			            		/*
-															  
+														//for comment		  
 									'activity_type' => $activity_type, //comment
 									'source_id' => $source_id,		  //comment id
 									'parent_id' => $postid,			 //post id
@@ -29,18 +29,21 @@
 								*/
 									$activity_type =$notification->activity_type;
 			            			 switch ($activity_type) {
-			            				case 'post': //post
-			            					# code...
+			            				case 'groupPost': //post
+			            					$Lastuser = User::find(Post::find($notification->source_id)->user_id);
+			            					$userlink = asset('user/'.$Lastuser->id.'/profile');
+			            					echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a>  <a href="'.asset('post/'.$notification->source_id).'">posted</a> in Group <a href="'.asset('group/'.$notification->parent_id).'">'.Group::find($notification->parent_id)->name.'</a>' ;
 			            					break;
 			            				
 			            				case 'comment': //comment
 			            					$Lastuser = User::find(Comment::find($notification->source_id)->user_id);
 			            					$userlink = asset('user/'.$Lastuser->id.'/profile');
-			            					$x = Comment::distinct()->groupBy('user_id')->where('post_id','=',$notification->parent_id)->count() ;
+			            					$comments = Comment::distinct()->groupBy('user_id')->where('post_id','=',$notification->parent_id)->get() ;
+			            					$x = $comments->count() ;
 			            					if(!($x-1))
-			            					echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;
 			            					else
-			            					echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;	
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;	
 			            					break;
 
 			            				case 'like': //like
@@ -51,9 +54,8 @@
 			            					# code...
 			            					break;
 			            			}
-			            		?></li>
-			            	
-		            	</div>
+			            		?></h4></li>
+			            	</div>
 	            	</div>
 	            	<?php   
 	            		Notification::find($notification->id)->update(array('seen' => 1)) ;

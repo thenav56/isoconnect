@@ -15,7 +15,7 @@ class CreateNotificationsTable extends Migration {
 		Schema::create('notifications', function(Blueprint $table)
 		{
 			$activity_type = array('comment','post','groupPost','like','disLike',
-				'accepted','rejected','blocked');
+				'accepted','rejected','blocked' , 'group');
 
 			$table->increments('id');
 			$table->integer('user_id') ;

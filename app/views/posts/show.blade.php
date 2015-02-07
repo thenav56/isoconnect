@@ -56,9 +56,8 @@
                                     <p>{{ Form::submit('Comment!' , array(
                                         'class' => 'btn btn-primary'
                                         )) }}</p>
-                                    <input type="hidden" name="comment_post_id_token"  autocomplete="off" value="<?php echo hash('md4' ,$post->id.$rand); ?>">
                                 <input type="hidden" name="comment_post_id"  autocomplete="off" value="<?php echo $post->id; ?>">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     {{ Form::close() }}
                                 </div>
                                             	

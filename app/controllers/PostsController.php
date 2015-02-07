@@ -100,7 +100,7 @@ class PostsController extends \BaseController {
 					]);
 
 				if($status){
-					if($Post->user_id != Auth::id())
+					
 					Notification::send("comment" , $status );
 					return Redirect::back()->with('post_id_focus' , $post_id) ;
 				}else{
@@ -115,10 +115,7 @@ class PostsController extends \BaseController {
 
 	public function showPostId($post_id)
 	{
-
-		$rand = mt_rand() ;
-
-		Session::put('rand_id_generate',  $rand) ;
+ 
 		//post information group_id
 		$posts = Post::where('id' , '=' , $post_id)->first();
 		
@@ -126,7 +123,7 @@ class PostsController extends \BaseController {
 			$comments = Post::find($post_id)->comment ;
 			$active = true ;
 			return View::make('posts.show')->with('post' , $posts)
-			->with('comments' , $comments)->with('active' , $active)->with('rand',$rand) ;
+			->with('comments' , $comments)->with('active' , $active);
 		}
 		//group and viewing user relation
 		$group_relation = UserGroup::where('user_id' , '=' , Auth::id())->where('group_id','=',$posts->group_id)->first() ;
@@ -138,17 +135,17 @@ class PostsController extends \BaseController {
 				$active = true ;
 				$comments = Post::find($post_id)->comment ;
 				return View::make('posts.show')->with('post' , $posts)
-				->with('comments' , $comments)->with('active' , $active)->with('rand',$rand) ;
+				->with('comments' , $comments)->with('active' , $active) ;
 			}
 		if($group_relation){
-			$active = ($group_relation->active === 1) ? true : false ;
+			$active = ($group_relation->active == 1) ? true : false ;
 			
 			if($active){
 				
 				$comments = Post::find($post_id)->comment ;
 				 	 
 				return View::make('posts.show')->with('post' , $posts)
-				->with('comments' , $comments)->with('active' , $active)->with('rand',$rand) ;
+				->with('comments' , $comments)->with('active' , $active) ;
 			
 			}
 		}

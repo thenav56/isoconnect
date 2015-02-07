@@ -15,25 +15,23 @@ class Group extends \Eloquent {
 
 	public function users()
 	{
-		 $UserGroups =  UserGroup::where('group_id' , '=' , $this->id , 'active' , '=' , '1' ) ;
+		 $UserGroups =  UserGroup::where('group_id' , '=' , $this->id )->where('active' , '=' , '1' )->get() ;
 
-		 $x = $UserGroups->count ; 
+		 $x = $UserGroups->count() + 1 ; 
 		
-		 if($x){
+		 $userId[$x] = $this->admin_id ; 
+		 $x-- ;
 
-		 	$userId = $UserGroups[0]->user_id ; 
-		 
-		 	$x--;
-		 
+		 if($x){		 
 			 foreach($UserGroups as $UserGroup)
 			 {
 
-			 	$userId .= ','.$UserGroup->user_id ;
+			 	$userId[$x]  = $UserGroup->user_id ;
 			 
 			 	$x--;
 			 }
 
-			 $user = User::where('id' , '=', $userId ) ;
+			 $user = User::whereIn('id' , $userId )->get() ;
 		
 			 return $user ;
 		

@@ -194,7 +194,7 @@ class GroupsController extends \BaseController {
 					]);
 
 				if($status){
-					Notification::send("groupPost" , $status->id );
+					Notification::send("groupPost" , $status );
 					return Redirect::back()->with('flash_notice' , 'Successfully Posted') ;
 				}else{
 					echo Redirect::back()->with('flash_error' , 'Post Failed Try Again!') ;	

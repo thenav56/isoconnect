@@ -17,4 +17,29 @@ class Post extends Eloquent {
 	{
 	 return $this->belongsTo('Group', 'group_id');
 	}
+
+	public function userlist()
+	{
+		$comments = Comment::Distinct()->groupBy('user_id')->select('user_id')->where('post_id','=',$this->id)->get() ;
+		  
+
+		$x = $comments->count() + 1 ; 
+
+		if($x){
+			$userList[$x] = $this->user_id ;
+			$x-- ;
+
+			foreach ($comments as $comment) {
+			  	$userList[$x] = $comment->user_id ;
+				$x-- ;
+
+			  }  
+
+			  $users = User::whereIn('id',$userList)->get();
+			  return $users ;
+		}else{
+			return Null ;
+		}	
+
+	}
 }
