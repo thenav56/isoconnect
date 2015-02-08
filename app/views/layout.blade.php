@@ -52,15 +52,13 @@ nav {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                      
                      @if (Auth::check())
-
+                    
                     <ul class="nav navbar-nav navbar">
                      <li><div class="btn-group ">
-                              <form class="navbar-form navbar-left" role="search">
-                                 <div class="input-group">
-                                    <input type="text" class="form-control input-sm" placeholder="Search...">
-                                    <div class = "input-group-btn">
-                                      <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-search"></span></button> 
-                                   </div>
+                               <form class="navbar-form navbar-left" role="search">
+                                <div class="form-group">
+                                  <input class="form-control" placeholder="Search" type="text">
+                                  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                               </form></div></li>
                     </ul>
@@ -136,7 +134,7 @@ nav {
 </html>
 
 <script>
-                (function($){
+                $(document).ready(function(){
                       window.onbeforeunload = function(e){    
                         var pathname = window.location.href ;
                         window.name = ' ['+pathname+'[' + $(window).scrollTop().toString() + '[' + $(window).scrollLeft().toString();
