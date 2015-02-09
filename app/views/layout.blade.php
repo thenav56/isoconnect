@@ -27,8 +27,6 @@ nav {
 }
 
     </style>
-       {{HTML::script(asset('assests/js/jquery.min.js'))}}
-       {{HTML::script(asset('assests/js/bootstrap.min.js'))}}
         
 </head>
  
@@ -55,9 +53,9 @@ nav {
                     
                     <ul class="nav navbar-nav navbar">
                      <li><div class="btn-group ">
-                               <form class="navbar-form navbar-left" role="search">
+                               <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
                                 <div class="form-group">
-                                  <input class="form-control" placeholder="Search" type="text">
+                                  <input class="form-control" placeholder="Search" type="text" id="users" name="user" autocomplete="off" >
                                   <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                               </form></div></li>
@@ -116,6 +114,7 @@ nav {
         </div>
     </div>
     <div class="container-fluid">
+       
     @yield('body')
     </div>
 </div>
@@ -133,12 +132,20 @@ nav {
 </body>
 </html>
 
+
+
+       {{HTML::script(asset('assests/js/jquery.min.js'))}}
+       {{HTML::script(asset('assests/js/typeahead.js'))}}
+       {{HTML::script(asset('assests/js/bootstrap.min.js'))}}
+       {{HTML::script(asset('assests/js/global.js'))}}
 <script>
+       //auto scroll for fixed position for redirect::back()
                 $(document).ready(function(){
                       window.onbeforeunload = function(e){    
                         var pathname = window.location.href ;
                         window.name = ' ['+pathname+'[' + $(window).scrollTop().toString() + '[' + $(window).scrollLeft().toString();
                         };
+                        
                       $.maintainscroll = function() {
                       if(window.name.indexOf('[') > 0)
                         {
@@ -152,8 +159,7 @@ nav {
                       };  
                       $.maintainscroll();
                       })(jQuery);
-          </script>
-
+</script>
 <?php
 
 //glyphicon glyphicon-thumbs-down

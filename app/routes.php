@@ -106,3 +106,7 @@ Route::get('register/verify/{confirmationCode}', [
     'as' => 'confirmation_path',
     'uses' => 'HomeController@confirm'
 ]);
+
+Route::get('search/query' , array('uses' => 'HomeController@search')) ;
+
+Route::get('search' ,array('uses' => 'HomeController@showsearch'));
