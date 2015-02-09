@@ -73,7 +73,7 @@
                             @endif
                             </h4>
                         <h5>{{$post->created_at->diffForHumans()}}</h5>
-                        <h5>{{ Str::limit(e($post->post_body),170)}}<a  href='/post/{{$post->id}}'>Read More&#8594;</a></h5>
+                        <h5>{{ Str::limit(e($post->post_body),170)}}<a  href='/post/{{$post->id}}'><br>Read More&#8594;</a></h5>
                         
                         <!--comment -->
                         <div class="comment_update" >

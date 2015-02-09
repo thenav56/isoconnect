@@ -10,14 +10,14 @@
             <div class="col-md-6 col-md-offset-3">
              <div class="well bs-component">
                 <div class="panel panel-default">
+                @if($active) 
+                       
                           <div class="panel-heading"> 
                           <h4><a>{{ User::find($post->user_id)['name'] }}</a></h4>
                              <h5>{{$post->created_at->diffForHumans()}}</h5>
                           </div>
                           <div class="panel-body">
-                           
-                          
-                @if($active)
+                                                
                         <h5>{{e($post->post_body)}}</h5><br>
                            
                             <h5>{{ $post->like}}<a href="/post/{{$post->id}}/like">{{ 'Vote up' }}</a></h5>

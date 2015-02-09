@@ -40,10 +40,16 @@
 			            					$userlink = asset('user/'.$Lastuser->id.'/profile');
 			            					$comments = Comment::distinct()->groupBy('user_id')->where('post_id','=',$notification->parent_id)->get() ;
 			            					$x = $comments->count() ;
+			            					$post = Post::find($notification->parent_id) ;
+			            						if($post->user_id == Auth::id())
+			            							$yours = 'yours' ;
+			            						else 
+			            							$yours = User::find($post->user_id)->name.'\'s ' ; 
+
 			            					if(!($x-1))
-			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;
 			            					else
-			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in your <a href="'.asset('post/'.$notification->parent_id).'">post</a>' ;	
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">Post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;	
 			            					break;
 
 			            				case 'like': //like
@@ -53,6 +59,21 @@
 			            				case 'dislike': //dislike
 			            					# code...
 			            					break;
+
+
+			            				case 'User_group_status':
+			            					$UserGroup = UserGroup::find($notification->source_id) ;
+			            	
+			            					if(!$UserGroup)
+			            						$status = 'Rejected' ;
+			            					elseif($UserGroup->active == '1')
+			            						$status = 'Accepted' ;
+			            					elseif($UserGroup->active == '2')
+			            						$status = 'Blocked' ;
+			            					else
+			            						$status = 'Unknown Status' ;
+			            					echo 'You member status in the Group <a href="'.asset('group/'.$notification->parent_id).'">"'.Group::find($notification->parent_id)->name.'"</a> is '.$status ;
+			            					break ;
 			            			}
 			            		?></h4></li>
 			            	</div>

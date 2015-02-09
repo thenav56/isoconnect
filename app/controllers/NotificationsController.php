@@ -87,7 +87,7 @@ class NotificationsController extends \BaseController {
 	public function showNotification()
 	{	
 
-		$notifications = User::find(Auth::id())->Notification()->orderBy('id','desc')->orderBy('seen')->simplePaginate(10) ;
+		$notifications = User::find(Auth::id())->Notification()->orderBy('updated_at','desc')->orderBy('seen')->simplePaginate(10) ;
 		return View::make('users.notification.show')->with('notifications' , $notifications) ;
 	}
 

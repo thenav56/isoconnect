@@ -96,28 +96,33 @@ class GroupsController extends \BaseController {
 		if($permission){
 			switch (Input::get('button_submit')) {
 				case 'accept':
-					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 1));
+					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->first() ;
+					$status = $result->update(array('active' => 1));					
 					$message = User::find($user_id)->name.' has been sucessfully added to the Group' ;
 						break;
 
 				case 'delete':
-					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->delete();
+					$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->first() ;
+					$status = $result->delete();
 					$message = User::find($user_id)->name.' request has been rejected' ;
 						break;
  
 
 				case 'block':
-				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 2));
+				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->first() ;
+				$status = $result->update(array('active' => 2));
 				 $message = User::find($user_id)->name.' has been sucessfully blocked in this Group' ;
 						break;
 
 				case 'unblock':
-				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->update(array('active' => 1));
-				 $message = User::find($user_id)->name.' has been sucessfully unblocked in this Group' ;
+				$result = UserGroup::where('user_id', '=', $user_id )->where('group_id', '=', $group_id )->first() ;
+				$status = $result->update(array('active' => 1));
+				$message = User::find($user_id)->name.' has been sucessfully unblocked in this Group' ;
 						break;
 			}
 			
-			if($result){
+			if($status){
+				Notification::send("User_group_status" , $result );
 				return Redirect::back()->
 				with('flash_notice' , $message ) ;
 			}else{

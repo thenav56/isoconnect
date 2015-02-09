@@ -18,7 +18,7 @@ class Post extends Eloquent {
 	 return $this->belongsTo('Group', 'group_id');
 	}
 
-	public function userlist()
+	public function userlist()//list of users connected to post ..post author and user who commented
 	{
 		$comments = Comment::Distinct()->groupBy('user_id')->select('user_id')->where('post_id','=',$this->id)->get() ;
 		  

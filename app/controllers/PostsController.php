@@ -118,8 +118,8 @@ class PostsController extends \BaseController {
  
 		//post information group_id
 		$posts = Post::where('id' , '=' , $post_id)->first();
-		
-		if($posts->group_id == 0){//it is public post visible to all
+		$active = false ;
+		if($posts->group_id == 0 || Auth::id() == $posts->user_id){							//it is public post visible to all or the user is the author
 			$comments = Post::find($post_id)->comment ;
 			$active = true ;
 			return View::make('posts.show')->with('post' , $posts)
