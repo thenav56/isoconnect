@@ -15,6 +15,7 @@ class UserTableSeeder extends Seeder
                 //'username' => 'navin',
                 'email'    => 'navinayer56@gmail.com',
                 'password' => Hash::make('awesome'),
+                'confirmed' => true ,
             ));
 
          User::create(array(
@@ -22,6 +23,7 @@ class UserTableSeeder extends Seeder
                 //'username' => 'navin',
                 'email'    => 'unknown.emlap@gmail.com',
                 'password' => Hash::make('awesome'),
+                'confirmed' => true ,
             ));
 
           User::create(array(
@@ -29,6 +31,7 @@ class UserTableSeeder extends Seeder
                 //'username' => 'navin',
                 'email'    => 'prabesh.pathak@hotmail.com',
                 'password' => Hash::make('awesome'),
+                'confirmed' => true ,
             ));
 
         foreach(range(1 , 10) as $index){
@@ -38,6 +41,7 @@ class UserTableSeeder extends Seeder
                 //'username' => 'navin',
                 'email'    => $hell.'@gmail.com',
                 'password' => Hash::make('awesome'),
+                'confirmed' => true ,
             ));
 
         }

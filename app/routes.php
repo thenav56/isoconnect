@@ -101,4 +101,8 @@ Route::get('user/{id}/profile/info' , array('uses' => 'UserController@showPublic
 
 Route::get('post/{id}/like' , array('uses' => 'LikesController@LikePost'))->before('auth') ;
 
-
+//email verification
+Route::get('register/verify/{confirmationCode}', [
+    'as' => 'confirmation_path',
+    'uses' => 'HomeController@confirm'
+]);

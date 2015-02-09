@@ -16,6 +16,7 @@
                     </ul>
 
                 <h1>Your Group</h1>
+                    @if($groups)
                     <ul>
                         @foreach($groups as $key => $value)
                     <p><li><a href='/group/{{$value->id}}'>
@@ -26,6 +27,9 @@
                     </a></li></p>
                         @endforeach
                     </ul>
+                    @else
+                        <ul><p>You are not connected to any Group Use search to search</p></ul>
+                    @endif
                 <p><li><a href='/group/register'>Create Your Own Group</a></li></p>
 
             </div>

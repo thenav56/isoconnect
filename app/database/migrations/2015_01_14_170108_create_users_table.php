@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration {
 			$table->string('contact',32) ;
 			$table->string('company',32) ;
 
-
-			$table->boolean('activated') ;
+			$table->string('confirmation_code')->nullable();
+			$table->boolean('confirmed')->default(0) ;
 			// required for Laravel 4.1.26
 			$table->string('remember_token', 100)->nullable();
 
