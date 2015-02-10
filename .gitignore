@@ -2,4 +2,6 @@
 vendor
 Vagrantfile
 .dropbox
-.vagrant/
+.vagrant
+.idea
+
