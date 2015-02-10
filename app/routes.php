@@ -107,6 +107,15 @@ Route::get('register/verify/{confirmationCode}', [
     'uses' => 'HomeController@confirm'
 ]);
 
-Route::get('search/query' , array('uses' => 'HomeController@search')) ;
+//resend verification
+Route::get('resend_confirm' ,function(){
+	return View::make('emails.resend_verfication');
+})->before('guest');
 
-Route::get('search' ,array('uses' => 'HomeController@showsearch'));
+Route::post('resend_confirm' ,array('before' => 'csrf' , 'uses' => 'HomeController@resend_confirm'))->before('guest');
+
+Route::get('search/query' , array('uses' => 'HomeController@search'))->before('auth') ;
+
+Route::get('search' ,array('uses' => 'HomeController@showsearch'))->before('auth');
+
+
