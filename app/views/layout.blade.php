@@ -55,7 +55,7 @@ nav {
                      <li><div class="btn-group ">
                                <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
                                 <div class="form-group">
-                                  <input class="form-control" placeholder="Search" type="text" id="users" name="user" autocomplete="off" >
+                                  <input class="form-control" placeholder="Search" type="text" id="users" name="query" autocomplete="off" >
                                   <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                               </form></div></li>

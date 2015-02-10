@@ -21,21 +21,62 @@
                             <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                         </div>
                     </form>
-            	@if($title)
+            	@if(!$title)
+                    <h1>{{'User Some More Character Please!'}}</h1>
+                @endif
+                @if($title && $title != 'query')
             	<h1>{{$title}}</h1>
             	<ul>
+                @if($title == 'Groups')
+                    @if($lists->count()<1)
+                                <h5>No Groups Found with "{{{Input::get('group_name')}}}"</h5>
+                    @endif
 	            	@foreach($lists as $list)
-	            			@if($title == 'Groups')
-	            				<li><h4><a href="<?php echo asset('group/'.$list->id.'') ?>">{{{$list->name}}}</a></h4>
-	            				<h6>{{{$list->about}}}</h6>
-	            			@else
-	            				<li><h4><a href="<?php echo asset('user/'.$list->id.'/profile') ?>">{{{$list->name}}}</a></h4>
-	            				
-	            			@endif
-	            		</li>
-	            		@endforeach	
-                    <?php  echo  $lists->appends(Request::except('page'))->links() ?>
-	       			@endif
+	            			<li><h4><a href="<?php echo asset('group/'.$list->id.'') ?>">{{{$list->name}}}</a></h4>
+	            				<h6>{{{$list->about}}}</h6></li>
+	            			@endforeach 
+                      @endif
+                      
+                      @if($title == 'Users')
+
+                      @if($lists->count()<1)
+                                <h5>No Users Found with "{{{Input::get('user_name')}}}"</h5>
+                            @endif
+                                @foreach($lists as $list)
+	            				<li><h4><a href="<?php echo asset('user/'.$list->id.'/profile') ?>">{{{$list->name}}}</a></h4></li>
+	            				@endforeach 
+	            	  @endif
+                       <?php echo  $lists->appends(Request::except('page'))->links() ; ?>
+                @endif
+	            		@if($title == 'query')
+                            <h3>Users</h3>
+                            @if($users->count()<1)
+                                <h5>No Users Found with "{{{Input::get('query')}}}"</h5>
+                            @else
+                            @foreach($users as $list)
+                            <li><h4><a href="<?php echo asset('group/'.$list->id.'') ?>">{{{$list->name}}}</a></h4>
+                                <h6>{{{$list->about}}}</h6></li>
+                            @endforeach
+                            <?php  
+                                Paginator::setPageName('users') ;
+                            echo  $users->appends(Request::except('page'))->links() ?>
+                            @endif
+                            <h3>Groups</h3>
+                            @if($groups->count()<1)
+                                <h5>No Groups Found with "{{{Input::get('query')}}}"</h5>
+                            @else
+                            @foreach($groups as $list)
+                                <li><h4><a href="<?php echo asset('user/'.$list->id.'/profile') ?>">{{{$list->name}}}</a></h4></li>
+                                @endforeach
+                            <?php 
+                                Paginator::setPageName('groups') ;
+                             echo  $groups->appends(Request::except('page'))->links()  ;
+                             ?>
+                             @endif
+                        @endif
+	            		
+                   
+	       			
        			</ul>
             </div>
          </div>

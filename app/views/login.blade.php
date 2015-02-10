@@ -38,6 +38,9 @@
                                 <label>
                                     <input type="checkbox" name="remember" id="remember" checked="true"> Remember Me
                                 </label>
+                                <label>
+                                   <a href="password_reset">Forget Password</a>
+                                </label>
                             </div>
                         </div>
                     </div>

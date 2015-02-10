@@ -118,4 +118,19 @@ Route::get('search/query' , array('uses' => 'HomeController@search'))->before('a
 
 Route::get('search' ,array('uses' => 'HomeController@showsearch'))->before('auth');
 
+//Password Reset
+Route::get('password_reset' ,function(){
+	return View::make('emails.password_reset');
+})->before('guest');
+
+Route::post('password_reset' , array('uses' => 'HomeController@password_reset'))->before('guest');
+
+//reset form
+Route::get('password_reset/{confirmationCode}' , function($confirmationCode){
+	return View::make('emails.reset_password')->with('confirmationCode',$confirmationCode);
+})->before('guest');
+
+Route::post('password_reset/{confirmationCode}' , array('uses' => 'HomeController@password_reset_withCode'))->before('guest');
+
+
 
