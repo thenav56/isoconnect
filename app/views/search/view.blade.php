@@ -54,7 +54,7 @@
                                 <h5>No Users Found with "{{{Input::get('query')}}}"</h5>
                             @else
                             @foreach($users as $list)
-                            <li><h4><a href="<?php echo asset('group/'.$list->id.'') ?>">{{{$list->name}}}</a></h4>
+                            <li><h4><a href="<?php echo asset('user/'.$list->id.'') ?>">{{{$list->name}}}</a></h4>
                                 <h6>{{{$list->about}}}</h6></li>
                             @endforeach
                             <?php  
@@ -66,7 +66,7 @@
                                 <h5>No Groups Found with "{{{Input::get('query')}}}"</h5>
                             @else
                             @foreach($groups as $list)
-                                <li><h4><a href="<?php echo asset('user/'.$list->id.'/profile') ?>">{{{$list->name}}}</a></h4></li>
+                                <li><h4><a href="<?php echo asset('group/'.$list->id) ?>">{{{$list->name}}}</a></h4></li>
                                 @endforeach
                             <?php 
                                 Paginator::setPageName('groups') ;

@@ -6,14 +6,17 @@ class MessagesController extends \BaseController {
 	public function showMessagelist()
 	{
 		//show the list of user with recent message
-		$messages = Message::where('user1_id' , '=' , Auth::id())
-		->orWhere('user2_id' , '=' , Auth::id())->orderBy('id' , 'desc')->get() ;
+		$messages = Message::orderBy('id' , 'desc')->distinct()->groupBy('user1_id')
+		->where('user1_id' , '=' , Auth::id())
+		->orWhere('user2_id' , '=' , Auth::id())->get() ;
 
 		foreach($messages as $message){
 			if($message->user1_id == Auth::id())
 			echo 'YOU::'.User::find($message->user2_id)->name.' '.$message->message.'<br>' ;
 			else
-				echo User::find($message->user1_id)->name.':: '.$message->message.'<br>' ;
+				echo User::find($message->user1_id)->name.'::YOU '.$message->message.'<br>' ;
+
+			echo '<br><br><br><br>' ;
 		}
 
 		die() ;
@@ -22,9 +25,15 @@ class MessagesController extends \BaseController {
 	 
 	public function showMessage($user_id)
 	{
-		$messages = Message::where('user1_id' , '=' , Auth::id())
-		->orWhere('user2_id' , '=' , Auth::id())->orWhere('user2_id' , '=' , $user_id)
-		->orWhere('user2_id' , '=' , $user_id)->orderBy('id' , 'desc')->paginate(10) ;
+		
+		$messages = Message::orderBy('id','desc')->where(function($query)  use($user_id)  {
+			$query->where('user1_id' , '=' , Auth::id())->Where('user2_id' , '=' , $user_id);
+		})->orWhere(function($query) use($user_id) {
+			$query->where('user1_id' , '=' , $user_id)->Where('user2_id' , '=' , Auth::id());
+		})->simplepaginate();
+
+
+		 
 
 		$otherUser = User::find($user_id) ;
 

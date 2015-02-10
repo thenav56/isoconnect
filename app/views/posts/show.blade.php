@@ -6,39 +6,75 @@
 
 @section('body')
 
-		<div class="row">
-            <div class="col-md-6 col-md-offset-3">
-             <div class="well bs-component">
-                <div class="panel panel-default">
-                @if($active) 
-                       
-                          <div class="panel-heading"> 
-                          <h4><a>{{ User::find($post->user_id)['name'] }}</a></h4>
-                             <h5>{{$post->created_at->diffForHumans()}}</h5>
-                          </div>
-                          <div class="panel-body">
-                                                
-                        <h5>{{e($post->post_body)}}</h5><br>
-                           
-                            <h5>{{ $post->like}}<a href="/post/{{$post->id}}/like">{{ 'Vote up' }}</a></h5>
 
+
+          <div class="container">
+              <div class="row">
+                      <div class="col-lg-7 col-lg-offset-3">
+                @if($active) 
+                       <div class="container">
+                                          <div class="row">
+
+                                             
+
+                                            <div class="col-sm-6">
+                                              <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                  <strong><a href="/user/<?php echo $post->user_id ;  ?>">{{User::find($post->user_id)->name }}</a></strong><span class="text-muted pull-right">Posted To (<a href="/group/<?php echo $post->group_id ?>"><?php if($post->group_id) echo Group::find($post->group_id)->name  ; else echo "Public" ?></a>) {{$post->created_at->diffForHumans()}}</span>
+                                                </div>
+                                                <div class="panel-body">
+                                                    {{e($post->post_body)}}
+                                                </div><!-- /panel-body -->
+                                                <div class="panel-heading">
+                                                @if(!$liked)
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
+                                                @else
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
+                                                @endif
+                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
+                                                  </div>
+
+                                            </div><!-- /panel panel-default -->
+                                          </div><!-- /col-sm-5 -->
+
+                                      </div><!-- /row-->
+                                      </div><!-- /container -->
+ 
+                            
                             <!-- comment portion here -->
                          
 
                             <div class="row">
-                                <div class="well bs-component">
+                                <div class="well bs-component col-lg-11">
                                     <div class="list-group">
                                 @foreach($comments as $comment => $_comment)
-                                      <a class="list-group-item">
-                                            <h4 class="list-group-item-heading">{{ User::find($_comment->user_id)['name'] }}
-                                            <h5>{{$_comment->created_at->diffForHumans()}}</h5></h4>
-                                            <p class="list-group-item-text">{{e($_comment->comment_body)}}</p>
-                                        </a>
+                                      <div class="container">
+                                          <div class="row">
+<!-- 
+                                            <div class="col-sm-1">
+                                              <div class="thumbnail">
+                                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                              </div> 
+                                            </div>  -->
+
+                                            <div class="col-sm-6">
+                                              <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                  <strong><a href="/user/<?php echo $post->user_id ?>">{{ User::find($_comment->user_id)->name }}</a></strong> <span class="text-muted pull-right">{{$_comment->created_at->diffForHumans()}}</span>
+                                                </div>
+                                                <div class="panel-body">
+                                                    {{e($_comment->comment_body)}}
+                                                </div><!-- /panel-body -->
+                                            </div><!-- /panel panel-default -->
+                                          </div><!-- /col-sm-5 -->
+
+                                      </div><!-- /row-->
+                                      </div><!-- /container -->
                                  @endforeach                 
-                                    </div>
+                                    
                                          
                                  </div>
-                             </div>
+                             
 
                              <!-- comment -->
                                  <div class="comment_update" >
@@ -68,7 +104,7 @@
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                     {{ Form::close() }}
                                 </div>
-                                
+                                </div>
                         </div>  
                                </div>             	
                         @else

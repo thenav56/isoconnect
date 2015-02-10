@@ -67,32 +67,42 @@
             @if($posts->count())
                 @foreach($posts as $post)
                 <?php // print_r($post) ; ?>
-                    <div class="well bs-component" >
-                        <h4><a href="/user/<?php echo $post->user_id ?>/profile">{{ User::find($post->user_id)['name'] }}</a></h4>
-                        <h4>Posted to 
-                            @if(($gpid=Post::find($post->id)->group_id) != 0)
-                            <a href='group/<?php echo $gpid ; ?>'>{{Group::find($gpid)['name']}}</a>
-                            @else
-                            {{'Public'}}
-                            @endif
-                            </h4>
-                        <h5>{{$post->created_at->diffForHumans()}}</h5>
-                        <h5>{{ Str::limit(e($post->post_body),170)}}<a  href='/post/{{$post->id}}'><br>Read More&#8594;</a></h5>
+
+                                  
+                                           
+<!-- 
+                                            <div class="col-sm-1">
+                                              <div class="thumbnail">
+                                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                              </div> 
+                                            </div>  -->
+
+                                             
+                                              <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                  <strong><a href="/user/<?php echo $post->user_id ?>">{{ User::find($post->user_id)->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
+                                                </div> 
+                                                <div class="panel-heading">Posted to 
+                                                    @if(($gpid=Post::find($post->id)->group_id) != 0)
+                                                        <a href='group/<?php echo $gpid ; ?>'>{{Group::find($gpid)->name}}</a>
+                                                    @else
+                                                        {{'Public'}}
+                                                    @endif
+                                                    </div>
+                                                <div class="panel-body">
+                                                    {{ Str::limit(e($post->post_body),170)}}......<br><a href='/post/{{$post->id}}'>Read More&#8594;</a>
+                                                </div><!-- /panel-body -->
+                                            
+                                           
+                        <div class="well bs-component" >
                         
                         <!--comment -->
                         <div class="comment_update" >
                                 {{ Form::open(array('url' => 'user/comment')) }}
-                                <!-- if there are login errors , show them here -->
-                                @if (Session::has('flash_error'))
-                                    <div id="flash_error" >{{ Session::get('flash_error') }}</div>
-                                @endif
-
-                                 <div class="form-group">
-                                                <tr class="danger">
-                                                    {{$errors->first('user_comment')}}
-                                                </tr>
-                                        </div>
+                                 
                                 <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
+                                    <div class="panel panel-default">
+                                    <div class="panel-heading"> 
                                     @if($comment->count())
                                     <a><h5>--Recent Comment--</h5></a>
                                     <?php $recent_commenter = User::find($comment->orderBy('id','desc')->get()->first()->user_id); ?>
@@ -101,6 +111,9 @@
                                    @else
                                     <a><h5>Be the first to comment</h5></a><br><br>
                                    @endif
+                                   </div>
+                                   </div><!-- /panel panel-default -->
+                                   </div>
                                     {{ Form::label('user_comment' , 'Comment!') }} ({{$comment->count()}})
                                     {{ Form::textarea('user_comment' ,'' ,  array(
                                     'placeholder'   => 'Have Some Comment!' , 

@@ -13,31 +13,42 @@ class LikesController extends \BaseController {
 	public function LikePost($id)
 	{
 		$post = Post::find($id);
-		$like = new Like;
-		if($post->like != "0")
-		{
-			//dd($post->like);
-			$find_like = Like::where('post_id','=', $post->id)->get();
-			
-			foreach($find_like as $check => $f_like)
-			{
-				//dd($find_like->user_id);
-				if($f_like->user_id == Auth::user()->id)
-				{
-					return Redirect::back();
-				}
+		$groupList = User::find(Auth::id())->group_lists();
+		$permision = false ;
+		foreach ($groupList as $groupId) {
+			if($groupId == $post->group_id){
+				$permision = true;
+				break;
 			}
-			
-			
-
 		}
+		if(!$permision)
+			return Redirect::to('home')->with('flash_error' , 'Authentication Failed<br>Permision Denied By the Group');
+
+		$like = Like::where('user_id','=',Auth::id())->where('post_id','=',$id)->first();
 		
-		$like->post_id = $post->id;
-		$like->user_id = Auth::user()->id;
-		$post->like += 1;
+
+		if($like){
+			$liked = ($like->liked == 1)?0:1 ;
+			$like->update([
+				'liked' => $liked ,
+				]);
+
+
+			$post->like += ($liked == 0)?-1:1;
+			$post->save();
+
+		}else{
+			$like = Like::create([
+				'user_id' =>  Auth::id() ,
+				'post_id' =>  $id,
+				'liked' =>   1,
+				]);
+
+			$post->like += 1;
+			$post->save();
+		}
+		//
 		
-		$like->save();
-		$post->save();
 		
 		return Redirect::back();
 		

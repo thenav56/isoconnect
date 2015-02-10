@@ -119,10 +119,19 @@ class PostsController extends \BaseController {
 		//post information group_id
 		$posts = Post::where('id' , '=' , $post_id)->first();
 		$active = false ;
+		
 		if($posts->group_id == 0 || Auth::id() == $posts->user_id){							//it is public post visible to all or the user is the author
 			$comments = Post::find($post_id)->comment ;
 			$active = true ;
-			return View::make('posts.show')->with('post' , $posts)
+
+			$like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post_id)->first(); 
+
+				if($like){
+					$liked = ($like->liked == 1) ? true : false ;
+				}else
+					$liked = false ;
+					
+			return View::make('posts.show')->with('post' , $posts)->with('liked',$liked)
 			->with('comments' , $comments)->with('active' , $active);
 		}
 		//group and viewing user relation
@@ -134,7 +143,15 @@ class PostsController extends \BaseController {
 		if($group_admin){//if the user is the admin
 				$active = true ;
 				$comments = Post::find($post_id)->comment ;
-				return View::make('posts.show')->with('post' , $posts)
+
+				$like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post_id)->first(); 
+
+				if($like){
+					$liked = ($like->liked == 1) ? true : false ;
+				}else
+					$liked = false ;
+
+				return View::make('posts.show')->with('post' , $posts)->with('liked',$liked)
 				->with('comments' , $comments)->with('active' , $active) ;
 			}
 		if($group_relation){
@@ -143,8 +160,14 @@ class PostsController extends \BaseController {
 			if($active){
 				
 				$comments = Post::find($post_id)->comment ;
-				 	 
-				return View::make('posts.show')->with('post' , $posts)
+				$like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post_id)->first(); 
+
+				if($like){
+					$liked = ($like->liked == 1) ? true : false ;
+				}else
+					$liked = false ;
+
+				return View::make('posts.show')->with('post' , $posts)->with('liked',$liked)
 				->with('comments' , $comments)->with('active' , $active) ;
 			
 			}

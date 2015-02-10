@@ -81,8 +81,10 @@ class UserController extends BaseController {
 			return Redirect::to('/user/profile');
 		}
 		$user = User::find($id);
+		//think about some permision too
+		$group_list = User::find(Auth::id())->group_lists();
 		//for user_posts
-		$posts = Post::where('user_id','=', $id)->orderBy('id','desc')->simplePaginate(10);
+		$posts = Post::where('user_id','=', $id)->whereIn('group_id',$group_list)->orderBy('id','desc')->simplePaginate(10);
 
 		return View::make('users.profile.publicView' , compact('user', 'posts', 'groups'));
 	}
@@ -92,7 +94,7 @@ class UserController extends BaseController {
 	{
 		//for user_posts
 		
-		$groups = User::find($id)->groups()->get() ;
+		$groups = User::find($id)->groups() ;
 		$user = User::find($id);
 
 		return View::make('users.profile.publicInfo', compact('user', 'groups'));

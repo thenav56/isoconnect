@@ -68,10 +68,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function group_lists()
 	{
 		 $UserGroups =  UserGroup::where('user_id' , '=' , $this->id )->where('active' , '=' , '1' )->get() ;
-		 $AdminGroups = Group::where('admin_id' , '='  , Auth::id())->get() ;
+		 $AdminGroups = Group::where('admin_id' , '='  , $this->id)->get() ;
 
-		 $x = $UserGroups->count() + $AdminGroups->count() ; //including user group where he/she is admin
+		 $x = $UserGroups->count() + $AdminGroups->count() + 1 ; //including user group where he/she is admin
 		
+		 $groupId[$x] = 0 ;//public post Group is 0
+		 $x-- ;
 		 if($x){
 
 			 foreach($UserGroups as $UserGroup)
@@ -92,7 +94,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		
 		}else{
 		
-			return Null ;
+			return $groupId ;
 			
 		}
 	}
@@ -101,7 +103,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 	 
 	 $UserGroups =  UserGroup::where('user_id' , '=' , $this->id )->where('active' , '=' , '1' )->get() ;
-	 $AdminGroups = Group::where('admin_id' , '='  , Auth::id())->get() ;
+	 $AdminGroups = Group::where('admin_id' , '='  , $this->id)->get() ;
 
 		 $x = $UserGroups->count() + $AdminGroups->count() ; 
 		
@@ -128,7 +130,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		
 		}else{
 		
-			return Null ;
+			$group = Null ;
+
+			return $group ;
 			
 		}
 	}

@@ -20,6 +20,10 @@ Route::get('/', function()
 	return Redirect::to('home');
 })->before('auth') ;
 
+Route::get('group/0', function()
+{
+	return Redirect::to('home');
+})->before('auth') ;
 
 //home handler
 Route::get('home' , array('uses' => 'HomeController@showPost'))->before('auth') ;
@@ -86,6 +90,9 @@ Route::post('group/register' , array('before' => 'csrf' ,'uses' => 'GroupsContro
 //Profile pramod
 Route::get('user/profile' , array('uses' => 'UserController@showProfile', 'as' => 'user.profile'))->before('auth') ;
 
+Route::get('user/{user_id}',function($user_id){
+	return Redirect::to('user/'.$user_id.'/profile');
+});
 
 //Profile info pramod
 Route::get('user/profile/info' , array('uses' => 'UserController@showProfileInfo', 'as' => 'user.profile.info'))->before('auth') ;

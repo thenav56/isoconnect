@@ -18,7 +18,8 @@
 
                 <h1>Joined Group</h1>
                     <ul>
-                        @foreach($groups as $key => $value)
+                    @if($groups->count())
+                        @foreach($groups as $value)
                     <p><li><a href='/group/{{$value->id}}'>
                     @if($value->admin_id == $user->id)
                         (Admin)
@@ -27,7 +28,7 @@
                     </a></li></p>
                         @endforeach
                     </ul>
-               
+               @endif
 
             </div>
       

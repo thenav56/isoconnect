@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration {
 			$table->increments('id');
 			$table->integer('post_id');
 			$table->integer('user_id');
-
+			$table->enum('liked', array('0','1','2'));
 			$table->timestamps();
 		});
 	}
