@@ -23,7 +23,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	protected $fillable = ['email','name' , 'password', 'address', 'dob', 'gender' ,'confirmed' , 'confirmation_code'];
+	protected $fillable = ['email','name' , 'password', 'address', 'contact' , 'company', 'dob', 'gender' ,'confirmed' , 'confirmation_code'];
 
 	public function Post()
 	{
@@ -122,7 +122,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			 	$x--;
 			 }
 			
-			 $group = Group::whereIn('id', $groupId ) ;
+			 $group = Group::whereIn('id', $groupId )->get() ;
 
 			 return $group ;
 		

@@ -68,7 +68,7 @@ nav {
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile/edit">Edit Profile</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Account Setting</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/password">Account Setting</a></li>
                                     <li role="presentation" class="divider"></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Log Out</a></li>
                                     <li role="presentation" class="divider"></li>

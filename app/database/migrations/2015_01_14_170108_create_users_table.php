@@ -20,11 +20,11 @@ class CreateUsersTable extends Migration {
 	        $table->string('email')->unique();
 	        $table->string('name',32);
 			$table->string('password',64) ;
-			$table->string('address',64) ;
-			$table->date('dob',32) ;
+			$table->string('address',64)->nullable() ;
+			$table->date('dob',32)->nullable() ;
 			$table->string('gender',32) ;
-			$table->string('contact',32) ;
-			$table->string('company',32) ;
+			$table->string('contact',32)->nullable() ;
+			$table->string('company',32)->nullable() ;
 
 			$table->string('confirmation_code')->nullable();
 			$table->boolean('confirmed')->default(0) ;

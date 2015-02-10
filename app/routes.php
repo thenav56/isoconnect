@@ -101,6 +101,18 @@ Route::get('user/{id}/profile/info' , array('uses' => 'UserController@showPublic
 
 Route::get('post/{id}/like' , array('uses' => 'LikesController@LikePost'))->before('auth') ;
 
+//change password
+Route::get('user/password' , function(){
+	return View::make('users.password') ;
+})->before('auth') ;
+
+Route::post('user/password' , array('before' => 'csrf' , 'uses' => 'UserController@changePassword' ))->before('auth') ; 
+
+
+
+
+
+//using mail stuff
 //email verification
 Route::get('register/verify/{confirmationCode}', [
     'as' => 'confirmation_path',
@@ -123,14 +135,14 @@ Route::get('password_reset' ,function(){
 	return View::make('emails.password_reset');
 })->before('guest');
 
-Route::post('password_reset' , array('uses' => 'HomeController@password_reset'))->before('guest');
+Route::post('password_reset' , array('before' => 'csrf' ,'uses' => 'HomeController@password_reset'))->before('guest');
 
 //reset form
 Route::get('password_reset/{confirmationCode}' , function($confirmationCode){
 	return View::make('emails.reset_password')->with('confirmationCode',$confirmationCode);
 })->before('guest');
 
-Route::post('password_reset/{confirmationCode}' , array('uses' => 'HomeController@password_reset_withCode'))->before('guest');
+Route::post('password_reset/{confirmationCode}' , array('before' => 'csrf' ,'uses' => 'HomeController@password_reset_withCode'))->before('guest');
 
 
 

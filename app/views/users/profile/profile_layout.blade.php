@@ -17,8 +17,8 @@
                     </ul>
 
                 <h1>Your Group</h1>
-                    <ul>
-                        @foreach($groups as $key => $value)
+                    <ul>@if($groups)
+                        @foreach($groups as $value)
                     <p><li><a href='/group/{{$value->id}}'>
                     @if($value->admin_id == Auth::id())
                         (Admin)
@@ -26,6 +26,9 @@
                     {{ e($value->name) }}
                     </a></li></p>
                         @endforeach
+                        @else
+                            Add New Group Search!
+                        @endif
                     </ul>
                 <p><li><a href='/group/register'>Create Your Own Group</a></li></p>
 

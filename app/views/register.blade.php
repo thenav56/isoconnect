@@ -67,6 +67,17 @@
                                     </div>
                                 </div>
 
+                               <div class="form-group">
+                                    {{ Form::label('gender','Gender' , array( 'class'=>'col-lg-2 control-label')) }}
+                                    <div class="col-lg-10">
+                                     
+                                        {{ Form::radio('gender', 'Male',true)}}
+                                        {{ Form::label('gender', 'Male') }}
+                                        {{ Form::radio('gender', 'Female' ) }} 
+                                        {{ Form::label('gender', 'Female') }}
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="col-lg-10 col-lg-offset-2">
                                         {{Form::captcha()}}

@@ -1,9 +1,9 @@
 @extends('users.profile.profile_layout')
 @section('profile_body')
 
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
+<div class="container-fluid">
+        <div class="row">
+             <div class="col-md-12">
                 <div class="well bs-component">
 				
                 {{ Form::open(array('url' => '/user/profile/edit','method' => 'post' , 'class' => 'form-horizontal')) }}                
@@ -18,13 +18,17 @@
                                 <!-- if there are login errors , show them here -->
 
                                
-                                @if(($errors->first()))
+                                @if( $errors->has('name') || $errors->has('dob')) 
                                     <div class="form-group alert alert-warning">
                                         <tr class="warning">
                                             <ul>
-                                                 @if(($errors->has('name')))
+                                                @if(($errors->has('name')))
                                                     <li><td>{{ $errors->first('name')}}</td></li>
                                                 @endif
+                                                @if(($errors->has('dob')))
+                                                    <li><td>{{ $errors->first('dob')}}</td></li>
+                                                @endif
+                                                
                                             </ul>
                                         </tr>
                                     </div>
@@ -62,6 +66,24 @@
 
 
                             <h4><pre>CONTACT INFO</h4>
+                            @if(($errors->has('address')))
+                                    <div class="form-group alert alert-warning">
+                                        <tr class="warning">
+                                            <ul>  
+                                                <li><td>{{ $errors->first('address')}}</td></li>
+                                            </ul>
+                                        </tr>
+                                    </div>
+                               @endif
+                               @if(($errors->has('contact')))
+                                    <div class="form-group alert alert-warning">
+                                        <tr class="warning">
+                                            <ul>  
+                                                <li><td>{{ $errors->first('contact')}}</td></li>
+                                            </ul>
+                                        </tr>
+                                    </div>
+                               @endif
                                 <div class="form-group">
                                     {{ Form::label('address' , 'Lives In' , array( 'class'=>'col-lg-2 control-label')) }}
                                     <div class="col-lg-8">
@@ -75,25 +97,24 @@
                                     </div>
                                </div>
 
-                            <h4><pre>OTHERS </h4>    
+                            <h4><pre>OTHERS </h4>  
+                            @if(($errors->has('company')))
+                                    <div class="form-group alert alert-warning">
+                                        <tr class="warning">
+                                            <ul>  
+                                                <li><td>{{ $errors->first('company')}}</td></li>
+                                            </ul>
+                                        </tr>
+                                    </div>
+                               @endif  
                                 <div class="form-group">
                                     {{ Form::label('company' , 'Work OR Academy' , array( 'class'=>'col-lg-2 control-label')) }}
                                     <div class="col-lg-8">
                                         {{ Form::text('company' , Input::has('company') ? Input::old('company') : Auth::user()->company,array('placeholder' => 'Company OR School ' , 'class'=>'form-control' )) }}
                                     </div>
                                </div>
-
-
-
-                                        
-                                        
-                                        
-
-                                    </div>
-                                </div>
-
-                               
-                                <div class="form-group">
+                                
+                                    <div class="form-group">
                                     <div class="col-lg-10 col-lg-offset-2">
                                         <p>{{ Form::submit('Save' , array('class'=>'btn btn-primary')) }}</p>
                                     </div>
