@@ -39,11 +39,12 @@ class MessagesController extends \BaseController {
 		// $sentMessages = Message::orderBy('created_at' , 'desc')
 		// ->where('user1_id' , '=' , Auth::id())->simplepaginate(5) ;
 
-		$conversations =  Conversation::where('user1_id','=',Auth::id())->orWhere('user2_id','=',Auth::id())->orderBy('updated_at')->simplepaginate();
+		$conversations =  Conversation::where('user1_id','=',Auth::id())->orWhere('user2_id','=',Auth::id())->orderBy('updated_at','desc')->simplepaginate();
 
 		$messages = array() ;
 		foreach ($conversations as $conversation) {
 			$messages[$conversation->id] = Message::where('conversation_id','=',$conversation->id)->orderBy('updated_at','desc')->first() ;
+		
 		}
 
 		return View::make('messages.index')->with('conversations',$conversations)->with('messages',$messages) ;

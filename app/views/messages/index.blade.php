@@ -15,11 +15,11 @@
 									<div class="bg-primary col-md-12" >
 									<label><h4>Recent Conversation</h4></label>	 
 										@foreach($conversations as $conversation)
-							 
+							 			
 						           	 <?php $message = $messages[$conversation->id];?>
 						           	 <div class="text-right ">
 						           	 <a href="<?php echo asset('user/message/'.User::find(($conversation->user1_id == Auth::id())?$conversation->user2_id:$conversation->user1_id)->id);?>" class="">
-						           	  
+						           	  @if($message)
 						           	  <div class="alert alert-block <?php echo ($message->seen == 0)?'alert-warning':'alert-success' ; ?>">
 										 		<label>
 										 		
@@ -32,6 +32,16 @@
 										 		{{{Str::limit(e($message->message),170)}}} <br> <span class="text-muted pull-right">About {{$message->created_at->diffForHumans()}}</span><br>
 										    
 										    </div>
+										 @else
+										 	<div class="alert alert-block 	alert-success  ">
+										 		<label>
+										 		
+										 			{{User::find(($conversation->user1_id == Auth::id())?$conversation->user2_id:$conversation->user1_id)->name}}
+										 		
+										 		</label><br>
+										 		 No message till now ;
+										    </div>
+										 @endif
 										    </a>
 						           	 </div>
 						             

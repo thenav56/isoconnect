@@ -48,22 +48,33 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)
 {
-	 // switch ($code)
-  //   {
-    	
-  //       case 403:
-  //           return Response::view('errors.404', array(), 403);
+	    
+   // switch ($code)
+   //  {
+    	  
+   //      case 403:
+   //          return Response::view('errors.404', array(), 403);
 
-  //       case 404:
-  //           return Response::view('errors.404', array(), 404);
+   //      case 404:
+   //          return Response::view('errors.404', array(), 404);
 
-  //       case 500:
-  //           return Response::view('errors.404', array(), 500);
+   //      case 500:
+   //          return Response::view('errors.404', array(), 500);
 
-  //       default:
-  //           return Response::view('errors.404', array(), $code);
-  //   }
+   //      default:
+   //          return Response::view('errors.404', array(), $code);
+   //  }
+
     //Log::error($exception);
+
+    // if (Config::get('app.debug')) {
+    //       $error = trans('errors.' . $code);
+    //       $error = (is_array($error))? $error : trans('errors.500');
+    //       $data = array('code' => $code, 'title' => $error['title'], 'message' => $error['message'] , 'name' => $error['name'] , 'pic' => $error['pic']);
+
+    //       return Response::view('errors.default', $data, $data['code']);
+    //     }
+    // Log::error($exception);
 });
 
 /*
