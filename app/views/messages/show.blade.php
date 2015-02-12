@@ -28,6 +28,7 @@
                                     )) }}
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <input type="hidden" name="otherUserId" value="<?php echo $otherUser->id ; ?>">
+                <input type="hidden" name="conversation" value="<?php echo $conversation_id ; ?>">
                {{ Form::close() }}
 									  </div>
 				</div>
@@ -35,11 +36,14 @@
          </div>
 	@foreach($messages as $message)
 	<div class="row"> 
-		@if($message->user1_id == Auth::id())
+		@if($message->user_id == Auth::id())
            	 <div class="bg-primary col-md-6 col-md-offset-6" >
            	 <div class="text-right ">
            	  <div class="alert alert-block">
 				 		{{{$message->message}}}<br>
+				 		@if($message->seen == 1)
+				 			 <span class="text-muted pull-right">{{'seen'}}</span>
+				 		@endif
 				    </div>
            	 </div>
              </div>
@@ -47,7 +51,9 @@
        		 <div class="bg-success col-md-6 ">
            	 <div class="text-left ">
            	     <div class="alert alert-block">
+           	     	<legend>{{$otherUser->name}}</legend>
 				 		{{{$message->message}}}<br>
+				 		<?php $message->update(['seen' => 1])?>
 				    </div>
        		</div>
        		 </div>

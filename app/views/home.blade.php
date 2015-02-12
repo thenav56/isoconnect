@@ -101,17 +101,41 @@
                                 {{ Form::open(array('url' => 'user/comment')) }}
                                  
                                 <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
+                                   <?php  
+                                   $like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post->id)->first(); 
+
+                                    if($like){
+                                        $liked = ($like->liked == 1) ? true : false ;
+                                    }else
+                                        $liked = false ;
+                                    ?>
+                                   <div class="panel-heading">
+                                                @if(!$liked)
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
+                                                @else
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
+                                                @endif
+                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
+                                 
+                                   </div><!-- /panel panel-default -->
+                                
                                     <div class="panel panel-default">
                                     <div class="panel-heading"> 
                                     @if($comment->count())
-                                    <a><h5>--Recent Comment--</h5></a>
+                                    <label>Recent Comment By</label>
                                     <?php $recent_commenter = User::find($comment->orderBy('id','desc')->get()->first()->user_id); ?>
                                         <a href="/user/{{$recent_commenter->id}}/profile">{{$recent_commenter->name}}</a><br>
+                                           </div>
+                                           <div class="panel-body">
                                          {{e($comment->get()->first()->comment_body)}}<br><br>
+                                            </div>
                                    @else
-                                    <a><h5>Be the first to comment</h5></a><br><br>
-                                   @endif
                                    </div>
+                                     <div class="panel-body">
+                                    <a><h5>Be the first to comment</h5></a><br><br>
+                                   </div>
+                                   @endif
+                                   
                                    </div><!-- /panel panel-default -->
                                    </div>
                                     {{ Form::label('user_comment' , 'Comment!') }} ({{$comment->count()}})

@@ -137,6 +137,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 	}
 
+	public static function unreadmessage(){
+
+		$user_id = Auth::id() ;
+
+		$conversations = Conversation::where('user1_id','=',$user_id)
+		->orWhere('user2_id','=',$user_id)->get() ;
+
+		foreach ($conversations as $Conversation) {
+			$Conversationlist[] = $Conversation->id ;
+		}
+
+		$message = Message::whereIn('conversation_id',$Conversationlist)
+		->where('seen','=',0)->where('user_id','!=',$user_id)->get()->count() ;
+
+		return $message ;
+
+	}
 
 
 }

@@ -43,14 +43,29 @@ class Notification extends \Eloquent {
 					break;
 				
 				case 'like':
-					// 'user_id' =>  $x ,
-					// 'activity_type' => ,
-					// 'source_id' => ,
-					// 'parent_id' => ,
-					// 'parent_type' => 
+					$source_id = $event->id ; //like id
+					$parent_id = $event->post_id ; //post id
+
+					$notification = Notification::where('activity_type' ,'=', 'like')->where('parent_id' ,'=', $parent_id)->update([
+						'seen' => 0 , 
+						'source_id' => $source_id ,
+						]) ;
+
+					if(!$notification){
+							
+							$notification = Notification::create([
+								'user_id' =>  User::find(Post::find($event->post_id)->user_id)->id ,
+								'activity_type' => 'like', //comment
+								'source_id' => $source_id,		 
+								'parent_id' => $parent_id, //post id
+								'parent_type' => 'post',  //post
+								'seen' => '0'
+								]);
+					}
+
 					break;
 
-				case 'dislike':
+				case 'unlike':
 					# code...
 					break;
 

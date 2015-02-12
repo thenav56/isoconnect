@@ -53,7 +53,22 @@
 			            					break;
 
 			            				case 'like': //like
-			            					# code...
+			            					$like = Like::find($notification->source_id) ;
+			            					$Lastuser = User::find($like->user_id);
+			            					$userlink = asset('user/'.$Lastuser->id.'/profile');
+			            					$likes = Like::where('post_id','=',$notification->parent_id)->get() ;
+			            					$x = $likes->count() ;
+			            					$post = Post::find($notification->parent_id) ;
+			            						if($post->user_id == Auth::id())
+			            							$yours = 'yours' ;
+			            						else 
+			            							$yours = User::find($post->user_id)->name.'\'s ' ; 
+
+			            					if(!($x-1))
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has liked '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;
+			            					else
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has liked '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">Post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;	
+			            					
 			            					break;
 
 			            				case 'dislike': //dislike
@@ -75,6 +90,8 @@
 			            					echo 'You member status in the Group <a href="'.asset('group/'.$notification->parent_id).'">"'.Group::find($notification->parent_id)->name.'"</a> is '.$status ;
 			            					break ;
 			            			}
+
+			            			echo $notification->updated_at->diffForHumans() ;
 			            		?></h4></li>
 			            	</div>
 	            	</div>

@@ -36,6 +36,9 @@ class LikesController extends \BaseController {
 
 			$post->like += ($liked == 0)?-1:1;
 			$post->save();
+			if(Auth::id() != $post->user_id )
+				if($liked == 1)
+				Notification::send('like',$like);
 
 		}else{
 			$like = Like::create([
@@ -46,6 +49,8 @@ class LikesController extends \BaseController {
 
 			$post->like += 1;
 			$post->save();
+			if(Auth::id() != $like->user_id )
+				Notification::send('like',$like);
 		}
 		//
 		

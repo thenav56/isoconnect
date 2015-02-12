@@ -15,8 +15,8 @@ class CreateMessagesTable extends Migration {
 		Schema::create('messages', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user1_id'); //source 
-			$table->integer('user2_id'); //reciever
+			$table->integer('conversation_id'); //converstion to which the message belongs to
+			$table->integer('user_id'); //message owner
 			$table->text('message');
 			$table->enum('seen' , array(0,1))->default(0);
 			$table->timestamps();

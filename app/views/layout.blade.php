@@ -6,7 +6,9 @@
     <link rel="shortcut icon" href="{{asset('assests/icon/icon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{ HTML::style( asset('assests/css/bootstrap.min.css') ) }}
+
     <!--{{HTML::style('http://localhost:8080/assests/css/bootstrap.min.css')}}
+
     --><style>
         body{
             padding-top: 70px;
@@ -56,15 +58,15 @@ nav {
                                <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
                                 <div class="form-group">
                                   <input class="form-control" placeholder="Search" type="text" id="users" name="query" autocomplete="off" >
-                                  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                                  <!-- <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button> -->
                                 </div>
                               </form></div></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                              <li><form action="/"><button class="btn btn-primary btn-md " type="submit" >Messages <span class="badge">0</span></button></form></li>
-                              <li><form action="/user/notification/show"><button class="btn btn-primary btn-md " type="submit" >Notifications <span class="badge" >{{Auth::user()->NotificationUnseen()->count()}}</span></button></form></li> 
-                                <li><button class="btn btn-primary dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></button>
+                              <li><a href="/user/message/show" class="btn btn-primary btn-md " >Messages <span class="badge">{{User::unreadmessage()}}</span></a></li>
+                              <li><a href="/user/notification/show" class="btn btn-primary btn-md " >Notifications <span class="badge" >{{Auth::user()->NotificationUnseen()->count()}}</span></a></li> 
+                                <li><a class="btn btn-primary dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile/edit">Edit Profile</a></li>
@@ -72,8 +74,8 @@ nav {
                                     <li role="presentation" class="divider"></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Log Out</a></li>
                                     <li role="presentation" class="divider"></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Help</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about">About Us</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/help">Help</a></li>
                                  </ul></li>
 
                         @else
