@@ -15,6 +15,14 @@ Route::pattern('post_id', '[0-9]+');
 Route::pattern('group_id', '[0-9]+');
 Route::pattern('user_id', '[0-9]+');
 
+//Sample use of Intervention/image
+Route::get('/pic', function()
+{
+    $img = Image::make(asset('assests/icon/iso_logo.png'))->resize(200, 200);
+
+    return $img->response('jpg');
+});
+
 //about us
 Route::get('about', function()
 {
