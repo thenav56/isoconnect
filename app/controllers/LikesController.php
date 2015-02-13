@@ -49,7 +49,7 @@ class LikesController extends \BaseController {
 
 			$post->like += 1;
 			$post->save();
-			if(Auth::id() != $like->user_id )
+			if(Auth::id() != $post->user_id )
 				Notification::send('like',$like);
 		}
 		//

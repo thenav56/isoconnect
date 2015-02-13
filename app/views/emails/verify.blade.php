@@ -4,6 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
+    <h1>Dear {{$name}}</h1>
         <h2>Verify Your Email Address</h2>
 
         <div>

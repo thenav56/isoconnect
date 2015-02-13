@@ -12,7 +12,7 @@
 
         body{
             padding-top: 70px;
-               background: url('http://newcavern.org/wp-content/themes/jupiter/images/box-warning-icon.png') repeat scroll 50% 0;
+               /*background: url('http://newcavern.org/wp-content/themes/jupiter/images/box-warning-icon.png') repeat scroll 50% 0;*/
         }
 
         .navbar-xs { min-height:28px; height: 45px; }
@@ -71,23 +71,7 @@ nav {
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                      
-                     @if (Auth::check())
-                    
-                    <ul class="nav navbar-nav navbar">
-                     <li><div class="btn-group ">
-                               <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
-                                <div class="form-group">
-                                  <input class="form-control" placeholder="Search" type="text" id="users" name="query" autocomplete="off" >
-                                  <!-- <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button> -->
-                                </div>
-                              </form></div></li>
-                    </ul>
-                        @else
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/login">Login</a></li>
-                            <li><a href="/register">Sign Up</a></li>
-                        @endif
-                    </ul>
+                   <a class="navbar-brand pull-right"  >{{$name}} ERROR</a>
 
                 </div><!-- /.navbar-collapse -->
             </div>
@@ -101,9 +85,9 @@ nav {
         <div class="col-md-12">
             <div class="error-template">
             <img src="{{$pic}}" class="img-rounded" alt="Cinque Terre" width="304" height="236"> 
-                 <div style="background-color: #66FF99">
+                 <div style="<!-- background-color: #66FF99 -->">
                 <h1 >
-                    Oops DUDE!</h1>
+                    Oops!</h1>
                 <h2>
                     {{$name}} {{$title}} </h2>
                 <div class="error-details">

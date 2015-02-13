@@ -65,15 +65,15 @@ App::error(function(Exception $exception, $code)
    //          return Response::view('errors.404', array(), $code);
    //  }
 
-    //Log::error($exception);
+    Log::error($exception);
 
-    // if (Config::get('app.debug')) {
-    //       $error = trans('errors.' . $code);
-    //       $error = (is_array($error))? $error : trans('errors.500');
-    //       $data = array('code' => $code, 'title' => $error['title'], 'message' => $error['message'] , 'name' => $error['name'] , 'pic' => $error['pic']);
+    if (!Config::get('app.debug')) {
+          $error = trans('errors.' . $code);
+          $error = (is_array($error))? $error : trans('errors.500');
+          $data = array('code' => $code, 'title' => $error['title'], 'message' => $error['message'] , 'name' => $error['name'] , 'pic' => $error['pic']);
 
-    //       return Response::view('errors.default', $data, $data['code']);
-    //     }
+          return Response::view('errors.default', $data, $data['code']);
+        }
     // Log::error($exception);
 });
 

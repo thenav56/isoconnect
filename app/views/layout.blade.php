@@ -32,9 +32,9 @@ nav {
         
 </head>
  
-<div class="page">
+ 
     
-      <div class="container-fluid">
+      
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
 
@@ -89,7 +89,7 @@ nav {
             </div>
         </nav>
 
-    </div>
+  
 
          
      
@@ -115,18 +115,36 @@ nav {
             </div>
         </div>
     </div>
+
     <div class="container-fluid">
        
     @yield('body')
+    
     </div>
-</div>
 
+
+        <!-- Footer -->
+       
+        <footer>
+         <div class="container"><hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p><!-- Copyright &copy;  -->I-so-Connect 2015-<?php echo date("Y") ; ?><span class="text-muted pull-right" ><a href="<?php echo asset('about') ;?>">About Us</a></span></p>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            </div>
+        </footer>
+        
+  
+<!--         
 <footer class="footer">
       <div class="container">
        <h4><div class="btn">I-so-Connect 2015-<?php echo date("Y") ; ?></div><span class="text-muted pull-right" ><a class='btn' href="<?php echo asset('about') ;?>">About Us</a></span></h4>
       </div>
 </footer>
-
+ -->
 
 
 @show

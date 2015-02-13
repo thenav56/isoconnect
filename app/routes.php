@@ -26,6 +26,15 @@ Route::get('/', function()
 	return Redirect::to('home');
 })->before('auth') ;
 
+//for reporting
+Route::get('support', function()
+{
+	return View::make('emails.support');
+})  ;
+
+Route::post('support', array('before' => 'csrf' , 'uses' => 'HomeController@doSubmitReport'))  ;
+
+//group 0 is home
 Route::get('group/0', function()
 {
 	return Redirect::to('home');

@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 
 
-$env = $app->detectEnvironment(array(
+$env = $app->detectEnvironment(array( //you may get 500 error if you remove...so make sure database.php is set in app/ for server as app/local is for local(that is down name is for local development)
 
 	'local' => array('homestead' ,'pramod-Vostro-2421' ,  'navinIR-NavVaio' ,'vagrant-ubuntu-trusty-64'),
 
