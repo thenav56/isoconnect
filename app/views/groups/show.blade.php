@@ -9,12 +9,12 @@
             <div class="col-md-12">
             	<div class="well bs-component">   
             			<?php $group = Group::find($group_id) ?>
-                       	<h2>{{$group->name}}</h2>
+                       	<h2>{{{$group->name}}}</h2>
                        	<h4>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h4>
                         <h4>Created by :: {{ User::where('id','=',$group->admin_id )->first()->name}}</h4>
-                        <h4>ABOUT :: {{$group->about}}</h4>
+                        <h4>ABOUT :: {{{$group->about}}}</h4>
                         @if($admin)
-                          <a href='/group/edit'>Edit</a>
+                          <a href='/group/edit/<?php echo $group_id; ?>'>Edit</a>
                         @endif
               </div>
             </div>
@@ -42,7 +42,7 @@
                       <ul>
                          @foreach($usersPending as $users)
                          
-                            <li>{{User::where('id' , '=' , $users->user_id)->first()->name }}</li>
+                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
                             
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='accept' class="btn btn-success btn-xs">
@@ -72,7 +72,7 @@
                       <ul>
                          @foreach($activeUsers as $users)
                          
-                            <li>  {{User::where('id' , '=' , $users->user_id)->first()->name }}</li>
+                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='delete' class="btn btn-warning btn-xs">
                             Remove
@@ -100,7 +100,7 @@
                       <ul>
                          @foreach($blockedUsers as $users)
                          
-                            <li>{{User::where('id' , '=' , $users->user_id)->first()->name }}</li>
+                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
                             
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='unblock' class="btn btn-success btn-xs">
@@ -167,7 +167,7 @@
                       @foreach($posts as $post)
                       <?php // print_r($post) ; ?>
                           <div class="well bs-component">
-                              <h4><a>{{ User::find($post->user_id)['name'] }}</a></h4>
+                              <h4><a href="<?php echo asset('/user/'.$post->user_id); ?>">{{ User::find($post->user_id)['name'] }}</a></h4>
                               <h4>Posted to 
                                   @if(($gpid=Post::find($post->id)->group_id) != 0)
                                   {{Group::find($gpid)['name']}}
@@ -194,7 +194,7 @@
                                       <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
                                           @if($comment->count())
                                           <a><h5>--Recent Comment--</h5></a>
-                                              <a>{{User::find($comment->orderBy('id','desc')->get()->first()->user_id)->name}}</a><br>
+                                              <a href="<?php echo asset('/user/'.$comment->orderBy('id','desc')->get()->first()->user_id); ?>">{{User::find($comment->orderBy('id','desc')->get()->first()->user_id)->name}}</a><br>
                                                {{e($comment->get()->first()->comment_body)}}<br><br>
                                          @else
                                           <a><h5>Be the first to comment</h5></a><br><br>

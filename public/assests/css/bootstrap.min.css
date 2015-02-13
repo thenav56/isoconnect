@@ -20,6 +20,7 @@ body {
 }
 .footer {
   position: absolute;
+  color: #CCCCFF;
   bottom: -2px ;
   width: 100%;
   /* Set the fixed height of the footer here */

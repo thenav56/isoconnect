@@ -91,7 +91,7 @@
 			            					break ;
 			            			}
 
-			            			echo $notification->updated_at->diffForHumans() ;
+			            			echo '<br>'.$notification->updated_at->diffForHumans() ;
 			            		?></h4></li>
 			            	</div>
 	            	</div>

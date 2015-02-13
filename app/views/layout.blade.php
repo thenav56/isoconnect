@@ -123,8 +123,7 @@ nav {
 
 <footer class="footer">
       <div class="container">
-       <h4>I-so-Connect 2015-<?php echo date("Y") ; ?></h4>
-        
+       <h4><div class="btn">I-so-Connect 2015-<?php echo date("Y") ; ?></div><span class="text-muted pull-right" ><a class='btn' href="<?php echo asset('about') ;?>">About Us</a></span></h4>
       </div>
 </footer>
 

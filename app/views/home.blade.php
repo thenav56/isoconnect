@@ -12,7 +12,7 @@
                 <h1>Home</h1>
                     <ul>
                     <li><p>Welcome({{ Auth::user()->name }})</p></li>
-                    <li><p><a href="/user/profile">{{ Auth::user()->email }}</a></p></li>
+                    <li><p><a href="/user/profile">{{ 'Profile' }}</a></p></li>
                     </ul>
 
                 <h1>Your Group</h1>
@@ -38,17 +38,14 @@
                 <div class="status_update" >
                 {{ Form::open(array('url' => 'user/post')) }}
                 <!-- if there are login errors , show them here -->
-                @if (Session::has('flash_error'))
-                    <div id="flash_error" >{{ Session::get('flash_error') }}</div>
-                @endif
-
+                
                  <div class="form-group">
                                 <tr class="danger">
                                     {{$errors->first('user_post')}}
                                 </tr>
                         </div>
                 <p>
-                    {{ Form::label('user_post' , 'Write Here DUDE!') }}
+                    {{ Form::label('user_post' , 'Write Here '.((Auth::user()->gender == 'Male')?'DUDE!':'DUDETTE!') ) }}
                     {{ Form::textarea('user_post' ,'' ,  array(
                     'placeholder'   => 'Want To Share Something!' , 
                     'class'         => 'form-control'   ,

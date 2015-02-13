@@ -50,6 +50,24 @@
                         <h5>{{$post->created_at->diffForHumans()}}</h5>
                         <h5>{{ Str::limit(e($post->post_body),170)}}<a  href='/post/{{$post->id}}'><br>Read More&#8594;</a></h5>
                         
+                         <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
+                                   <?php  
+                                   $like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post->id)->first(); 
+
+                                    if($like){
+                                        $liked = ($like->liked == 1) ? true : false ;
+                                    }else
+                                        $liked = false ;
+                                    ?>
+                                   <div class="panel-heading">
+                                                @if(!$liked)
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
+                                                @else
+                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
+                                                @endif
+                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
+                                 
+                                   </div><!-- /panel panel-default -->
                         <!--comment -->
                         <div class="comment_update" >
                                 {{ Form::open(array('url' => 'user/comment')) }}

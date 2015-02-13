@@ -15,6 +15,12 @@ Route::pattern('post_id', '[0-9]+');
 Route::pattern('group_id', '[0-9]+');
 Route::pattern('user_id', '[0-9]+');
 
+//about us
+Route::get('about', function()
+{
+	return View::make('isoconnect.about');
+}) ;
+
 Route::get('/', function()
 {
 	return Redirect::to('home');
@@ -24,6 +30,20 @@ Route::get('group/0', function()
 {
 	return Redirect::to('home');
 })->before('auth') ;
+
+//group edit 
+Route::get('group/edit/{group_id}', function($group_id)
+{
+	$permission = Auth::user()->isadmin($group_id);
+	if($permission){
+		$group = Group::find($group_id);
+		return View::make('groups.edit')->with('group',$group);
+	}
+	return Redirect::to('home')->with('flash_error','Permission Access Denied');
+})->before('auth') ;
+ 
+Route::post('group/edit/{group_id}' , ['before' => 'csrf', 'uses' => 'GroupsController@edit'])->before('auth');
+
 
 //home handler
 Route::get('home' , array('uses' => 'HomeController@showPost'))->before('auth') ;

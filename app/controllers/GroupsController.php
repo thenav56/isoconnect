@@ -285,9 +285,51 @@ class GroupsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($group_id)
 	{
-		//
+		$permission = Auth::user()->isadmin($group_id);
+	if($permission){
+			//custom message
+			$messages = array(
+	   		 'g-recaptcha-response.required' => 'We need to know if you are a human!',
+	   		 'about_group.required' => 'There must be something about the group' ,
+	   		 'name.required' => 'A group must have a Name' , 
+			);
+
+			$rules = array(
+				'name' => 'required|alpha_num_dashes|min:4|max:32' , 
+				//'g-recaptcha-response' => 'required|recaptcha' , 
+				'about_group' => 'required|min:4|max:300'
+				) ;
+
+				// run the validation rules on the inputs from the form
+				$validator = Validator::make(Input::all() ,$rules, $messages) ;
+
+				if($validator->fails()){
+					return Redirect::to('group/edit/'.$group_id)
+					->withErrors($validator)
+					->withInput(Input::all()) ;
+				}else{
+			 		$group = Group::find($group_id);
+					
+					$newGroup = $group->update([ 
+						'name' => e(Input::get('name')),
+						'about' => e(Input::get('about_group')) ,
+						]);
+
+					if($newGroup){
+						return Redirect::to('group/'.$group->id)
+						->with('flash_notice' , 'Successfully edited You Group');
+					}
+
+					return Redirect::to('group/edit/'.$group->id)
+					->withInput(Input::all())
+					->with('flash_error' , 'Cannt Process Your Request::	Please Try Again Later');
+			}
+		}else{
+			return Redirect::to('home')->with('flash_error','Permission Access Denied');
+		}
+
 	}
 
 	/**
