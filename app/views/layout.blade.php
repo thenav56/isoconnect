@@ -77,13 +77,14 @@ nav {
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/about">About Us</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/help">Help</a></li>
                                  </ul></li>
-
+                    </ul>
                         @else
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="/login">Login</a></li>
                             <li><a href="/register">Sign Up</a></li>
+                           </ul> 
                         @endif
-                    </ul>
+                    
 
                 </div><!-- /.navbar-collapse -->
             </div>

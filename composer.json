@@ -8,7 +8,8 @@
 		"laravel/framework": "4.2.*",
 		 "fzaninotto/faker": "1.3.*@dev",
 		"way/generators": "2.*",
-		"greggilbert/recaptcha": "dev-master"
+		"greggilbert/recaptcha": "1.1.*",
+		"intervention/image": "~2.1"
 	},
 	"autoload": {
 		"classmap": [
