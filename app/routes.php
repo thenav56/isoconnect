@@ -14,20 +14,110 @@
 Route::pattern('post_id', '[0-9]+');
 Route::pattern('group_id', '[0-9]+');
 Route::pattern('user_id', '[0-9]+');
+Route::pattern('aspect_ratio', '[0-9]+');
+
 
 //Sample use of Intervention/image
-Route::get('/pic', function()
-{
-    $img = Image::make(asset('assests/icon/iso_logo.png'))->resize(200, 200);
+// Route::get('/pic', function()
+// {
+//     $img = Image::make(asset('assests/icon/iso_logo.png'))->resize(200, 200);
 
-    return $img->response('jpg');
-});
+//     return $img->response('jpg');
+// });
+
+
+//http response for image with original quality
+Route::get('profile_pic/{aspect_ratio}/{image_name?}' , function($image_name = NULL,$aspect_ratio){
+		if($image_name){ 
+			$img = Image::make('store/photo/original/'.$image_name)
+			->resize(null, $aspect_ratio, function ($constraint) {
+					 $constraint->aspectRatio();
+			});
+		}else{
+			$img = Image::make('store/photo/lowsize_image/default.png');
+		}
+	return $img->response('jpg');
+}) ;
+ 
+//with crop width is halfed
+Route::get('profile_pic/crop/{image_name?}' , function($image_name = NULL ){
+	if($image_name){
+		$img = Image::make('store/photo/original/'.$image_name)
+		->resize(null, 200, function ($constraint) {
+				 $constraint->aspectRatio();
+		});
+		$width = $img->width() ;
+		$height = $img->height();
+		$img->crop($width - $width/4, $height ,round($width/6), 0) ;
+	}else{
+			$img = Image::make('store/photo/lowsize_image/default.png');
+	}
+	return $img->response('jpg');
+}) ;
+
+//http response for image with original quality
+Route::get('profile_pic/{image_name?}' , function($image_name = null){
+	if($image_name)
+	$img = Image::make('store/photo/original/'.$image_name);
+	else
+		$img = Image::make('store/photo/lowsize_image/default.png');
+	return $img->response('jpg');
+}) ;
+
+
+//with crop width is halfed low
+Route::get('profile_pic/low/crop/{image_name?}' , function($image_name = NULL ){
+	if($image_name){
+		$img = Image::make('store/photo/lowsize_image/'.$image_name)
+		->resize(null, 200, function ($constraint) {
+				 $constraint->aspectRatio();
+		});
+		$width = $img->width() ;
+		$height = $img->height();
+		$img->crop($width - round($width/3), $height ,round($width/6), 0) ;
+	}else{
+			$img = Image::make('store/photo/lowsize_image/default.png');
+	}
+	return $img->resize(100,100)->response('jpg');
+}) ;
+
+//http response for image with lowsize_image quality
+Route::get('profile_pic/low/{image_name?}' , function($image_name = null){
+	if($image_name)
+	$img = Image::make('store/photo/lowsize_image/'.$image_name);
+	else
+		$img = Image::make('store/photo/lowsize_image/default.png');
+	return $img->resize(100,100)->response('jpg');
+}) ;
+
+
+
+
+
+
+
+
+
 
 //about us
 Route::get('about', function()
 {
 	return View::make('isoconnect.about');
 }) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/', function()
 {

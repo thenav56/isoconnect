@@ -20,8 +20,20 @@
                                             <div class="col-sm-6">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                  <strong><a href="/user/<?php echo $post->user_id ;  ?>">{{User::find($post->user_id)->name }}</a></strong><span class="text-muted pull-right">Posted To (<a href="/group/<?php echo $post->group_id ?>"><?php if($post->group_id) echo Group::find($post->group_id)->name  ; else echo "Public" ?></a>) {{$post->created_at->diffForHumans()}}</span>
-                                                </div>
+                                                    <div class="row">
+                                                    <div class="col-md-2"> 
+                                                      <?php  $user = User::find($post->user_id) ; ?>
+                                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                                            'url' => 'slkadjf'
+                                                            )) }}</a>
+                                                        </div>
+                                                        <div class="col-md">
+                                                             <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div> 
                                                 <div class="panel-body">
                                                     {{e($post->post_body)}}
                                                 </div><!-- /panel-body -->

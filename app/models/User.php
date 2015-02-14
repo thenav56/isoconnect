@@ -23,7 +23,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	protected $fillable = ['email','name' , 'password', 'address', 'contact' , 'company', 'dob', 'gender' ,'confirmed' , 'confirmation_code'];
+	protected $fillable = ['email','name' , 'profile_pic' , 'password', 'address', 'contact' , 'company', 'dob', 'gender' ,'confirmed' , 'confirmation_code'];
 
 	public function Post()
 	{
@@ -140,17 +140,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public static function unreadmessage(){
 
 		$user_id = Auth::id() ;
-
+		$Conversationlist = array();
 		$conversations = Conversation::where('user1_id','=',$user_id)
 		->orWhere('user2_id','=',$user_id)->get() ;
 
 		foreach ($conversations as $Conversation) {
 			$Conversationlist[] = $Conversation->id ;
 		}
-
-		$message = Message::whereIn('conversation_id',$Conversationlist)
-		->where('seen','=',0)->where('user_id','!=',$user_id)->get()->count() ;
-
+		
+		if(!empty($Conversationlist)){
+			$message = Message::whereIn('conversation_id',$Conversationlist)
+			->where('seen','=',0)->where('user_id','!=',$user_id)->get()->count() ;
+		}else{
+			return 0 ;
+		}
 		return $message ;
 
 	}

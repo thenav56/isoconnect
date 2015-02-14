@@ -43,7 +43,19 @@
                       <ul>
                          @foreach($usersPending as $users)
                          
-                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
+                            <li><div class="row">
+                           <?php $user =  User::find($users->user_id); ?>  
+                                    <div class="col-md-4"> 
+                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                             
+                                            )) }}</a>
+                                        </div>
+                                        <div class="col-md">
+                                             <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
+                                        </div>
+                                    </div></li>
                             
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='accept' class="btn btn-success btn-xs">
@@ -73,7 +85,20 @@
                       <ul>
                          @foreach($activeUsers as $users)
                          
-                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
+                           <li><div class="row">
+                           <?php $user =  User::find($users->user_id); ?>  
+                                    <div class="col-md-4"> 
+                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                             
+                                            )) }}</a>
+                                        </div>
+                                        <div class="col-md">
+                                             <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
+                                        </div>
+                                    </div></li>
+
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='delete' class="btn btn-warning btn-xs">
                             Remove
@@ -101,8 +126,21 @@
                       <ul>
                          @foreach($blockedUsers as $users)
                          
-                            <li><a href="<?php echo asset('/user/'.$users->user_id); ?>">{{User::where('id' , '=' , $users->user_id)->first()->name }}</a></li>
-                            
+                            <li><div class="row">
+                           <?php $user =  User::find($users->user_id); ?>  
+                                    <div class="col-md-4"> 
+                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                             
+                                            )) }}</a>
+                                        </div>
+                                        <div class="col-md">
+                                             <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
+                                        </div>
+                                    </div></li>
+
+                                    
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='unblock' class="btn btn-success btn-xs">
                             Unblock Request
@@ -168,7 +206,19 @@
                       @foreach($posts as $post)
                       <?php // print_r($post) ; ?>
                           <div class="well bs-component">
-                              <h4><a href="<?php echo asset('/user/'.$post->user_id); ?>">{{ User::find($post->user_id)['name'] }}</a></h4>
+                          <div class="row">
+                           <?php $user =  User::find($post->user_id); ?>  
+                                    <div class="col-md-2"> 
+                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                            'url' => 'slkadjf'
+                                            )) }}</a>
+                                        </div>
+                                        <div class="col-md">
+                                             <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
+                                        </div>
+                                    </div>
                               <h4>Posted to 
                                   @if(($gpid=Post::find($post->id)->group_id) != 0)
                                   {{Group::find($gpid)['name']}}

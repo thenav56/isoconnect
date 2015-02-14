@@ -29,7 +29,7 @@ class CreateConversationsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('Conversations');
+		Schema::drop('conversations');
 	}
 
 }

@@ -33,7 +33,8 @@ class UserController extends BaseController {
 		//
 		
 		$messages = array(
-   		 'name.required' => 'You Must Have A Name' , 
+   		 'name.required' => 'You Must Have A Name' ,
+   		 'profile_pic.max' => 'Photo should be less than 5mb',
 		);
 
 		//validate the info , create rules for the inputs
@@ -42,7 +43,8 @@ class UserController extends BaseController {
 			'address' => 'alpha_dash',
 			'contact' => 'digits_between:5,12',
 			'dob' => 'date',
-			'company' => 'alpha_spaces'
+			'company' => 'alpha_spaces',
+			'profile_pic' => 'image|max:5500' , //5120 kB = 5 MB 
 		);
 
 
@@ -57,9 +59,23 @@ class UserController extends BaseController {
 		}
 		else{
 
-			$data = Input::only(['name', 'address', 'gender', 'contact', 'dob', 'company']);
- 
 			$User = User::find(Auth::id());
+			$image_name = $User->profile_pic ;
+			if(Input::hasFile('profile_pic')){
+				$image_name = time().Input::file('profile_pic')->getClientOriginalName();
+				$img = Image::make(Input::file('profile_pic')) ;
+			 
+			//$result = File::makeDirectory('/path/to/directory', 0775, true);
+				$img->save('store/photo/original/'.$image_name);
+
+				$img->resize(null, 200, function ($constraint) {
+			    $constraint->aspectRatio();
+				})->save('store/photo/lowsize_image/'.$image_name);
+			}
+ 
+			$data = Input::only(['name', 'address', 'gender', 'contact', 'dob', 'company' , 'profile_pic']);
+ 			$data['profile_pic'] = $image_name ;
+			
 			$check = $User->update($data) ;
 			 
 			if($check)

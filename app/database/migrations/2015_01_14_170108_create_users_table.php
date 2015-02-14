@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
 			$table->string('gender',32) ;
 			$table->string('contact',32)->nullable() ;
 			$table->string('company',32)->nullable() ;
+			$table->string('profile_pic')->nullable();
 
 			$table->string('confirmation_code')->nullable();
 			$table->boolean('confirmed')->default(0) ;

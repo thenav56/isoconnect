@@ -74,10 +74,21 @@
                                               </div> 
                                             </div>  -->
 
-                                             
+                                             <?php  $user = User::find($post->user_id) ; ?>
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                  <strong><a href="/user/<?php echo $post->user_id ?>">{{ User::find($post->user_id)->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
+                                                    <div class="row">
+                                                    <div class="col-md-2"> 
+                                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                                            'url' => 'slkadjf'
+                                                            )) }}</a>
+                                                        </div>
+                                                        <div class="col-md">
+                                                             <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
+                                                        </div>
+                                                    </div>
                                                 </div> 
                                                 <div class="panel-heading">Posted to 
                                                     @if(($gpid=Post::find($post->id)->group_id) != 0)
@@ -86,9 +97,11 @@
                                                         {{'Public'}}
                                                     @endif
                                                     </div>
-                                                <div class="panel-body">
-                                                    {{ Str::limit(e($post->post_body),170)}}......<br><a href='/post/{{$post->id}}'>Read More&#8594;</a>
-                                                </div><!-- /panel-body -->
+                                                    <a href="<?php echo asset('/post/'.$post->id) ; ?>" >
+                                                            <div class="panel-body">
+                                                                {{ Str::limit(e($post->post_body),170)}}......<br><a href='/post/{{$post->id}}'>Read More&#8594;</a>
+                                                            </div><!-- /panel-body -->
+                                                    </a>
                                             
                                            
                         <div class="well bs-component" >

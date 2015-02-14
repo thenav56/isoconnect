@@ -6,7 +6,7 @@
              <div class="col-md-12">
                 <div class="well bs-component">
 				
-                {{ Form::open(array('url' => '/user/profile/edit','method' => 'post' , 'class' => 'form-horizontal')) }}                
+                {{ Form::open(array('url' => '/user/profile/edit','method' => 'post' , 'class' => 'form-horizontal' , 'files'=>true)) }}                
                 <fieldset>
                    
                     <legend>Edit Profile</legend>            
@@ -18,7 +18,7 @@
                                 <!-- if there are login errors , show them here -->
 
                                
-                                @if( $errors->has('name') || $errors->has('dob')) 
+                                @if( $errors->has('name') || $errors->has('dob') || $errors->has('profile_pic')) 
                                     <div class="form-group alert alert-warning">
                                         <tr class="warning">
                                             <ul>
@@ -28,7 +28,9 @@
                                                 @if(($errors->has('dob')))
                                                     <li><td>{{ $errors->first('dob')}}</td></li>
                                                 @endif
-                                                
+                                                 @if(($errors->has('profile_pic')))
+                                                    <li><td>{{ $errors->first('profile_pic')}}</td></li>
+                                                @endif
                                             </ul>
                                         </tr>
                                     </div>
@@ -49,8 +51,15 @@
                                         max="<?php echo date("Y-m-d") ?>" value="{{Input::has('dob') ? Input::old('dob') : '1990-08-14'}}" >
 
                                     </div>
-                                </div>
+                                </div> 
 
+                               <div class="form-group">
+                                    {{ Form::label('profile_pic','Profile Picture' , array( 'class'=>'col-lg-2 control-label')) }}
+                                    <div class="col-lg-8">
+                                      {{Form::file('profile_pic')}}
+                                    </div>
+                                </div>
+                                
                                 <div class="form-group">
                                     {{ Form::label('gender','Gender' , array( 'class'=>'col-lg-2 control-label')) }}
                                     <div class="col-lg-10">

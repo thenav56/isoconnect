@@ -9,6 +9,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 col-md-3">
+                {{ HTML::image('profile_pic/crop/'.Auth::user()->profile_pic, 'a picture', array('class' => 'img-rectangle img-responsive img-center')) }}
                 <h1>Profile</h1>
                     <ul>
                     <li><p>Welcome({{ Auth::user()->name }})</p></li>
