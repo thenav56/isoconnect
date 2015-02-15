@@ -1,0 +1,52 @@
+/*body , html {
+
+	font: "Tahoma" , sans-serif;
+}
+*/
+/*input {
+	font: inherit;
+}
+*/
+/*input[type="submit"]{
+	border:1px solid  #bbb;
+	background-color: #fff; 
+	padding: 5px 10px;
+	vertical-align: bottom 
+}
+*/
+input[type="text"],
+.tt-input {
+	padding: 5px 10px;
+	border: 1px solid #bbb;
+}
+
+.tt-input:focus {
+	outline: none;
+}
+
+.tt-dropdown-menu {
+	width: 100%;
+	border: 1px solid #bbb;
+	border-top: 0;
+	padding: 0;
+}
+
+.tt-suggestion{
+	padding: 5px 10px;
+	margin: 0 ;
+	background-color: #ffffff;
+	cursor:pointer;
+}
+
+.tt-suggestion p {
+	margin: 5px 0 ;
+}
+
+.tt-suggestion.tt-cursor {
+	background-color: #ddd;
+}
+
+.tt-hint {
+	color:#bbb;
+}
+
