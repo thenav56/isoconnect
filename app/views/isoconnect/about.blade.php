@@ -36,12 +36,12 @@
                      
             </div>
             <div class="col-lg-4 col-sm-6 text-center">
-                <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/w1h5x6fwqzv7637/default.png?dl=0" alt="">
-                <h3>PromodMn
+                <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/kp9u33634dcbpnv/photo_pro.png?dl=0" alt="">
+                <h3>PramodMn
                     
             </div>
             <div class="col-lg-4 col-sm-6 text-center">
-                <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/w1h5x6fwqzv7637/default.png?dl=0" alt="">
+                <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/yo7jvtdyapboj20/photo_prab.png?dl=0" alt="">
                 <h3>PrabeshPthk
                    <!--  <small>Job Title</small>
                 </h3>

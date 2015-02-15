@@ -15,6 +15,8 @@ Route::pattern('post_id', '[0-9]+');
 Route::pattern('group_id', '[0-9]+');
 Route::pattern('user_id', '[0-9]+');
 Route::pattern('aspect_ratio', '[0-9]+');
+Route::pattern('photo_id', '[0-9]+');
+
 
 
 //Sample use of Intervention/image
@@ -68,17 +70,22 @@ Route::get('profile_pic/{image_name?}' , function($image_name = null){
 //with crop width is halfed low
 Route::get('profile_pic/low/crop/{image_name?}' , function($image_name = NULL ){
 	if($image_name){
-		$img = Image::make('store/photo/lowsize_image/'.$image_name)
-		->resize(null, 200, function ($constraint) {
-				 $constraint->aspectRatio();
-		});
-		$width = $img->width() ;
-		$height = $img->height();
-		$img->crop($width - round($width/3), $height ,round($width/6), 0) ;
+		$img = Image::make('store/photo/original/'.$image_name) ;
+		// ->resize(null, 200, function ($constraint) {
+		// 		 $constraint->aspectRatio();
+		// });
+		// $width = $img->width() ;
+		// $height = $img->height();
+		// $img->crop($width - round($width/3), $height ,round($width/6), 0) ;
+
+		//$img->fit(600, 360);
+
+		// crop the best fitting 1:1 ratio (200x200) and resize to 200x200 pixel
+		$img->fit(100);
 	}else{
-			$img = Image::make('store/photo/lowsize_image/default.png');
+			$img = Image::make('store/photo/lowsize_image/default.png')->fit(100);
 	}
-	return $img->resize(100,100)->response('jpg');
+	return $img->response('jpg');
 }) ;
 
 //http response for image with lowsize_image quality
@@ -91,13 +98,10 @@ Route::get('profile_pic/low/{image_name?}' , function($image_name = null){
 }) ;
 
 
+Route::get('user/photo/'  , array('uses' => 'UserController@showPhoto'))->before('auth') ;
+Route::get('user/photo/set/{photo_id}'  , array('uses' => 'UserController@setProfilePhoto'))->before('auth') ;
 
-
-
-
-
-
-
+Route::get('user/photo/show/{photo_id}' ,array('uses' => 'UserController@showPhotoById'))->before('auth');
 
 //about us
 Route::get('about', function()
@@ -182,6 +186,13 @@ Route::post('login' , array('before' => 'csrf' , 'uses' => 'HomeController@doLog
 //Logout
 // route to the logout process
 Route::get('logout' , array('uses' => 'HomeController@doLogout'))->before('auth') ;
+
+
+
+//message count for javascript
+Route::get('user/message/count', array('uses' => 'HomeController@unreadmessage'))->before('auth') ;
+//notification count for javascript
+Route::get('user/notification/count', array('uses' => 'HomeController@unreadnotification'))->before('auth') ;
 
 //post_handler
 Route::post('user/post' , array('before' => 'csrf' , 'uses' => 'PostsController@createPost'))->before('auth') ; 

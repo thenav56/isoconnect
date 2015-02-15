@@ -16,6 +16,9 @@ return array(
 	'public_key'	=> '6Le_yAATAAAAAGC1zq0QKlFAOhdSOBupU1lw4zli',//6LecygATAAAAAKT62ITy8vgIUiAWTwv66ym58Wko
 	'private_key'	=> '6Le_yAATAAAAACJ023bb1Rbwu0cqDgeicnRwSMzz',//6LecygATAAAAAAhTl0fc0ATEOR1mA4-rEh9KJOGA
 	
+	//for hostinger
+	// 'public_key'	=> '6LcEDAITAAAAAMRO-kF3lDHffRs_W_97C1hX7Xpa', 
+	// 'private_key'	=> '6LcEDAITAAAAAJabsS313NChthdsJgaX8mKsufH7', 
 	/*
 	|--------------------------------------------------------------------------
 	| Template

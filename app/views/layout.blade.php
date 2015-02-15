@@ -6,6 +6,7 @@
     <link rel="shortcut icon" href="{{asset('assests/icon/icon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{ HTML::style( asset('assests/css/bootstrap.min.css') ) }}
+    {{ HTML::style( asset('assests/css/autosuggest.css') ) }}
 
     <!--{{HTML::style('http://localhost:8080/assests/css/bootstrap.min.css')}}
 
@@ -15,6 +16,10 @@
         }
 
         .navbar-xs { min-height:28px; height: 45px; }
+
+        .label-as-badge {
+    border-radius: 1em;
+      }
 
         .input-mysize {   
    height: 33px;
@@ -29,6 +34,8 @@ nav {
 }
 
     </style>
+
+   
         
 </head>
  
@@ -58,14 +65,33 @@ nav {
                                <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
                                 <div class="form-group">
                                   <input class="form-control" placeholder="Search" type="text" id="users" name="query" autocomplete="off" >
-                                  <!-- <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button> -->
+                                   <button type="submit" style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                               </form></div></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                              <li><a href="/user/message/show" class="btn btn-primary btn-md " >Messages <span class="badge">{{User::unreadmessage()}}</span></a></li>
-                              <li><a href="/user/notification/show" class="btn btn-primary btn-md " >Notifications <span class="badge" >{{Auth::user()->NotificationUnseen()->count()}}</span></a></li> 
+                    <?php 
+                    $notificationNu = Auth::user()->NotificationUnseen()->count() ;
+                    $messageNu = User::unreadmessage() ;
+
+                    $messageBadgeColor = 'label-default'  ;
+                    $notificationBadgeColor = 'label-default';
+                    if($notificationNu)
+                      $notificationBadgeColor = 'label-success';
+                    if($messageNu)
+                      $messageBadgeColor = 'label-success';
+                   
+                    Session::put('messageNu', $messageNu);
+                    $messageNu = '<span class="label '.$messageBadgeColor.' label-as-badge">'.$messageNu.'</span>' ;
+                    
+                    Session::put('notificationNu', $notificationNu);
+                    $notificationNu =  '<span class="label '.$notificationBadgeColor.' label-as-badge">'.$notificationNu.'</span>' ;
+
+
+                    ?>                                                                                                                                     
+                              <li><a href="/user/message/show" class="btn btn-primary btn-md " >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
+                              <li><a href="/user/notification/show" class="btn btn-primary btn-md " >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
                                 <li><a class="btn btn-primary dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
@@ -84,6 +110,7 @@ nav {
                             <li><a href="/register">Sign Up</a></li>
                            </ul> 
                         @endif
+                    
                     
 
                 </div><!-- /.navbar-collapse -->
@@ -118,6 +145,7 @@ nav {
     </div>
 
     <div class="container-fluid">
+        
        
     @yield('body')
     
@@ -157,29 +185,12 @@ nav {
        {{HTML::script(asset('assests/js/jquery.min.js'))}}
        {{HTML::script(asset('assests/js/typeahead.js'))}}
        {{HTML::script(asset('assests/js/bootstrap.min.js'))}}
-       {{HTML::script(asset('assests/js/global.js'))}}
-<script>
-       //auto scroll for fixed position for redirect::back()
-                $(document).ready(function(){
-                      window.onbeforeunload = function(e){    
-                        var pathname = window.location.href ;
-                        window.name = ' ['+pathname+'[' + $(window).scrollTop().toString() + '[' + $(window).scrollLeft().toString();
-                        };
-                        
-                      $.maintainscroll = function() {
-                      if(window.name.indexOf('[') > 0)
-                        {
-                        var pathname = window.location.href ;
-                        var parts = window.name.split('['); 
-                        if(parts[1] == pathname){
-                          window.name = $.trim(parts[0]);
-                          window.scrollTo(parseInt(parts[parts.length - 1]), parseInt(parts[parts.length - 2]));
-                          }
-                        }   
-                      };  
-                      $.maintainscroll();
-                      })(jQuery);
-</script>
+       {{HTML::script(asset('assests/js/autoscroll.js'))}}
+       @include('javascript')   
+
+ 
+ 
+ 
 <?php
 
 //glyphicon glyphicon-thumbs-down

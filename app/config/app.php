@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://isoconect.tk', //http://isoconnect.bugs3.com
+	'url' => 'http://localhost', //http://isoconnect.bugs3.com
 
 	/*
 	|--------------------------------------------------------------------------

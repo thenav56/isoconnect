@@ -71,6 +71,12 @@ class UserController extends BaseController {
 				$img->resize(null, 200, function ($constraint) {
 			    $constraint->aspectRatio();
 				})->save('store/photo/lowsize_image/'.$image_name);
+			
+				//save to photo table
+				$photo_flag = Photo::create([
+					'user_id' => Auth::id() ,
+					'location' => $image_name ,
+					]);
 			}
  
 			$data = Input::only(['name', 'address', 'gender', 'contact', 'dob', 'company' , 'profile_pic']);
@@ -177,6 +183,51 @@ class UserController extends BaseController {
 
 
 
+	public function showPhoto(){
+		$id = Auth::id() ;
+		$groups = User::find($id)->groups() ;
+		$user = User::find($id);
+		$photos = Photo::where('user_id','=' , $id)->simplePaginate();
+ 
+		return View::make('users.profile.showPhoto', compact('user', 'groups','photos'));
+	}
+
+	public function setProfilePhoto($photo_id){
+
+		$id = Auth::id();
+		$user = User::find($id);
+		$photo = Photo::find($photo_id);
+		$permision = ($photo->user_id == $id)?true:false ;
+
+		if($permision){
+			if($user->profile_pic == $photo->location)
+				return Redirect::back()->with('flash_notice','Profile Picture already set');
+			
+			$flag = $user->update([
+				'profile_pic' => $photo->location , 
+				]);
+			if($flag)
+				return Redirect::back()->with('flash_notice','Successfully changed');
+			return Redirect::back()->with('flash_error','Something went wrong try again');
+
+		}else{
+			return Redirect::back()->with('flash_error','Thats photo belongs to another user');
+		}
+	}
+
+	public function showPhotoById($photo_id){
+		$id = Auth::id();
+		$user = User::find($id);
+		$photo = Photo::find($photo_id);
+		$permision = ($photo->user_id == $id)?true:false ;
+
+		if($permision){
+				return View::make('users.profile.showPhotoById',compact('photo'));
+		}else{
+			return Redirect::back()->with('flash_error','Thats photo belongs to another user');
+		}
+
+	}	
 
 
 

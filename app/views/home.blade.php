@@ -89,7 +89,7 @@
                                                              <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
                                                         </div>
                                                     </div>
-                                                </div> 
+                                                </div>
                                                 <div class="panel-heading">Posted to 
                                                     @if(($gpid=Post::find($post->id)->group_id) != 0)
                                                         <a href='group/<?php echo $gpid ; ?>'>{{Group::find($gpid)->name}}</a>
@@ -97,12 +97,11 @@
                                                         {{'Public'}}
                                                     @endif
                                                     </div>
-                                                    <a href="<?php echo asset('/post/'.$post->id) ; ?>" >
+                                                   
                                                             <div class="panel-body">
-                                                                {{ Str::limit(e($post->post_body),170)}}......<br><a href='/post/{{$post->id}}'>Read More&#8594;</a>
+                                                                {{e($post->post_body)}}<br><a href='/post/{{$post->id}}'>Read More&#8594;</a>
                                                             </div><!-- /panel-body -->
-                                                    </a>
-                                            
+                                                                                               
                                            
                         <div class="well bs-component" >
                         
