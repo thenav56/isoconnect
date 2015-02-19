@@ -38,6 +38,7 @@
         <div class="row">
             <div class="col-md-12 ">
                 <div class="well bs-component">
+                {{ HTML::image('profile_pic/'.$user->profile_pic, 'a picture', array('class' => 'img-rectangle img-responsive img-center')) }}
                         
                 <h4><pre>BASIC INFO</h4>
                 <h5>Name: {{ $user->name }}<br>

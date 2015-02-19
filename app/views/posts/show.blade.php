@@ -2,40 +2,63 @@
 
 @section('head')
 <title>IsoConnect | Post </title>
+<style> 
+
+div.new_message {
+    -webkit-animation: myfirst 5s; /* Chrome, Safari, Opera */
+    animation: myfirst 5s;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+    from {background: #18bc9c;}
+    to {background: #ffffff;}
+}
+
+/* Standard syntax */
+@keyframes myfirst {
+    from {background: #18bc9c;}
+    to {background: #ffffff;}
+}
+</style>
+
 @stop
 
 @section('body')
 
 
 
-          <div class="container">
+          <div class="container ">
               <div class="row">
-                      <div class="col-lg-7 col-lg-offset-3">
+                      <div class="col-md-7 col-md-offset-3">
                 @if($active) 
                        <div class="container">
                                           <div class="row">
 
                                              
 
-                                            <div class="col-sm-6">
+                                            <div class="col-md-6">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <div class="row">
+                                                    
                                                     <div class="col-md-2"> 
                                                       <?php  $user = User::find($post->user_id) ; ?>
                                                             <a href="<?php echo asset('user/'.$user->id) ; ?>" >
                                                             {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
                                                             array('class' => 'img-circle  img-responsive img-center' ,
-                                                            'url' => 'slkadjf'
+                                                             
                                                             )) }}</a>
                                                         </div>
-                                                        <div class="col-md">
+                                                       <!--  <div class="row">
+                                                          <div class="col-md">
+                                                            <div class="panel-heading"> -->
                                                              <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">Posted To (<a href="{{asset('group/'.$post->group_id)}}">{{($post->group_id == 0)?'Public':(Group::find($post->group_id)->name)}}</a>) {{$post->created_at->diffForHumans()}}</span>
+                                                            <!-- </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div> 
                                                 <div class="panel-body">
-                                                    {{e($post->post_body)}}
+                                                    {{Post::handleText($post->post_body)}}
                                                 </div><!-- /panel-body -->
                                                 <div class="panel-heading">
                                                 @if(!$liked)
@@ -43,7 +66,8 @@
                                                 @else
                                                   <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
                                                 @endif
-                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
+                                                  <span class="text-muted pull-right"><a class="btn btn-danger" href="{{asset('post/delete/'.$post->id)}}">Delete</a></span>
+                                                  <span class="text-muted  ">{{$post->like}} people liked</span>
                                                   </div>
 
                                             </div><!-- /panel panel-default -->
@@ -69,12 +93,24 @@
                                               </div> 
                                             </div>  -->
 
-                                            <div class="col-sm-6">
+                                            <div class="col-md-6" id="<?php echo $_comment->id ?>">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                  <strong><a href="/user/<?php echo $post->user_id ?>">{{ User::find($_comment->user_id)->name }}</a></strong> <span class="text-muted pull-right">{{$_comment->created_at->diffForHumans()}}</span>
+                                                <div class="col-md-2"> 
+                                                      <?php  $user = User::find($_comment->user_id) ; ?>
+                                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                                             
+                                                            )) }}</a>
+                                                        </div>
+                                                  <strong><a href="/user/<?php echo $post->user_id ?>">{{ $user->name }}</a></strong> <span class="text-muted pull-right">{{$_comment->created_at->diffForHumans()}}</span>
                                                 </div>
-                                                <div class="panel-body">
+                                                <div class="panel-body <?php 
+                                            if(Input::has('comment_number'))  
+                                                if($_comment->id == Input::get('comment_number')) 
+                                                  echo 'new_message' ;
+                                              ?>">
                                                     {{e($_comment->comment_body)}}
                                                 </div><!-- /panel-body -->
                                             </div><!-- /panel panel-default -->
@@ -126,5 +162,18 @@
                  </div>
             </div>
 		</div>
+
+@stop
+
+@section('javascript')
+
+@if(Input::has('comment_number'))
+<script>
+  $(document).ready(function(){
+              var el = document.getElementById({{Input::get('comment_number')}}) ;
+               el.scrollIntoView(true);
+            });
+</script>
+@endif
 
 @stop

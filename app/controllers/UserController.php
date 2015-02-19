@@ -76,6 +76,8 @@ class UserController extends BaseController {
 				$photo_flag = Photo::create([
 					'user_id' => Auth::id() ,
 					'location' => $image_name ,
+					'source_id' => Auth::id() , //can be null ....doesnt matter for profile
+					'source_type' => 'profile' ,
 					]);
 			}
  

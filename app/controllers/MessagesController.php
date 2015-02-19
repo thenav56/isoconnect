@@ -5,40 +5,7 @@ class MessagesController extends \BaseController {
  
 	public function showMessagelist()
 	{
-		//show the list of user with recent message
-		// $messages = Message::orderBy('id' , 'desc')->distinct()->groupBy()
-		// ->where('user1_id' , '=' , Auth::id())
-		// ->orWhere('user2_id' , '=' , Auth::id())->simplepaginate() ;
-
-		// $messages = Message::select(DB::raw('DISTINCT  if(user1_id = ? , user2_id,user1_id )',array(Auth::id())))
-		// ->whereRaw('user1_id = ? or user2_id = ? ',array( Auth::id(),Auth::id(),Auth::id()))->get();		
-
-		// foreach ($messages as $message) {
-		//  	$userList[] =  $message['if(user1_id = ? , user2_id,user1_id )'] ;
-		//  } 
-
-		//  foreach ($userList as $user) {
-		//  	$messages[$user] = Message::orderBy('id','desc')->where(function($query)  use($user)  {
-		// 			$query->where('user1_id' , '=' , Auth::id())->Where('user2_id' , '=' , $user);
-		// 				})->orWhere(function($query) use($user) {
-		// 					$query->where('user1_id' , '=' , $user)->Where('user2_id' , '=' , Auth::id());
-		// 				})->first() ;
-		//  }
-		//  foreach ($userList as $user_id) {
-		//  	echo User::find($user_id)->name.'<br>'.$messages[$user_id]->message.' '.$messages[$user_id]->created_at->diffForHumans().'<br><br>' ;
-		//  }
-		//  die();
-
-		// //inbox
-		// Paginator::setPageName('inbox') ;
-		// $inboxMessages = Message::orderBy('created_at' , 'desc')->distinct()->groupBy('user1_id')
-		// ->where('user2_id' , '=' , Auth::id())->simplepaginate(5) ;
-
-		// //sent
-		// Paginator::setPageName('sent') ;
-		// $sentMessages = Message::orderBy('created_at' , 'desc')
-		// ->where('user1_id' , '=' , Auth::id())->simplepaginate(5) ;
-
+		 
 		$conversations =  Conversation::
 		 where('user1_id','=',Auth::id())->orWhere('user2_id','=',Auth::id())->orderBy('updated_at','desc')->simplepaginate();
 
@@ -74,9 +41,13 @@ class MessagesController extends \BaseController {
 		->orderBy('created_at' , 'desc')->simplepaginate();
 		
 		$otherUser = User::find($user_id) ;
+		$Updownmessage = $messages->sortBy(function($messages){
+				return $messages->created_at ;
+		});
 
 		return View::make('messages.show')
 		->with('messages' , $messages)
+		->with('Updownmessage' , $Updownmessage)
 		->with('otherUser', $otherUser) 
 		->with('conversation_id', $conversation->id) ;
 	}
@@ -107,7 +78,8 @@ class MessagesController extends \BaseController {
 			$success = Message::create([
 				'user_id' => $sender,
 				 'conversation_id' => $conversation->id ,
-				'message' =>  $message
+				'message' =>  $message,
+				'seen' => 0 ,
 				]) ;
 
 			if($success){
@@ -122,4 +94,76 @@ class MessagesController extends \BaseController {
 	}
 
 	 
+
+	 public function messengerHandler(){
+
+	 	$function = Input::get('function');
+
+	 	$conversation = Conversation::find(Input::get('conversation')) ;
+		$permission = false ;	           
+		if( ($conversation->user1_id == Auth::id()) || ($conversation->user2_id == Auth::id())   ){
+			$permission = true ; 
+       }
+    	
+
+    	if($permission){
+	   	    $log = array();
+	   	  
+				    switch($function) {
+				    
+				       case('getState'):
+				       	  $message = Message::where('conversation_id','=',$conversation->id)
+				       	  ->where('user_id','=',Input::get('otherUser'))
+				       	  ->orderBy('id','desc')
+				       	  ->first() ;
+				          $log['last_message'] = $message->id; 
+				          $log['seen'] = $message->seen ;
+				          break ;
+
+
+				       case('update'):
+				          $last_message = Input::get('last_message');
+				          
+				          $message = Message::where('conversation_id','=',$conversation->id)
+				       	  ->where('user_id','=',Input::get('otherUser'))
+				       	  ->orderBy('id','desc')
+				       	  ->first() ;
+				       
+				          $last_messageRecent = $message->id;
+
+				          if($last_messageRecent == $last_message){
+				             $log['last_message'] = $last_message;
+				        	
+				             $log['text'] = false;
+				          } else {
+				         //	echo $last_message.'and'.$last_messageRecent ;
+				             $log['last_message'] = $last_messageRecent;
+				             $log['user'] = User::find(Input::get('otherUser'))->name ;
+				             $log['user_link'] = asset('user/'.Input::get('otherUser')) ;
+				             $log['date'] = $message->created_at->diffForHumans() ;
+				             $log['text'] = $message->message ; 
+				          	 $message->update([
+				          	 	'seen' => 1 ,
+				          	 	]) ;
+
+
+				          }
+				            
+				          break;
+				       
+				       case('send'):
+				       	 $nickname = htmlentities(strip_tags($_POST['nickname']));
+					     $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+					     $message = htmlentities(strip_tags($_POST['message']));
+					     if (($message) != "\n") {
+					       if (preg_match($reg_exUrl, $message, $url)) {
+					          $message = preg_replace($reg_exUrl, '<a href="'.$url[0].'" target="_blank">'.$url[0].'</a>', $message);
+					       } 
+					          fwrite(fopen('chat.txt', 'a'), "<span>". $nickname . "</span>" . $message = str_replace("\n", " ", $message) . "\n"); 
+					     }
+				         break;
+				    }
+		    echo json_encode($log);
+		}
+	}
 }

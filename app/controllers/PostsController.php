@@ -21,8 +21,21 @@ class PostsController extends \BaseController {
 	 */
 	public function createPost()
 	{
+		//for array of photos
+		$photos = Input::file('photos');
+		$photos = array_filter($photos);
+
+				foreach($photos as $photo) {
+				  // validating each photo.
+				  $rules = array('photo' => 'image|max:5500'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
+				  $validator = Validator::make(array('photo'=> $photo), $rules);
+				  if($validator->fails()){
+				   	return Redirect::back()->withErrors($validator)->withInput(\Input::except('photos'));
+				  }  
+				}
+
 		$rules = array(
-			'user_post' => 'required|max:250' , //make sure the email is present and is email
+			'user_post' => 'required|max:1000' ,  
 		);
 
 
@@ -32,8 +45,10 @@ class PostsController extends \BaseController {
 		//if the validator fails, redirect back to the form
 		if($validator->fails()) {
 			return Redirect::back()
-				->withErrors($validator) ; //send back all errors to the
+				->withErrors($validator)
+				->withInput(Input::all()) ; //send back all errors to the
 		}else{
+
 			$userPost = htmlentities(Input::get('user_post')) ;
 			$user_id = Auth::id() ;
 			$status = Post::create([
@@ -44,6 +59,26 @@ class PostsController extends \BaseController {
 					'group_id'	=>  0,
 				]);
 
+			 
+			if(!empty($photos)){
+				foreach ($photos as $photo) {
+					    $image_name = time().$photo->getClientOriginalName();
+						$img = Image::make($photo) ;
+					 
+					//$result = File::makeDirectory('/path/to/directory', 0775, true);
+						$img->save('store/photo/original/'.$image_name);
+	  	 		
+					//save to photo table
+					$photo_flag = Photo::create([
+						'user_id' => Auth::id() ,
+						'location' => $image_name ,
+						'source_id' => $status->id , //can be null ....doesnt matter for profile
+						'source_type' => 'post' ,
+						]);
+					if(!$photo_flag)
+						return Redirect::back()->with('flash_error','Something went wrong with the photos');
+				}
+			}
 			if($status){
 				return Redirect::back()->with('flash_notice' , 'Post Posted Successfully')  ;
 			}else{
@@ -102,7 +137,7 @@ class PostsController extends \BaseController {
 				if($status){
 					
 					Notification::send("comment" , $status );
-					return Redirect::back()->with('post_id_focus' , $post_id) ;
+					return Redirect::to(asset('post/'.$post_id.'?comment_number='.$status->id)) ;
 				}else{
 					echo Redirect::back()->with('flash_error' , 'Comment Failed Try Again!') ;	
 				}
@@ -196,9 +231,21 @@ class PostsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//
+	public function delete($id)
+	{  
+		$post = Post::findOrFail($id);
+  
+		$permission = ($post->user_id == Auth::id() )?true : false ;
+
+	
+		if($permission){
+
+			$post->delete();
+			return Redirect::to('home')->with('flash_notice','Deleted Successfully');
+		}
+			
+		return Redirect::back()->with('flash_error','Something went wrong Try Again');
+		
 	}
 
 	/**

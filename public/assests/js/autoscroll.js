@@ -7,6 +7,7 @@ $(document).ready(function(){
                       $.maintainscroll = function() {
                       if(window.name.indexOf('[') > 0)
                         {
+                        window.messenger = window.name ;
                         var pathname = window.location.href ;
                         var parts = window.name.split('['); 
                         if(parts[1] == pathname){
@@ -16,4 +17,4 @@ $(document).ready(function(){
                         }   
                       };  
                       $.maintainscroll();
-                      })(jQuery);
+                      });

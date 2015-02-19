@@ -114,7 +114,8 @@ Route::get('about', function()
 
 
 
-
+//dynamic chatting route
+Route::post('messenger' , array('uses' => 'MessagesController@messengerHandler'))->before('auth') ;
 
 
 
@@ -161,6 +162,9 @@ Route::get('home' , array('uses' => 'HomeController@showPost'))->before('auth') 
 
 //post view handler
 Route::get('post/{post_id}' , array('uses' => 'PostsController@showPostId'))->before('auth') ;
+
+//post delete handler
+Route::get('post/delete/{post_id}' , array('uses' => 'PostsController@delete'))->before('auth') ;
 
 //group view handler
 Route::get('group/{group_id}' , array('uses' => 'GroupsController@showGroup'))->before('auth') ;

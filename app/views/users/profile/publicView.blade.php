@@ -15,6 +15,7 @@
                     <li><p>({{ $user->name }})</p></li>
                     <li><p>{{ $user->email }}</p></li>
                     <li><p><a href='/user/<?php echo $user->id ?>/profile/info'>{{ 'Profile Info' }}</a></p></li>
+                    <li><p><a href="{{asset('/user/message/'.$user->id)}}">Start Conversation</a></li>
                     </ul>
 
                 <h1>Joined Group</h1>

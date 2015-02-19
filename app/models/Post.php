@@ -42,4 +42,32 @@ class Post extends Eloquent {
 		}	
 
 	}
+
+
+	public static function handleText($text){
+		 
+		 // The Regular Expression filter for links
+                $reg_exUrl = "/(((http|https|ftp|ftps)\:\/\/)|())[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+                $_reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+                
+
+		if(preg_match($reg_exUrl, $text, $url)) {
+
+           // make the urls hyper links
+           return preg_replace_callback($reg_exUrl, 
+            function($url) use($_reg_exUrl){
+                if(preg_match($_reg_exUrl, $url[0]))
+                    return "<a target='_blank' href=".$url[0].">".$url[0]."</a> " ;
+                else
+                    return "<a target='_blank' href=http://".$url[0].">".$url[0]."</a> " ;
+            }, $text);
+
+    } else {
+
+           // if no urls in the text just return the text
+           return $text;
+
+    }
+	}
 }
+

@@ -8,13 +8,16 @@
 
 <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-md-offset-3">
+            <div class="col-md-4 col-md-offset-2">
             	<form class="navbar-form navbar-left" role="search" method="get" action="">
                         <div class="form-group">
-                            <input class="form-control" placeholder="Search for Group" type="text" id="users" name="group_name" autocomplete="off" >
-                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                            <input class="form-control search typeaheadInput" placeholder="Search for Group" type="text" id="group" name="group_name" autocomplete="off" >
+                            <button type="submit"  style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                         </div>
                     </form>
+
+                <div class="row">
+                    <div class="col-md-12">
             @if($title == 'Groups')
                 <h1>{{$title}}</h1>
                 <ul>
@@ -43,16 +46,19 @@
                              ?>
                              @endif
                         @endif
+                        </div>
+                </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                     <form class="navbar-form navbar-left" role="search" method="get" action="">
                         <div class="form-group">
-                            <input class="form-control" placeholder="Search for Users" type="text" id="users" name="user_name" autocomplete="off" >
-                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                            <input class="form-control typeaheadInput" placeholder="Search for Users" type="text" id="user" name="user_name" autocomplete="off" >
+                            <button type="submit"  style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                         </div>
                     </form>
-
+                 <div class="row">
+                    <div class="col-md-12">
              @if($title == 'Users')
                     <h1>{{$title}}</h1>
                       @if($title == 'Users')
@@ -81,6 +87,8 @@
                             echo  $users->appends(Request::except('page'))->links() ?>
                             @endif
                 @endif
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-6 col-md-offset-3">
@@ -90,4 +98,10 @@
               
          </div>
 </div>
+</div>
+
+@stop
+
+@section('javascript')
+@include('search.javascript')
 @stop

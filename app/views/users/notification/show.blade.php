@@ -47,9 +47,9 @@
 			            							$yours = User::find($post->user_id)->name.'\'s ' ; 
 
 			            					if(!($x-1))
-			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'?comment_number='.$notification->source_id.'">post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;
 			            					else
-			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'">Post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;	
+			            						echo '<a href="'.$userlink.'">'.$Lastuser->name.'</a> and '.($x-1).' more has commented in '.$yours.' <a href="'.asset('post/'.$notification->parent_id).'?comment_number='.$notification->source_id.'">Post</a><p>"'.Str::limit(e($post->post_body),20).'"</p>' ;	
 			            					break;
 
 			            				case 'like': //like
