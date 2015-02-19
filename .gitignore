@@ -13,3 +13,5 @@ app/config/mail.php
 public/store/
 app/config/packages/greggilbert/
 public/assests/sound
+public/uploads
+public/img
