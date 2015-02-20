@@ -1,4 +1,6 @@
-<h1>Private Social Network<br>Demo at <a href="isoconnect.bugs3.com">isoconnect.bugs3.com<a/><br><a href="isoconnect.tk">isoconnect.tk</a><h1>
+
+
+<h1>Private Social Network<br>Demo at <a href="http://isoconnect.bugs3.com">isoconnect.bugs3.com<a/><br><a href="http://isoconnect.tk">isoconnect.tk</a><h1>
 
 
 
