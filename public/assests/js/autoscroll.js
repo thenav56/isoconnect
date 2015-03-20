@@ -5,6 +5,7 @@ $(document).ready(function(){
                         };
                         
                       $.maintainscroll = function() {
+                      
                       if(window.name.indexOf('[') > 0)
                         {
                         window.messenger = window.name ;
@@ -14,7 +15,8 @@ $(document).ready(function(){
                           window.name = $.trim(parts[0]);
                           window.scrollTo(parseInt(parts[parts.length - 1]), parseInt(parts[parts.length - 2]));
                           }
-                        }   
+                        } 
+
                       };  
                       $.maintainscroll();
                       });

@@ -3,6 +3,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"></meta>
+<!-- for chrome for now -->
+<meta  name="theme-color" content="#2c3e50"></meta>
     @yield('head')
     <link rel="shortcut icon" href="{{asset('assests/icon/icon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">

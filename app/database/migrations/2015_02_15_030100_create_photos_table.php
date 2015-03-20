@@ -14,7 +14,7 @@ class CreatePhotosTable extends Migration {
 	{
 		Schema::create('photos', function(Blueprint $table)
 		{
-			$source_type = ['post','profile','group'] ;
+			$source_type = ['post','profile','group' , 'user_photo'] ;
 			
 			$table->increments('id');
 			$table->integer('user_id'); //source of the photo

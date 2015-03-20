@@ -14,10 +14,11 @@
                     <ul>
                     <li><p>({{ $user->name }})</p></li>
                     <li><p>{{ $user->email }}</p></li>
-                    <li><p><a href='/user/<?php echo $user->id ?>/profile/info'>{{ 'Profile Info' }}</a></p></li>
-                    </ul>
+                    <li><p><a href='/user/<?php echo $user->id ?>/profile/'>{{ 'Profile' }}</a></p></li>
+                    </ul>       
 
                 <h1>Joined Group</h1>
+                    @if($groups)
                     <ul>
                         @foreach($groups as $key => $value)
                     <p><li><a href='/group/{{$value->id}}'>
@@ -28,7 +29,7 @@
                     </a></li></p>
                         @endforeach
                     </ul>
-               
+               @endif
 
             </div>
 

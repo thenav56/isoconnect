@@ -2,40 +2,28 @@
 
 class PostsController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /posts
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /posts/create
-	 *
-	 * @return Response
-	 */
+	 
 	public function createPost()
 	{
 		//for array of photos
 		$photos = Input::file('photos');
-		$photos = array_filter($photos);
-
+	 
 				foreach($photos as $photo) {
+					 
+				 
 				  // validating each photo.
-				  $rules = array('photo' => 'image|max:5500'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
-				  $validator = Validator::make(array('photo'=> $photo), $rules);
+				  $rules = array('photos' => 'image|max:5500'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
+				  $validator = Validator::make(array('photos'=> $photo), $rules);
+				  
 				  if($validator->fails()){
-				   	return Redirect::back()->withErrors($validator)->withInput(\Input::except('photos'));
+				  	$input = Input::except('photos');
+				   	return Redirect::back()->withErrors($validator)->withInput($input);
 				  }  
 				}
-
+			 
+	 
 		$rules = array(
-			'user_post' => 'required|max:1000' ,  
+			'user_post' => 'required|max:2000' , 
 		);
 
 
@@ -46,9 +34,8 @@ class PostsController extends \BaseController {
 		if($validator->fails()) {
 			return Redirect::back()
 				->withErrors($validator)
-				->withInput(Input::all()) ; //send back all errors to the
+				->withInput(Input::except('photos')) ; //send back all errors to the
 		}else{
-
 			$userPost = htmlentities(Input::get('user_post')) ;
 			$user_id = Auth::id() ;
 			$status = Post::create([
@@ -59,6 +46,7 @@ class PostsController extends \BaseController {
 					'group_id'	=>  0,
 				]);
 
+			$photos = array_filter($photos);
 			 
 			if(!empty($photos)){
 				foreach ($photos as $photo) {
@@ -67,6 +55,10 @@ class PostsController extends \BaseController {
 					 
 					//$result = File::makeDirectory('/path/to/directory', 0775, true);
 						$img->save('store/photo/original/'.$image_name);
+
+						$img->resize(null, 200, function ($constraint) {
+					    $constraint->aspectRatio();
+						})->save('store/photo/lowsize_image/'.$image_name);
 	  	 		
 					//save to photo table
 					$photo_flag = Photo::create([
@@ -248,40 +240,7 @@ class PostsController extends \BaseController {
 		
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 * GET /posts/{id}/edit
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /posts/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /posts/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+	 
+ 
 
 }

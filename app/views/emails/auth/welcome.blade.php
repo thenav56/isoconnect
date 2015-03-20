@@ -37,7 +37,10 @@
 	<div class="welcome">
 		<h1>Dear {{$name}}</h1>
 		<a href="<?php echo asset('');?>" title="Isoconnect"><img src="" alt="Isoconnect"></a>
-		<h1>You have successfully activated your account Please <a href="<?php echo asset('');?>" title="Isoconnect">Login in</a>  .</h1>
+		<h1>You have successfully activated your account<br>
+		with email : {{$email}} <br>
+		 Please <a href="<?php echo asset('');?>" title="Isoconnect">Login in</a>  .</h1>
+		
 	</div>
 </body>
 </html>

@@ -125,6 +125,7 @@ return array(
 		'Way\Generators\GeneratorsServiceProvider',
 		'Greggilbert\Recaptcha\RecaptchaServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
+		'Cviebrock\ImageValidator\ImageValidatorServiceProvider' ,
 
 	),
 

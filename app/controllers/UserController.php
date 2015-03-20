@@ -135,7 +135,7 @@ class UserController extends BaseController {
 			'password_current' => 'required|alphaNum',
 			'password' => 'required|alphaNum|min:3|Confirmed', //password can only be alphanumeric and has to be greater than 3 characters
 			'password_confirmation' => 'required' ,
-			'g-recaptcha-response' => 'required|recaptcha',
+			//'g-recaptcha-response' => 'required|recaptcha',
 		);
 
 
@@ -166,10 +166,10 @@ class UserController extends BaseController {
 				 
 					if($check){
 						
-						Mail::queue('emails.password_change_remender', array('name' => Auth::user()->name), function($message) {
-			            $message->to(Auth::user()->email, Auth::user()->name)
-			                ->subject('Password Changed');
-						});
+						// Mail::queue('emails.password_change_remender', array('name' => Auth::user()->name), function($message) {
+			   //          $message->to(Auth::user()->email, Auth::user()->name)
+			   //              ->subject('Password Changed');
+						// });
 
 						return Redirect::back()->with('flash_notice','Changed Successfull')	;
 					}

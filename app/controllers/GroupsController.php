@@ -2,23 +2,7 @@
 
 class GroupsController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /groups
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /groups/create
-	 *
-	 * @return Response
-	 */
+	 
 	public function showcreateGroup()
 	{
 			return View::make('groups.register') ;
@@ -66,24 +50,7 @@ class GroupsController extends \BaseController {
 
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /groups
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 * GET /groups/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	 
 
 
 	public function handleGroupRequest()
@@ -135,27 +102,67 @@ class GroupsController extends \BaseController {
 			}
 	}
 
+
 	public function sendGroupRequest()
 	{
 
-		$user_id = Auth::id() ; 
-		$group_id = Input::get('group_id') ;
-		$UserGroups =  UserGroup::where('user_id' , '=' , Auth::id() )->where('group_id' , '=' , $group_id)->get() ;
-		if($UserGroups->count()){
+		if(Input::has('button_submit'))
+			if(Input::get('button_submit')== 'cancle'){
+				$user_id = Auth::id();
+				$group_id = Input::get('group_id') ;
+				$UserGroup = UserGroup::where('user_id','=',$user_id)->where('group_id','=',$group_id)->first();
+				if($UserGroup){
+					$UserGroup->delete() ;
+					return Redirect::back()->with('flash_notice' , 'You Leaved the Group')	;
+				}
+				return Redirect::back()->with('flash_error' , 'something went wrong')	;
+			}
+		if(Input::has('request_user_id')){
+			//request is send by the admin
+			$user_id = Input::get('request_user_id');
+			$group_id = Input::get('group_id') ;
+			if(Auth::id() != Group::find($group_id)->admin_id )
+					return Redirect::back()->with('flash_error' , 'Admin can only have permission')	;
+			$UserGroups =  UserGroup::where('user_id' , '=' , $user_id )->where('group_id' , '=' , $group_id)->get() ;
+			if($UserGroups->count()){
+					return Redirect::back()->with('flash_error' , 'Request already send')	;
+				}else{
+				$status = UserGroup::create([
+					 'user_id'	 => $user_id ,
+					 'group_id'	 => $group_id ,
+					 'active'    => 3
+					]);
+				if($status){
+					Notification::send("User_group_status" , $status );
+							return Redirect::back()->with('flash_notice' , 'Request Has Been Send!') ;
+				}else{
+							return Redirect::back()->with('flash_error' , 'Request Failed')	;
+				}
+			}
+		}else{//request is send by the user to the group
+			$user_id = Auth::id() ; 
+			$group_id = Input::get('group_id') ;
+			$UserGroups =  UserGroup::where('user_id' , '=' , Auth::id() )->where('group_id' , '=' , $group_id)->get() ;
+			if($UserGroups->count()){
+				if($UserGroups->first()->active == 3){
+					$UserGroups->first()->update(['active' => '1']);
+					return Redirect::back()->with('flash_notice' , 'Welcome to the Group')	;
+				}
 
-			}else{
-			$status = UserGroup::create([
-				 'user_id'	 => $user_id ,
-				 'group_id'	 => $group_id ,
-				 'active'    => 0
-				]);
-			if($status){
-						return Redirect::back()->with('flash_notice' , 'Request Has Been Send!') ;
-			}else{
-						return Redirect::back()->with('flash_error' , 'Request Failed')	;
+					return Redirect::back()->with('flash_error' , 'Request already send')	;
+				}else{
+				$status = UserGroup::create([
+					 'user_id'	 => $user_id ,
+					 'group_id'	 => $group_id ,
+					 'active'    => 0
+					]);
+				if($status){
+							return Redirect::back()->with('flash_notice' , 'Request Has Been Send!') ;
+				}else{
+							return Redirect::back()->with('flash_error' , 'Request Failed')	;
+				}
 			}
 		}
-
 	}
 
 
@@ -219,15 +226,20 @@ class GroupsController extends \BaseController {
 		$admin = (Group::where('id' , '=' ,$group_id)->first()->admin_id == Auth::id()) ? true : false ;
 
 		//if user is blocked active = 2
+		if(!$admin){
 		$block = (UserGroup::where('group_id' , '=' ,$group_id)->where('user_id' , '=' , Auth::id() )->where('active' , '=' , 2 )->get()->count() ) ? true : false ;
-
+		$toaccept = (UserGroup::where('group_id' , '=' ,$group_id)->where('user_id' , '=' , Auth::id() )->where('active' , '=' , 3 )->get()->count() ) ? true : false ;
+		}else{
+			$block = false ;
+			$toaccept = false ;
+		}	
 		//Group joined by the user
 		$UserGroups =  UserGroup::where('user_id' , '=' , Auth::id() )->where('group_id' , '=' , $group_id)->get() ;
 
 		$pending = false ;
 		$active = false ;
 
-		if(!$block){
+		if(!$block && !$toaccept ){
 			if(!$admin){	//normal user
 				//if the user is in the list(i.e request may or may not be accepted)
 				if($UserGroups->count()){
@@ -271,11 +283,12 @@ class GroupsController extends \BaseController {
 			}
 		}else{
 			//for blocked users
-			return View::make('groups.show')->with('block' , $block)->with('group_id' , $group_id)
+			return View::make('groups.show')->with('block' , $block)->with('toaccept' , $toaccept)
+			->with('group_id' , $group_id)->with('active' , $active )
 			->with('admin' , false ) ;
 		}
 		return View::make('groups.show')->with('group_id' , $group_id)->with('active' , $active )
-		->with('pending' , $pending)->with('admin' , $admin )->with('block' , $block) ;
+		->with('toaccept' , $toaccept)->with('pending' , $pending)->with('admin' , $admin )->with('block' , $block) ;
 	}
 
 	/**
@@ -332,28 +345,41 @@ class GroupsController extends \BaseController {
 
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /groups/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
+	 public function showSearch($group_id){
+
+		$data = array(Input::get('user_name')) ;
+		$lengths = array_map('strlen', $data);
+		
+		if(max($lengths) < 3)	return View::make('search.group_user')->with('title',null)->with('group_id',$group_id) ;
+
+		if(Input::has('user_name')) {
+
+			$users = User::select('id','name','profile_pic')->where('name','LIKE', Input::get('user_name').'%')->simplePaginate() ;
+
+			return View::make('search.group_user')->with('lists' , $users)->with('title','Users')->with('group_id',$group_id) ;
+
+		}else{
+
+		} 
+
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /groups/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
+	public static function isMember($user_id,$group_id){
+		$user = UserGroup::where('user_id','=',$user_id)->where('group_id','=',$group_id)->get() ;
+		if($user){
+			return true ;
+		}else{
+			return false ;
+		}
+}
+	public static function userRelation($user_id,$group_id){
+		$user = UserGroup::where('user_id','=',$user_id)->where('group_id','=',$group_id)->first() ;
+		return $user ;
 	}
+
+	public function createNotice(){
+		
+	}
+
 
 }

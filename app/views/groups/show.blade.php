@@ -38,6 +38,16 @@
           <div class="col-md-3">
            <div class="well bs-component" >
                      @if($admin)
+                     <div class="row">
+                        <div class="col-md-4">
+                                <form class="navbar-form navbar-left" role="search" method="get" action="/search/group/{{$group_id}}/user">
+                                    <div class="form-group">
+                                        <input class="form-control typeaheadInput" placeholder="Search for Users" type="text" id="user" name="user_name" autocomplete="off" >
+                                        <button type="submit"  style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
                     <h2>Pending Users</h2>
                       @if($usersPending->count())
                       <ul>
@@ -165,7 +175,13 @@
                    
 
                      @else
-                        //if user is the memeber of the group i.e not the admin
+                         {{ Form::open(array('url' => 'group/send_request')) }}
+                            <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger">
+                            Leave This Group
+                            </button>
+                          <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
+                          <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        {{ Form::close() }}
                      @endif
              </div>
           </div>
@@ -202,98 +218,9 @@
                 {{ Form::close() }}
 
 
-               @if($posts->count())
-                      @foreach($posts as $post)
-                      <?php // print_r($post) ; ?>
-                          <div class="well bs-component">
-                          <div class="row">
-                           <?php $user =  User::find($post->user_id); ?>  
-                                    <div class="col-md-2"> 
-                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
-                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
-                                            array('class' => 'img-circle  img-responsive img-center' ,
-                                            'url' => 'slkadjf'
-                                            )) }}</a>
-                                        </div>
-                                        <div class="col-md">
-                                             <strong><a href="/user/<?php echo $post->user_id ?>">{{$user->name }}</a></strong> <span class="text-muted pull-right">{{$post->created_at->diffForHumans()}}</span>
-                                        </div>
-                                    </div>
-                              <h4>Posted to 
-                                  @if(($gpid=Post::find($post->id)->group_id) != 0)
-                                  {{Group::find($gpid)['name']}}
-                                  @else
-                                  {{'Public'}}
-                                  @endif
-                                  </h4>
-                              <h5>{{$post->created_at->diffForHumans()}}</h5>
-                              <h5>{{ Str::limit(e($post->post_body),170)}}<a  href='/post/{{$post->id}}'>Read More&#8594;</a></h5>
-                              <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
-                                   <?php  
-                                   $like = Like::where('user_id','=',Auth::id())->where('post_id','=',$post->id)->first(); 
+                @include('posts.default')
+                </div>
 
-                                    if($like){
-                                        $liked = ($like->liked == 1) ? true : false ;
-                                    }else
-                                        $liked = false ;
-                                    ?>
-                                   <div class="panel-heading">
-                                                @if(!$liked)
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
-                                                @else
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
-                                                @endif
-                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
-                                 
-                                   </div><!-- /panel panel-default -->
-                              <!--comment -->
-                              <div class="comment_update" >
-                                      {{ Form::open(array('url' => 'user/comment')) }}
-                                      <!-- if there are login errors , show them here -->
-                                      @if (Session::has('flash_error'))
-                                          <div id="flash_error" >{{ Session::get('flash_error') }}</div>
-                                      @endif
-
-                                       <div class="form-group">
-                                                      <tr class="danger">
-                                                          {{$errors->first('user_comment')}}
-                                                      </tr>
-                                              </div>
-                                      <p> <?php $comment = Post::find($post->id)->Comment() ; ?>
-                                          @if($comment->count())
-                                          <a><h5>--Recent Comment--</h5></a>
-                                              <a href="<?php echo asset('/user/'.$comment->orderBy('id','desc')->get()->first()->user_id); ?>">{{User::find($comment->orderBy('id','desc')->get()->first()->user_id)->name}}</a><br>
-                                               {{e($comment->get()->first()->comment_body)}}<br><br>
-                                         @else
-                                          <a><h5>Be the first to comment</h5></a><br><br>
-                                         @endif
-                                          {{ Form::label('user_comment' , 'Comment!') }} ({{$comment->count()}})
-                                          {{ Form::textarea('user_comment' ,'' ,  array(
-                                          'placeholder'   => 'Have Some Comment!' , 
-                                          'class'         => 'form-control'   ,
-                                          'rows'          => '2'
-                                          )) }}
-                                      </p>
-                                      <p>{{ Form::submit('Comment!' , array(
-                                          'class' => 'btn btn-primary'
-                                          )) }}</p>
-                                      <input type="hidden" name="comment_post_id"  autocomplete="off" value="<?php echo $post->id; ?>">
-                                      <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                      {{ Form::close() }}
-                              </div>
-                          </div>
-                      @endforeach
-                      <?php  
-                        Paginator::setPageName('page') ;
-                        echo  $posts->appends(Request::except('page'))->links() 
-                        ?>
-                      </div>
-                  @else
-                  <div class="well bs-component">
-                          <h3>{{'Be the First To Post'}}</h3>
-                  </div>
-                  @endif
-                
                 <div class="col-md-3 ">
                    <div class="well bs-component" >
                       <h3>Notice Board</h3>
@@ -302,8 +229,17 @@
 
 
                  		@else
-                      @if(!$pending)
-                        <h2>Join This Group By Sending Request</h2>
+                      @if($toaccept)
+                          {{ Form::open(array('url' => 'group/send_request')) }}
+                            <button type="submit" class="btn btn-primary">
+                            Accept Request
+                            </button>
+                            <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        {{ Form::close() }}
+                       
+                      @elseif(!$pending)
+                        <h2>Join This Group</h2>
                         {{ Form::open(array('url' => 'group/send_request')) }}
                             <button type="submit" class="btn btn-primary">
                             Send Request
@@ -312,10 +248,20 @@
                           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         {{ Form::close() }}
                       @elseif($pending)
-                        <button  class="btn btn-success" disabled>
-                            Request Pending 
+                      <div class="row">
+                      <div class="col-md-4 col-md-offset-10">
+                         
+                        {{ Form::open(array('url' => 'group/send_request')) }}
+                            <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger">
+                            Cancle Request
                             </button>
+                          <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
+                          <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        {{ Form::close() }}
+                        </div>
+                        </div>
                       @endif
+                     
                     
             
             </div>                    

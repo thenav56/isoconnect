@@ -109,7 +109,19 @@ Route::get('about', function()
 	return View::make('isoconnect.about');
 }) ;
 
-
+Route::get('post/pic/crop/{photo_id}' , function($photo_id = null) {
+	$photo = Post::find($photo_id) ;
+	
+	if($photo->source_type == 'post'){
+		if($photo_id){
+			$img = Image::make('store/photo/original/'.$photo->location);
+			return $img->resize(100,100)->response('jpg');
+		}
+	}
+	$img = Image::make('store/photo/lowsize_image/default.png');
+	return $img->resize(100,100)->response('jpg');
+})->before('auth');
+Route::get('post/pic/{photo_id}' ,array('uses' => 'UserController@showPostPhotoById'))->before('auth');
 
 
 
@@ -278,6 +290,8 @@ Route::post('resend_confirm' ,array('before' => 'csrf' , 'uses' => 'HomeControll
 Route::get('search/query' , array('uses' => 'HomeController@search'))->before('auth') ;
 
 Route::get('search' ,array('uses' => 'HomeController@showsearch'))->before('auth');
+
+Route::get('search/group/{group_id}/user/' , array('uses' => 'GroupsController@showSearch'))->before('auth') ;
 
 //Password Reset
 Route::get('password_reset' ,function(){

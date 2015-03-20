@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration {
 		{	
 			$table->increments('id');
 			$table->integer('user_id') ;
-			$table->text('post_body' , 1000) ;
+			$table->text('post_body' , 2000) ;
 			$table->integer('like')->default(0) ;
 			$table->integer('dislike');
 			$table->integer('group_id')->default(0) ; 

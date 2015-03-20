@@ -135,12 +135,12 @@
                         ].join('\n'),
                          suggestion: Handlebars.compile(
                           "<div class='row'>"
-                          +"<a href='<?php echo asset('user/') ;?>/{{id}}' >"
+                          +"<a href='<?php echo asset('group/') ;?>/{{id}}' >"
                           +"<div class='col-md-4'>"
                           +"<img class='img-circle img-responsive img-center' src='<?php echo asset('profile_pic/low/crop/') ;?>/{{profile_pic}}' >"
                           +"</div>"
                           +"<div class='col-md'>"
-                          +"<strong>{{name}}</strong>"
+                          +"<h6><strong>{{name}}</strong></h6>"
                           +"</a>"
                           +"<div class='row'>"
                           +"<div class='col-md'>"

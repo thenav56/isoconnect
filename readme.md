@@ -1,11 +1,3 @@
-
-
-<h1>Private Social Network<br>Demo at <a target ="_blank" href="http://isoconnect.bugs3.com">isoconnect.bugs3.com<a/><br><a target ="_blank " href="http://isoconnect.tk">isoconnect.tk</a><h1>
-
-
-
-
-
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)

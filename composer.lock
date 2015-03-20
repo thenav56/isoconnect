@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d7e53627af9ff606e61e8ae9a9b34392",
+    "hash": "ff5ac30e39611090c15fd1dc7ca3efe2",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -52,6 +52,55 @@
                 "preload"
             ],
             "time": "2014-03-12 00:05:31"
+        },
+        {
+            "name": "cviebrock/image-validator",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cviebrock/image-validator.git",
+                "reference": "a9ae973f8964e3cd99c665783524aeb53abc43f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cviebrock/image-validator/zipball/a9ae973f8964e3cd99c665783524aeb53abc43f9",
+                "reference": "a9ae973f8964e3cd99c665783524aeb53abc43f9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "illuminate/support": ">=4.1.21",
+                "illuminate/validation": ">=4.1.21",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Cviebrock\\ImageValidator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Viebrock",
+                    "email": "colin@viebrock.ca"
+                }
+            ],
+            "description": "Custom Laravel 4 Validator for image dimensions",
+            "homepage": "https://github.com/cviebrock/image-validator",
+            "keywords": [
+                "image",
+                "laravel",
+                "validator"
+            ],
+            "time": "2014-06-18 01:15:15"
         },
         {
             "name": "d11wtq/boris",

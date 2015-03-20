@@ -30,14 +30,14 @@ div.new_message {
 
           <div class="container ">
               <div class="row">
-                      <div class="col-md-7 col-md-offset-3">
+                      <div class="col-md-12 col-md-offset-1">
                 @if($active) 
-                       <div class="container">
+                       <!-- <div class="container"> -->
                                           <div class="row">
 
                                              
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-10">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     
@@ -59,6 +59,18 @@ div.new_message {
                                                 </div> 
                                                 <div class="panel-body">
                                                     {{Post::handleText($post->post_body)}}
+                                                    <?php 
+                                                                   $post_photos  = Photo::where('source_type','=','post')
+                                                                   ->where('source_id','=',$post->id)->get() ;
+                                                                  ?>
+                                                                  @if($post_photos->count())
+                                                                    @foreach($post_photos as $photo)
+                                                                         <a href="<?php echo asset('user/photo/show/'.$photo->location) ; ?>" >
+                                                                            {{ HTML::image('profile_pic/'.$photo->location, 'a picture', 
+                                                                            array('class' => 'img-responsive ' 
+                                                                        )) }}</a>
+                                                                    @endforeach    
+                                                                @endif
                                                 </div><!-- /panel-body -->
                                                 <div class="panel-heading">
                                                 @if(!$liked)
@@ -66,7 +78,9 @@ div.new_message {
                                                 @else
                                                   <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
                                                 @endif
+                                                @if(Auth::id() == $post->user_id)
                                                   <span class="text-muted pull-right"><a class="btn btn-danger" href="{{asset('post/delete/'.$post->id)}}">Delete</a></span>
+                                                 @endif
                                                   <span class="text-muted  ">{{$post->like}} people liked</span>
                                                   </div>
 
@@ -74,18 +88,17 @@ div.new_message {
                                           </div><!-- /col-sm-5 -->
 
                                       </div><!-- /row-->
-                                      </div><!-- /container -->
+                                      <!-- </div>/container -->
  
                             
                             <!-- comment portion here -->
                          
 
                             <div class="row">
-                                <div class="well bs-component col-lg-11">
+                                <div class="well bs-component col-md-8 col-md-offset-1">
                                     <div class="list-group">
                                 @foreach($comments as $comment => $_comment)
-                                      <div class="container">
-                                          <div class="row">
+                                          <div class="row" id="<?php echo $_comment->id ?>">
 <!-- 
                                             <div class="col-sm-1">
                                               <div class="thumbnail">
@@ -93,7 +106,7 @@ div.new_message {
                                               </div> 
                                             </div>  -->
 
-                                            <div class="col-md-6" id="<?php echo $_comment->id ?>">
+                                            <div class="col-md-10 col-md-offset-1" >
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                 <div class="col-md-2"> 
@@ -117,7 +130,6 @@ div.new_message {
                                           </div><!-- /col-sm-5 -->
 
                                       </div><!-- /row-->
-                                      </div><!-- /container -->
                                  @endforeach                 
                                     
                                          
@@ -161,7 +173,7 @@ div.new_message {
                         @endif
                  </div>
             </div>
-		</div>
+		 
 
 @stop
 
@@ -170,8 +182,8 @@ div.new_message {
 @if(Input::has('comment_number'))
 <script>
   $(document).ready(function(){
-              var el = document.getElementById({{Input::get('comment_number')}}) ;
-               el.scrollIntoView(true);
+               var comment_position = $('#{{Input::get('comment_number')}}').position() ;
+               window.scrollTo( parseInt($(window).scrollLeft()) ,comment_position.top  ) ;
             });
 </script>
 @endif

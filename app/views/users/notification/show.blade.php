@@ -85,6 +85,8 @@
 			            						$status = 'Accepted' ;
 			            					elseif($UserGroup->active == '2')
 			            						$status = 'Blocked' ;
+			            					elseif($UserGroup->active == '3')
+			            						$status = 'pending to be Accepted by you' ;
 			            					else
 			            						$status = 'Unknown Status' ;
 			            					echo 'You member status in the Group <a href="'.asset('group/'.$notification->parent_id).'">"'.Group::find($notification->parent_id)->name.'"</a> is '.$status ;
