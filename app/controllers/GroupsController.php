@@ -378,7 +378,36 @@ class GroupsController extends \BaseController {
 	}
 
 	public function createNotice(){
-		
+		$group = Group::find(Input::get('post_group_id')) ;
+		if(Auth::id() == $group->admin_id){//is admin
+			 $rules = array(
+				'notice_message' => 'required|max:2500'
+			);
+
+			// run the validation rules on the inputs from the form
+			$validator = Validator::make(Input::all() ,$rules) ;
+
+			//if the validator pass, 
+				if(!$validator->fails()){ //'user_id' ,'post_body', 'group_id'
+					$notice = GroupNotice::create([
+						'post_body' => Input::get('notice_message'),
+						'user_id' => $group->admin_id,
+						'group_id' => $group->id ,
+						]);
+
+					if($notice){
+						Notification::send("groupPost" , $notice );
+						return Redirect::back()->with('flash_notice','Success');
+					}else{
+						return Redirect::back()->with('flash_error','No-Success');
+					}
+				}else{
+					return Redirect::back()->withInput(Input::all())->withErrors($validator);
+				}
+			 
+		}else{
+			return Redirect::back('flash_error','Request Admin');
+		}
 	}
 
 

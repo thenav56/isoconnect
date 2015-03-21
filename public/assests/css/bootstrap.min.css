@@ -13,6 +13,10 @@ html {
   position: relative;
   min-height: 100%;
 }
+
+.group_notice {
+	padding:10px;
+}
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;

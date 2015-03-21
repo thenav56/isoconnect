@@ -219,6 +219,9 @@ Route::post('user/comment' , array('before' => 'csrf' , 'uses' => 'PostsControll
 //group post handler
 Route::post('group/post' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@createGroupPost'))->before('auth') ;
 
+//group notice handler
+Route::post('group/post_notice' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@createNotice'))->before('auth') ;
+
 //send group request
 Route::post('group/send_request' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@sendGroupRequest'))->before('auth') ;
 

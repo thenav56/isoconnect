@@ -223,8 +223,55 @@
 
                 <div class="col-md-3 ">
                    <div class="well bs-component" >
-                      <h3>Notice Board</h3>
-                  </div>
+
+                      <h4>Notice Board</h4>
+                  @if($admin)
+                    <div class="col-md-12">
+
+                        {{ Form::open(array('url' => 'group/post_notice')) }}
+                        <!-- if there are login errors , show them here -->
+                        @if (Session::has('flash_error'))
+                            <div id="flash_error" >{{ Session::get('flash_error') }}</div>
+                        @endif
+
+                         <div class="form-group">
+                         
+                                        <tr class="danger">
+                                            {{$errors->first('user_post')}}
+                                        </tr>
+                                
+                        <p>
+                            {{ Form::textarea('notice_message' ,'' ,  array(
+                            'placeholder'   => 'Write A Notice Here!' , 
+                            'class'         => 'form-control'   ,
+                            'rows'          => '1'
+                            )) }}
+                        </p>
+                        <p>{{ Form::submit('Submit!' , array(
+                            'class' => 'btn btn-success btn-sm'
+                            )) }}</p>
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        <input type="hidden" name="post_group_id"  autocomplete="off" value="<?php echo  $group->id ; ?>">
+                    </div>
+
+
+                        {{ Form::close() }}
+
+ 
+                </div>
+                @endif
+                 <?php 
+                 $notices = GroupNotice::where('group_id','=',$group->id)->orderBy('created_at','desc')->get() ;
+                 ?>
+                  @foreach($notices as $notice)
+                <div class="well bs-component">
+                <div class="group_notice">
+                    <p>{{$notice->post_body}}</p>
+                </div>
+                </div>
+                  @endforeach
+                </div>
+                
                 </div>
 
 
