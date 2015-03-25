@@ -21,7 +21,7 @@
                 <h1 class="page-header">About Us
                     <small>It's Nice to Meet You!</small>
                 </h1>
-                <p>Proudly developing with <a href="http:\\www.laravel.com">Laravel</a> &<a href="http:\\getbootstrap.com"> Bootstrap</a></p>
+                <p>Proudly developing with <a href="http://www.laravel.com" target="_blank">Laravel</a> &<a href="http://getbootstrap.com" target="_blank"> Bootstrap</a></p>
             </div>
         </div>
 

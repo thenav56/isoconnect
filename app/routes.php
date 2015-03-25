@@ -15,7 +15,9 @@ Route::pattern('post_id', '[0-9]+');
 Route::pattern('group_id', '[0-9]+');
 Route::pattern('user_id', '[0-9]+');
 Route::pattern('aspect_ratio', '[0-9]+');
+Route::pattern('conversation_id', '[0-9]+');
 Route::pattern('photo_id', '[0-9]+');
+Route::pattern('notice_id', '[0-9]+');
 
 
 
@@ -212,6 +214,10 @@ Route::get('user/notification/count', array('uses' => 'HomeController@unreadnoti
 
 //post_handler
 Route::post('user/post' , array('before' => 'csrf' , 'uses' => 'PostsController@createPost'))->before('auth') ; 
+Route::get('post/edit/{post_id}' , function($post_id){
+	return View::make('posts.edit')->with("postid",$post_id) ;
+})->before('auth') ;
+Route::post('post/edit' , array( 'before' => 'csrf' , 'uses' => 'PostsController@edit'))->before('auth') ;
 
 //comment handler
 Route::post('user/comment' , array('before' => 'csrf' , 'uses' => 'PostsController@createComment' ))->before('auth') ; 
@@ -221,6 +227,11 @@ Route::post('group/post' , array( 'before' => 'csrf' , 'uses' => 'GroupsControll
 
 //group notice handler
 Route::post('group/post_notice' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@createNotice'))->before('auth') ;
+Route::get('group/post_notice/delete/{notice_id}' , array('uses' => 'GroupsController@deleteNotice'))->before('auth') ;
+Route::get('group/post_notice/edit/{notice_id}' , function($notice_id){
+	return View::make('groups.editNotice')->with("noticeid",$notice_id) ;
+})->before('auth') ;
+Route::post('group/post_notice/edit' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@editNotice'))->before('auth') ;
 
 //send group request
 Route::post('group/send_request' , array( 'before' => 'csrf' , 'uses' => 'GroupsController@sendGroupRequest'))->before('auth') ;
@@ -239,6 +250,7 @@ Route::get('/user/message/{user_id}' , array('uses' => 'MessagesController@showM
 
 //message handler
 Route::post('/user/message/handler' , array('before' => 'csrf' , 'uses' => 'MessagesController@messagehandler'))->before('auth') ;
+Route::get('/user/message/enable/{conversation_id}' , array('uses' => 'MessagesController@messageEnable'))->before('auth')->where('enable','true') ;
 
 //create a group
 Route::get('group/register' , array('uses' => 'GroupsController@showcreateGroup'))->before('auth') ;
@@ -272,7 +284,10 @@ Route::get('user/password' , function(){
 
 Route::post('user/password' , array('before' => 'csrf' , 'uses' => 'UserController@changePassword' ))->before('auth') ; 
 
-
+//help to support
+Route::get('/help' , function(){
+	return Redirect::to('/support') ;
+})->before('auth') ;
 
 
 

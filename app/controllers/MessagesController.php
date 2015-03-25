@@ -23,7 +23,6 @@ class MessagesController extends \BaseController {
 	 
 	public function showMessage($user_id)
 	{
-		
 		$conversation = Conversation::where(function($query)  use($user_id)  {
 			$query->where('user1_id' , '=' , Auth::id())->Where('user2_id' , '=' , $user_id);
 		})->orWhere(function($query) use($user_id) {
@@ -34,6 +33,7 @@ class MessagesController extends \BaseController {
 			$conversation = Conversation::create([
 				'user1_id' =>  Auth::id(),
 				'user2_id' => $user_id,
+				'user1active' => 1 ,
 					]);
 		}
 
@@ -93,7 +93,29 @@ class MessagesController extends \BaseController {
 			}
 	}
 
-	 
+	 public function messageEnable($conversation_id){
+	 	$conversation = Conversation::find($conversation_id);
+	 	
+	 	$active = 0 ;
+
+	 	if($conversation->user1_id == Auth::id()){
+	 		$active = ($conversation->user1active == 0)?1:0 ;
+	 		$check = $conversation->update([
+	 			'user1active' => $active ,
+	 			]) ;
+	 	}elseif($conversation->user2_id == Auth::id()){
+	 		$active = ($conversation->user2active == 0)?1:0 ;
+	 		$check = $conversation->update([
+	 			'user2active' => $active ,
+	 			]) ;
+	 	}else{
+	 		return Redirect::to('/home')->with('flash_error','Something went wrong') ;
+	 	}
+
+	 	if(!$check)
+	 		return Redirect::back()->with('flash_error','Try Again or Report the problem');
+	 	return Redirect::back();
+	 }
 
 	 public function messengerHandler(){
 

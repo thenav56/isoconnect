@@ -202,27 +202,7 @@ class PostsController extends \BaseController {
 		return View::make('posts.show')->with('active' , $active) ;	
 	}
 
-	
-
-
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /posts
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 * GET /posts/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	 
 	public function delete($id)
 	{  
 		$post = Post::findOrFail($id);
@@ -240,6 +220,37 @@ class PostsController extends \BaseController {
 		
 	}
 
+
+	public function edit(){
+		 	$post = Post::find(Input::get("_postid")) ;
+			if($post->user_id == Auth::id()){
+					 $rules = array(
+					'post_body' => 'required|max:2500'
+					);
+
+				// run the validation rules on the inputs from the form
+				$validator = Validator::make(Input::all() ,$rules) ;
+
+				//if the validator pass, 
+					if(!$validator->fails()){ //'user_id' ,'post_body', 'group_id'
+					 
+							$postCheck = $post->update([
+								'post_body' => Input::get('post_body') 
+								]);
+
+							if($postCheck){
+								return Redirect::to('/post/'.$post->id)->with('flash_notice','Success');
+							}else{
+								return Redirect::back()->with('flash_error','No-Success');
+							}
+						 
+					}else{
+						return Redirect::back()->withInput(Input::all())->withErrors($validator);
+					}
+			}
+		 
+		return Redirect::back()->with('flash_error','Something went wrong') ;
+	}
 	 
  
 

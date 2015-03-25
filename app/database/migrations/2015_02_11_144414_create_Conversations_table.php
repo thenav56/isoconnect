@@ -17,6 +17,8 @@ class CreateConversationsTable extends Migration {
 			$table->increments('id');
 			$table->integer('user1_id'); //creater of the conversation 
 			$table->integer('user2_id'); //another buddy
+			$table->enum('user1active' , array(0,1))->default(0);
+			$table->enum('user2active' , array(0,1))->default(0);
 			$table->timestamps();
 		});
 	}

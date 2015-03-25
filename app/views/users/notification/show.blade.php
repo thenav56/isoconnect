@@ -13,12 +13,14 @@
 	            <ul>
 	            @foreach($notifications as $notification)
 	            	<div class="well bs-component">
+		            	<div class="row">
+		            		<div class="col-md-10">
 		            	@if(!$notification->seen)
-		            		<div class="form-group alert alert-warning">
+		            		<div class="form-group alert-warning">
 		            	@else
 			            	<div class="form-group">
 			            @endif
-			            		<li><h4><?php 
+			            		<li><p><?php 
 			            		/*
 														//for comment		  
 									'activity_type' => $activity_type, //comment
@@ -94,12 +96,14 @@
 			            			}
 
 			            			echo '<br>'.$notification->updated_at->diffForHumans() ;
-			            		?></h4></li>
+			            		?></p></li>
 			            	</div>
 	            	</div>
 	            	<?php   
-	            		Notification::find($notification->id)->update(array('seen' => 1)) ;
+	            		Notification::find($notification->id)->update(array('seen' =>1)) ;
 	            	?>
+	            	</div>
+	            </div>
 	            @endforeach
 	            </ul>
 	            <?php  echo  $notifications->appends(Request::except('page'))->links() ?>

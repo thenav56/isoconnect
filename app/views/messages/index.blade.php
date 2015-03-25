@@ -21,7 +21,7 @@
 						           	 <div class="text-right ">
 						           	 <a href="<?php echo asset('user/message/'.User::find(($conversation->user1_id == Auth::id())?$conversation->user2_id:$conversation->user1_id)->id);?>" class="">
 						           	  
-						           	  <div class="alert alert-block <?php echo ($message->seen == 0)?'alert-warning':'alert-success' ; ?>">
+						           	  <div class="alert alert-block <?php echo ($message->seen == 0)?'alert-info':'alert-success' ; ?>">
 										 		<label>
 										 		
 										 			{{User::find(($conversation->user1_id == Auth::id())?$conversation->user2_id:$conversation->user1_id)->name}}

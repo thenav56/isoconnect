@@ -1,3 +1,46 @@
+
+<style>
+  .panel {
+  border: none;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.panel-heading {
+  border-bottom: none;
+}
+.panel-footer {
+  border-top: none;
+}
+.panel-success .panel-heading {
+  background-color: #4caf50;
+}
+.panel-success .panel-title {
+  color: #fff;
+}
+.panel-info .panel-heading {
+  background-color: #9c27b0;
+}
+.panel-info .panel-title {
+  color: #fff;
+}
+.panel-warning .panel-heading {
+  background-color: #ff9800;
+}
+.panel-warning .panel-title {
+  color: #fff;
+}
+.panel-danger .panel-heading {
+  background-color: #e51c23;
+}
+.panel-danger .panel-title {
+  color: #fff;
+}
+
+
+
+ 
+</style>
 <div class="ViewPost">
                               
             @if($posts->count())
@@ -51,7 +94,7 @@
 
                                                    
                                                             <div class="panel-body">
-                                                                 {{Post::handleText($post->post_body)}} <br>
+                                                                 {{nl2br(Post::handleText($post->post_body))}} <br>
 
 
                                                                  <?php 
@@ -102,7 +145,7 @@
                                         <a href="/user/{{$recent_commenter->id}}/profile">{{$recent_commenter->name}}</a><br>
                                            </div>
                                            <div class="panel-body">
-                                         {{e($comment->get()->first()->comment_body)}}<br><br>
+                                         {{nl2br(Post::handleText($comment->get()->first()->comment_body))}}<br><br>
                                             </div>
                                    @else
                                    </div>

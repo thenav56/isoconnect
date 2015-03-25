@@ -10,13 +10,13 @@
         <div class="row">
             <div class="col-md-3 ">
                 <div class="container-fluid well bs-component ">
-                    <h1>Home</h1>
+                    <h4>Home</h4>
                         <ul>
                         <li><p>Welcome({{ Auth::user()->name }})</p></li>
                         <li><p><a href="/user/profile">{{ 'Profile' }}</a></p></li>
                         </ul>
 
-                        <h1>Your Group</h1>
+                        <h4>Your Group</h4>
                             @if($groups)
                             <ul>
                                 @foreach($groups as $key => $value)
@@ -55,9 +55,9 @@
                     @endif 
                  
                 <p>
-                    {{ Form::label('user_post' , 'Write Here '.((Auth::user()->gender == 'Male')?'DUDE!':'DUDETTE!') ) }}
+                    {{ Form::label('user_post' , 'Write Here! ') }}<!-- ((Auth::user()->gender == 'Male')?'DUDE!':'DUDETTE!')  -->
                     {{ Form::textarea('user_post' ,'' ,  array(
-                    'placeholder'   => 'Want To Share Something!' , 
+                    'placeholder'   => 'Want To Share Something!(Public Post)' , 
                     'class'         => 'form-control'   ,
                     'rows'          => '2'
                     )) }}

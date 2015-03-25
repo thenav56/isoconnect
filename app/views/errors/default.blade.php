@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>404 Error</title>
+    <title>{{$name}} Error</title>
     <link rel="shortcut icon" href="{{asset('assests/icon/icon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{ HTML::style( asset('assests/css/bootstrap.min.css') ) }}

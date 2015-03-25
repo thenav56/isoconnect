@@ -26,20 +26,77 @@ div.new_message {
 @stop
 
 @section('body')
+
+ <?php 
+   	 $conversation = Conversation::find($conversation_id) ;
+   	 $canChat  = false ; //can chat
+   	 $hasoff = false ; //you have closed
+   	 $gotoff = false ; //another user has closed
+   	 if($conversation->user1_id == Auth::id() ){
+   	 	if($conversation->user1active == 1 ){
+   	 		if($conversation->user2active == 1){
+	   	 		$canChat = true ;
+	   	 	}else{
+	   	 		$gotoff = true ;
+	   	 	}
+   	 	}else{
+   	 		$hasoff = true ;
+   	 		}
+
+   	  }else{
+   	 	 if($conversation->user2active == 1 ){
+	   	 		if($conversation->user1active == 1){
+		   	 		$canChat = true ;
+		   	 	}else{
+		   	 		$gotoff = true; 
+		   	 	}
+   	 	}else{
+   	 		$hasoff = true ;
+   	 		}
+  
+   	  }
+
+
+
+   	 ?>
+
+
 <div class="row">
 		<div class="col-md-6 col-md-offset-3">
 		 <div class="panel">
 									  <div class="panel-heading">
 									    
   <div class="container-fluid">
-					 <legend><h4>MessageBOx with {{$otherUser->name}}</h4></legend>
-
+					 <legend><h4>MessageBOx with {{$otherUser->name}}
+					  @if(!$hasoff)
+						<div class="row"> 
+							<div class="col-md-12"> 
+								<span  class="pull-right"><a href="/user/message/enable/{{$conversation_id}}" class="btn btn-sm btn-danger">Disable Chat</a></span>
+							</div>
+						</div>
+						@endif
+						@if($hasoff)
+						<div class="row"> 
+							<div class="col-md-12"> 
+								<span  class="pull-right"><a href="/user/message/enable/{{$conversation_id}}" class="btn btn-sm btn-success">Enable Chat</a></span>
+							</div>
+						</div>
+						@endif</h4></legend>
+						@if($gotoff)
+						<div class="row"> 
+							<div class="col-md-6 col-md-offset-3"> 
+							<div class="alert alert-info"> 
+								<span class=""><p>Other user has not enable the chat</p></span>
+							</div>
+							</div>
+						</div>
+						@endif
 						<div class="col-md-offset-3 ">
 	 <?php  echo  $messages->appends(Request::except('page'))->links() ?>
 		</div>
-	
+			<?php $messageNU= 0 ; ?>
 			@foreach($Updownmessage as $message)
-			<div class="row"> 
+			<div class="row"> <?php $messageNU++ ; ?>
 				@if($message->user_id == Auth::id())
 		           	 <div class="bg-primary col-md-6 col-md-offset-5" >
 		           	 <div class="text-right ">
@@ -68,11 +125,24 @@ div.new_message {
 		        </div>
 				<br>
 			@endforeach
+			 @if(!$messageNU)
+   	 	<div class="row"> 
+			<div class="col-md-6 col-md-offset-3"> 
+			<div class="alert alert-warning"> 
+				<span class=""><p>Enter chat invitation message</p></span>
+			</div>
+			</div>
+		</div>
+   	 	@endif
 		 
 	  <div id="chat-wrap" class="chat-area"><div id="chat-area"></div></div>
       
 		</div>	
    	 </div>
+   	
+   	 	@if($canChat || !$messageNU)
+
+   	 	
 		<div class="panel-body">
 									  <div class="row"> 
 									  <div class="col-md-9"> 
@@ -86,7 +156,7 @@ div.new_message {
 	                                    )) }}
 			 						</div>
 				<br>{{ Form::submit('Send Message!' , array(
-                                    'class' => 'btn btn-primary'
+                                    'class' => 'btn btn-sm btn-primary'
                                     )) }}
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <input type="hidden" name="otherUserId" value="<?php echo $otherUser->id ; ?>">
@@ -94,6 +164,10 @@ div.new_message {
                {{ Form::close() }}
 									  </div>
 									  </div>
+				@endif
+				
+				
+				
 				</div>
 		            </div>     
 		            </div>

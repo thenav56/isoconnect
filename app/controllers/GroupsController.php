@@ -182,7 +182,7 @@ class GroupsController extends \BaseController {
 
 		if($permission){
 			$rules = array(
-				'user_post' => 'required|max:250' , 
+				'user_post' => 'required|max:2000' , 
 				'post_group_id' => 'exists:groups,id'
 			);
 
@@ -192,6 +192,7 @@ class GroupsController extends \BaseController {
 			//if the validator fails, redirect back to the form
 			if($validator->fails()) {
 				return Redirect::back()
+					->withInput(Input::all())
 					->withErrors($validator) ; //send back all errors to the
 			}else{
 				$userPost = htmlentities(Input::get('user_post')) ;
@@ -409,6 +410,52 @@ class GroupsController extends \BaseController {
 			return Redirect::back('flash_error','Request Admin');
 		}
 	}
+	public function deleteNotice($notice_id){
+			$notice = GroupNotice::find($notice_id) ;
+			$group = Group::find($notice->group_id) ;
+			if($group->admin_id == Auth::id()){
+			 	$noticeCheck = $notice->delete();
+			 	if($noticeCheck){
+				return Redirect::back()->with('flash_notice','Deleted') ;
+ 				}
+		 }
+		return Redirect::back()->with('flash_error','Something went wrong') ;
 
+	}
+	
+
+	public function editNotice(){
+		if(Input::has("_groupid")){
+			$group = Group::find(Input::get("_groupid")) ;
+			if($group->admin_id == Auth::id()){
+					 $rules = array(
+					'notice_message' => 'required|max:2500'
+					);
+
+				// run the validation rules on the inputs from the form
+				$validator = Validator::make(Input::all() ,$rules) ;
+
+				//if the validator pass, 
+					if(!$validator->fails()){ //'user_id' ,'post_body', 'group_id'
+						$notice = GroupNotice::find(Input::get('_noticeid')) ;
+						if($notice){
+							$noticeCheck = $notice->update([
+								'post_body' => Input::get('notice_message') 
+								]);
+
+							if($noticeCheck){
+								Notification::send("groupPost" , $notice );
+								return Redirect::to('/group/'.$group->id)->with('flash_notice','Success');
+							}else{
+								return Redirect::back()->with('flash_error','No-Success');
+							}
+						}
+					}else{
+						return Redirect::back()->withInput(Input::all())->withErrors($validator);
+					}
+			}
+		}
+		return Redirect::back()->with('flash_error','Something went wrong') ;
+	}
 
 }

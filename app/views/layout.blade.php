@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"></meta>
 <!-- for chrome for now -->
-<meta  name="theme-color" content="#2c3e50"></meta>
+<meta  name="theme-color" content="#149C82"></meta>
     @yield('head')
     <link rel="shortcut icon" href="{{asset('assests/icon/icon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,7 +69,7 @@ input[readonly] {
 </head>
  
  <body>
- <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container-fluid">
 
                 <div class="navbar-header">
@@ -86,15 +86,16 @@ input[readonly] {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                      
                      @if (Auth::check())                    
-                    <ul class="nav navbar-nav navbar">
-                     <li><div class="btn-group ">
+                    <!-- <ul class="nav navbar-nav navbar">
+                     <li><div class="btn-group"> -->
                                <form class="navbar-form navbar-left" role="search" method="get" action="<?php echo asset('search') ; ?>">
                                 <div class="form-group">
                                   <input class="form-control search typeaheadInput" placeholder="Search" type="text" id="users" name="query" autocomplete="off" >
                                    <button type="submit" style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
-                              </form></div></li>
-                    </ul>
+                              </form>
+                          <!-- </div></li>
+                    </ul> -->
 
                     <ul class="nav navbar-nav navbar-right">
                     <?php 
@@ -116,9 +117,9 @@ input[readonly] {
 
 
                     ?>                                                                                                                                     
-                              <li><a href="/user/message/show" class="btn btn-primary btn-md " >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
-                              <li><a href="/user/notification/show" class="btn btn-primary btn-md " >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
-                                <li><a class="btn btn-primary dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
+                              <li><a href="/user/message/show" class="btn btn-success btn-md " >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
+                              <li><a href="/user/notification/show" class="btn btn-success btn-md " >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
+                                <li><a class="btn btn-success dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile/edit">Edit Profile</a></li>

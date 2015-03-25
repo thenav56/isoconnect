@@ -7,25 +7,38 @@
 @section('body')
  
 		<div class="row">
-            <div class="col-md-12">
-            	<div class="well bs-component">   
+            <div class="col-md-9">
+            	<div class="">   
             			<?php $group = Group::find($group_id) ?>
-                       	<h2>{{{$group->name}}}</h2>
-                       	<h4>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h4>
-                        <h4>Created by :: {{ User::where('id','=',$group->admin_id )->first()->name}}</h4>
-                        <h4>ABOUT :: {{{$group->about}}}</h4>
-                        @if($admin)
-                          <a href='/group/edit/<?php echo $group_id; ?>'>Edit</a>
-                        @endif
+                       	<div class="list-group">
+                              <a href="
+                              @if($admin)
+                                  {{'/group/edit/'.$group_id}}
+                                @endif" class="list-group-item  active">
+                                <h4>{{{$group->name}}}
+                                 @if($admin)
+                                  (Edit)
+                                @endif</h4>
+                              </a>
+                               	<a class="list-group-item list-group-item-success"><h5>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h5></a>
+                                <a href="/user/{{$group->admin_id}}" class="list-group-item list-group-item-success" ><h5>Created by: {{ User::where('id','=',$group->admin_id )->first()->name}}</h5></a>
+                                
+                                    <a class="list-group-item list-group-item-success">
+                                      <h4 class="list-group-item-heading">About</h4>
+                                      <p>{{{$group->about}}}</p>
+                                </a>
+                          </div>
+
+                       
               </div>
-            </div>
-    </div>
+            
+    
     @if($block)
     <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-           <div class="well bs-component" >
+          <div class="col-md-6 col-md-offset-4">
+           <div class="" >
               <button  class="btn btn-lg btn-danger" disabled>
-                  >>>>>>>>>>>>You Are Blocked From This Group<<<<<<<<<<<< 
+                  You Are Blocked From This Group
               </button>
           </div>
         </div>
@@ -33,7 +46,7 @@
                           
     @elseif($active)
                     		
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
           <div class="col-md-3">
            <div class="well bs-component" >
@@ -48,14 +61,15 @@
                                 </form>
                         </div>
                     </div>
-                    <h2>Pending Users</h2>
+                    <h4>Pending Users</h4>
                       @if($usersPending->count())
-                      <ul>
+                      
                          @foreach($usersPending as $users)
                          
-                            <li><div class="row">
+                          <div class="row"  style="padding:5px;" > 
+                             
                            <?php $user =  User::find($users->user_id); ?>  
-                                    <div class="col-md-4"> 
+                                    <div class="col-md-3"  > 
                                             <a href="<?php echo asset('user/'.$user->id) ; ?>" >
                                             {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
                                             array('class' => 'img-circle  img-responsive img-center' ,
@@ -65,21 +79,22 @@
                                         <div class="col-md">
                                              <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
                                         </div>
-                                    </div></li>
+                                  
                             
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='accept' class="btn btn-success btn-xs">
-                            Accept Request
-                            </button><button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
-                            Delete Request
+                            Accept
+                            </button>
+                            <button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
+                            Delete
                             </button>
                             <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
                             <input type='hidden' name='request_user_id' value="<?php echo $users->user_id ; ?>">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
-
+                          </div>
                          @endforeach
-                    </ul>
+                    
                     
                     <?php  
                     Paginator::setPageName('userspending') ;
@@ -90,14 +105,14 @@
                     @endif
                     
 
-                     <h2>Active Users</h2>
+                     <h4>Active Users</h4>
                       @if($activeUsers->count())
-                      <ul>
+
                          @foreach($activeUsers as $users)
                          
-                           <li><div class="row">
+                           <div class="row"  style="padding:5px;" > 
                            <?php $user =  User::find($users->user_id); ?>  
-                                    <div class="col-md-4"> 
+                                    <div class="col-md-3"> 
                                             <a href="<?php echo asset('user/'.$user->id) ; ?>" >
                                             {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
                                             array('class' => 'img-circle  img-responsive img-center' ,
@@ -107,21 +122,21 @@
                                         <div class="col-md">
                                              <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
                                         </div>
-                                    </div></li>
+                                    
 
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='delete' class="btn btn-warning btn-xs">
                             Remove
-                            </button><button id='button_submit' name='button_submit' value ='block' type="submit" class="btn btn-danger btn-xs ">
+                            </button>
+                            <button id='button_submit' name='button_submit' value ='block' type="submit" class="btn btn-danger btn-xs ">
                             Block
                             </button>
                             <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
                             <input type='hidden' name='request_user_id' value="<?php echo $users->user_id ; ?>">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
-
+                            </div>
                          @endforeach
-                    </ul>
                     
                    <?php  
                    Paginator::setPageName('activeusers') ;
@@ -131,14 +146,14 @@
                       No Member In The Group At The Moment
                     @endif
 
-                    <h2>Blocked Users</h2>
+                    <h4>Blocked Users</h4>
                       @if($blockedUsers->count())
-                      <ul>
+                      
                          @foreach($blockedUsers as $users)
                          
-                            <li><div class="row">
+                           <div class="row"  style="padding:5px;" > 
                            <?php $user =  User::find($users->user_id); ?>  
-                                    <div class="col-md-4"> 
+                                    <div class="col-md-3"> 
                                             <a href="<?php echo asset('user/'.$user->id) ; ?>" >
                                             {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
                                             array('class' => 'img-circle  img-responsive img-center' ,
@@ -148,22 +163,23 @@
                                         <div class="col-md">
                                              <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
                                         </div>
-                                    </div></li>
+                                    
 
                                     
                             {{ Form::open(array('url' => 'group/handle_request')) }}
                             <button type="submit" id='button_submit' name='button_submit' value='unblock' class="btn btn-success btn-xs">
-                            Unblock Request
-                            </button><button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
-                            Delete Request
+                            Unblock
+                            </button>
+                            <button id='button_submit' name='button_submit' value ='delete' type="submit" class="btn btn-danger btn-xs ">
+                            Remove
                             </button>
                             <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
                             <input type='hidden' name='request_user_id' value="<?php echo $users->user_id ; ?>">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
-
+                            </div>
                          @endforeach
-                    </ul>
+                    
                     
                     <?php  
                     Paginator::setPageName('blockedusers') ;
@@ -173,16 +189,17 @@
                       No Blocked Users At The Moment
                     @endif
                    
+                     @endif
 
-                     @else
+                     @if(!$admin)
                          {{ Form::open(array('url' => 'group/send_request')) }}
-                            <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger">
+                            <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger btn-sm">
                             Leave This Group
                             </button>
                           <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
                           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         {{ Form::close() }}
-                     @endif
+                      @endif
              </div>
           </div>
 
@@ -220,12 +237,15 @@
 
                 @include('posts.default')
                 </div>
-
-                <div class="col-md-3 ">
+    </div>
+    </div>
+    </div>
+                <div class="col-md-3">
                    <div class="well bs-component" >
 
                       <h4>Notice Board</h4>
                   @if($admin)
+                  <div class="row">
                     <div class="col-md-12">
 
                         {{ Form::open(array('url' => 'group/post_notice')) }}
@@ -259,17 +279,27 @@
 
  
                 </div>
+                </div>
                 @endif
                  <?php 
-                 $notices = GroupNotice::where('group_id','=',$group->id)->orderBy('created_at','desc')->get() ;
+                 Paginator::setPageName('group_notice');
+                 $notices = GroupNotice::where('group_id','=',$group->id)->orderBy('created_at','desc')->simplePaginate(8) ;
                  ?>
-                  @foreach($notices as $notice)
-                <div class="well bs-component">
-                <div class="group_notice">
-                    <p>{{$notice->post_body}}</p>
-                </div>
-                </div>
-                  @endforeach
+                    <div class="list-group">
+                      @foreach($notices as $notice)
+                        <div class="">
+                          <div class="list-group-item list-group-item-info">
+                              <p><?php echo nl2br($notice->post_body) ;?></p>
+                              @if($admin)
+                                <span class="text-muted"><a class="btn btn-sm btn-default" href="{{asset('/group/post_notice/edit/'.$notice->id)}}">Edit</a></span>
+                                <span class="text-muted pull-right"><a class="btn btn-sm btn-danger" href="{{asset('/group/post_notice/delete/'.$notice->id)}}">Delete</a></span>
+                              @endif
+                          </div>
+                        </div>
+                      @endforeach
+                      {{Paginator::setPageName('group_notice')}}
+            {{$notices->appends(Request::except('group_notice'))->links()}}
+                  </div>
                 </div>
                 
                 </div>

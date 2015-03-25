@@ -58,18 +58,23 @@ div.new_message {
                                                     </div> -->
                                                 </div> 
                                                 <div class="panel-body">
-                                                    {{Post::handleText($post->post_body)}}
+                                                    {{nl2br(Post::handleText($post->post_body))}}
                                                     <?php 
                                                                    $post_photos  = Photo::where('source_type','=','post')
                                                                    ->where('source_id','=',$post->id)->get() ;
                                                                   ?>
                                                                   @if($post_photos->count())
                                                                     @foreach($post_photos as $photo)
-                                                                         <a href="<?php echo asset('user/photo/show/'.$photo->location) ; ?>" >
+                                                                  <div class="row">
+                                                                    <div class="col-md-12">
+                                                                    <hr>
+                                                                         <a href="<?php echo asset('user/photo/show/'.$photo->id) ; ?>" >
                                                                             {{ HTML::image('profile_pic/'.$photo->location, 'a picture', 
                                                                             array('class' => 'img-responsive ' 
                                                                         )) }}</a>
-                                                                    @endforeach    
+                                                                      </div>
+                                                                  </div>  
+                                                                    @endforeach  
                                                                 @endif
                                                 </div><!-- /panel-body -->
                                                 <div class="panel-heading">
@@ -79,7 +84,8 @@ div.new_message {
                                                   <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
                                                 @endif
                                                 @if(Auth::id() == $post->user_id)
-                                                  <span class="text-muted pull-right"><a class="btn btn-danger" href="{{asset('post/delete/'.$post->id)}}">Delete</a></span>
+                                                  <span class="text-muted pull-right"><a class="btn btn-sm btn-danger" href="{{asset('post/delete/'.$post->id)}}">Delete</a></span>
+                                                  <span class="text-muted pull-right"><a class="btn btn-sm btn-default" href="{{asset('post/edit/'.$post->id)}}">Edit</a></span>
                                                  @endif
                                                   <span class="text-muted  ">{{$post->like}} people liked</span>
                                                   </div>
@@ -124,7 +130,7 @@ div.new_message {
                                                 if($_comment->id == Input::get('comment_number')) 
                                                   echo 'new_message' ;
                                               ?>">
-                                                    {{e($_comment->comment_body)}}
+                                                    {{nl2br(Post::handleText($_comment->comment_body))}}
                                                 </div><!-- /panel-body -->
                                             </div><!-- /panel panel-default -->
                                           </div><!-- /col-sm-5 -->

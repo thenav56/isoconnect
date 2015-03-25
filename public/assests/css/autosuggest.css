@@ -17,9 +17,8 @@
 input.typeaheadInput,
 input.search,
 .tt-input {
-	width: 120%;
+	 
 	padding: 5px 10px;
-	border: 1px solid #bbb;
 }
 
 .tt-input:focus {
