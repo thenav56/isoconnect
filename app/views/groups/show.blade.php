@@ -16,16 +16,16 @@
                               <a href="
                               @if($admin)
                                   {{'/group/edit/'.$group_id}}
-                                @endif" class="list-group-item  active">
+                                @endif" class="list-group-item  list-group-item-success">
                                 <h4>{{{$group->name}}}
                                  @if($admin)
                                   (Edit)
                                 @endif</h4>
                               </a>
-                               	<a class="list-group-item list-group-item-success"><h5>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h5></a>
-                                <a href="/user/{{$group->admin_id}}" class="list-group-item list-group-item-success" ><h5>Created by: {{ User::where('id','=',$group->admin_id )->first()->name}}</h5></a>
+                               	<a class="list-group-item"><h5>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h5></a>
+                                <a href="/user/{{$group->admin_id}}" class="list-group-item" ><h5>Created by: {{ User::where('id','=',$group->admin_id )->first()->name}}</h5></a>
                                 
-                                    <a class="list-group-item list-group-item-success">
+                                    <a class="list-group-item">
                                       <h4 class="list-group-item-heading">About</h4>
                                       <p>{{{$group->about}}}</p>
                                 </a>
@@ -51,23 +51,29 @@
     <div class="container">
         <div class="row">
           <div class="col-md-3">
-           <div class="well bs-component" >
+           <div class="bs-component" >
                      @if($admin)
+                    <div class="list-group">
+                     <div class="list-group-item">
                      <div class="row">
                         <div class="col-md-4">
                                 <form class="navbar-form navbar-left" role="search" method="get" action="/search/group/{{$group_id}}/user">
                                     <div class="form-group">
-                                        <input class="form-control typeaheadInput" placeholder="Search for Users" type="text" id="user" name="user_name" autocomplete="off" >
+                                        <input class="form-control typeaheadInput" style="margin-left: -15px;" placeholder="Search for Users" type="text" id="user" name="user_name" autocomplete="off" >
                                         <button type="submit"  style="display: none;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
                                     </div>
                                 </form>
+                                </div>
                         </div>
                     </div>
-                    <h4>Pending Users</h4>
+                    </div>
+
+                    <div class="list-group">
+                    <a class="list-group-item active">Pending Users</a>
                       @if($usersPending->count())
                       
                          @foreach($usersPending as $users)
-                         
+                         <div class="list-group-item">
                           <div class="row"  style="padding:5px;" > 
                              
                            <?php $user =  User::find($users->user_id); ?>  
@@ -95,23 +101,31 @@
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
                           </div>
+                          </div>
                          @endforeach
-                    
-                    
-                    <?php  
-                    Paginator::setPageName('userspending') ;
-                    echo  $usersPending->appends(Request::except('userspending'))->links() 
-                    ?>
                     @else
+                    <div class="list-group-item">
                       No Pending At The Moment
+                    </div>
                     @endif
                     
+                    </div>
 
-                     <h4>Active Users</h4>
+                    <div style="margin-left:20px;">
+                          <?php  
+                          Paginator::setPageName('userspending') ;
+                          echo  $usersPending->appends(Request::except('userspending'))->links() 
+                          ?>
+                          </div>
+                          
+                    <div class="list-group">
+
+                    <a class="list-group-item active">Active Users</a>
+
                       @if($activeUsers->count())
 
                          @foreach($activeUsers as $users)
-                         
+                         <div class="list-group-item">
                            <div class="row"  style="padding:5px;" > 
                            <?php $user =  User::find($users->user_id); ?>  
                                     <div class="col-md-3"> 
@@ -138,21 +152,27 @@
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
                             </div>
+                            </div>
                          @endforeach
-                    
-                   <?php  
-                   Paginator::setPageName('activeusers') ;
-                   echo  $activeUsers->appends(Request::except('activeusers'))->links() 
-                   ?>
                    @else
+                   <div class="list-group-item">
                       No Member In The Group At The Moment
+                    </div>
                     @endif
+              </div>
+                    <div style="margin-left:20px;">
+                      <?php  
+                                       Paginator::setPageName('activeusers') ;
+                                       echo  $activeUsers->appends(Request::except('activeusers'))->links() 
+                                       ?>
+                                       </div>
+              <div class="list-group">
 
-                    <h4>Blocked Users</h4>
+                    <a class="list-group-item active">Blocked Users</a>
                       @if($blockedUsers->count())
                       
                          @foreach($blockedUsers as $users)
-                         
+                         <div class="list-group-item">
                            <div class="row"  style="padding:5px;" > 
                            <?php $user =  User::find($users->user_id); ?>  
                                     <div class="col-md-3"> 
@@ -180,19 +200,21 @@
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             {{ Form::close() }}
                             </div>
+                            </div>
                          @endforeach
-                    
-                    
-                    <?php  
-                    Paginator::setPageName('blockedusers') ;
-                    echo  $blockedUsers->appends(Request::except('blockedusers'))->links() 
-                    ?>
                     @else
+                   <div class="list-group-item">
                       No Blocked Users At The Moment
+                    </div>
                     @endif
-                   
+                   </div>
                      @endif
-
+                    <div style="margin-left:20px;">
+                    <?php  
+                          Paginator::setPageName('blockedusers') ;
+                          echo  $blockedUsers->appends(Request::except('blockedusers'))->links() 
+                          ?>
+                    </div>
                      @if(!$admin)
                          {{ Form::open(array('url' => 'group/send_request')) }}
                             <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger btn-sm">
