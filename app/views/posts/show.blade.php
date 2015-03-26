@@ -28,7 +28,7 @@ div.new_message {
 
 
 
-          <div class="container ">
+          <div class="container-fluid">
               <div class="row">
                       <div class="col-md-12 col-md-offset-1">
                 @if($active) 
@@ -39,7 +39,7 @@ div.new_message {
 
                                             <div class="col-md-10">
                                               <div class="panel panel-default">
-                                                <div class="panel-heading">
+                                                <div class="panel-heading boder-bold">
                                                     
                                                     <div class="col-md-2"> 
                                                       <?php  $user = User::find($post->user_id) ; ?>
@@ -77,17 +77,19 @@ div.new_message {
                                                                     @endforeach  
                                                                 @endif
                                                 </div><!-- /panel-body -->
-                                                <div class="panel-heading">
+                                                <div class="panel-heading  boder-bold">
+                                                <div class="btn btn-primary btn-sm"><a href="/post/{{$post->id}}/like">
                                                 @if(!$liked)
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
+                                                  <span class="glyphicon glyphicon-thumbs-up"></span> Like</a>
                                                 @else
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
+                                                  <span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a>
                                                 @endif
+                                                </div>
                                                 @if(Auth::id() == $post->user_id)
                                                   <span class="text-muted pull-right"><a class="btn btn-sm btn-danger" href="{{asset('post/delete/'.$post->id)}}">Delete</a></span>
                                                   <span class="text-muted pull-right"><a class="btn btn-sm btn-default" href="{{asset('post/edit/'.$post->id)}}">Edit</a></span>
                                                  @endif
-                                                  <span class="text-muted  ">{{$post->like}} people liked</span>
+                                                  <span class="text-muted  pull-right">{{$post->like}} people (<span class="glyphicon glyphicon-thumbs-up">)</span>
                                                   </div>
 
                                             </div><!-- /panel panel-default -->
@@ -101,8 +103,8 @@ div.new_message {
                          
 
                             <div class="row">
-                                <div class="well bs-component col-md-8 col-md-offset-1">
-                                    <div class="list-group">
+                                <div class="bs-component col-md-8 col-md-offset-1">
+                                    <div class="">
                                 @foreach($comments as $comment => $_comment)
                                           <div class="row" id="<?php echo $_comment->id ?>">
 <!-- 
@@ -143,7 +145,7 @@ div.new_message {
                              
 
                              <!-- comment -->
-                                 <div class="comment_update" >
+                                 <div class="well comment_update col-md-10 col-md-offset-1" >
                                     {{ Form::open(array('url' => 'user/comment')) }}
                                     <!-- if there are login errors , show them here -->
                                     @if (Session::has('flash_error'))
@@ -164,7 +166,7 @@ div.new_message {
                                         )) }}
                                     </p>
                                     <p>{{ Form::submit('Comment!' , array(
-                                        'class' => 'btn btn-primary'
+                                        'class' => 'btn btn-sm btn-primary'
                                         )) }}</p>
                                 <input type="hidden" name="comment_post_id"  autocomplete="off" value="<?php echo $post->id; ?>">
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

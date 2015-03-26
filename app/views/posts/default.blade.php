@@ -57,7 +57,7 @@
                                             </div>  -->
                                              <?php  $user = User::find($post->user_id) ; ?>
                                               <div class="panel panel-default">
-                                                <div class="panel-heading">
+                                                <div class="panel-heading boder-bold">
                                                     <div class="col-md-2">
                                                         @if(!$user)
                                                             {{ HTML::image('profile_pic/low/crop' , 'a picture', 
@@ -128,12 +128,14 @@
                                         $liked = false ;
                                     ?>
                                    <div class="panel-heading">
+                                                <a href="/post/{{$post->id}}/like">
                                                 @if(!$liked)
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></div>
+                                                  <span class="glyphicon glyphicon-thumbs-up"></span> Like</a>
                                                 @else
-                                                  <div class="btn btn-primary"><a href="/post/{{$post->id}}/like"><span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a></div>
+                                                  <span class="glyphicon glyphicon-thumbs-down"></span> UnLike</a>
                                                 @endif
-                                                  <span class="text-muted pull-right">{{$post->like}} people liked</span>
+                                                
+                                                  <span class="text-muted pull-right">{{$post->like}} people (<span class="glyphicon glyphicon-thumbs-up"></span>)</span>
                                  
                                    </div><!-- /panel panel-default -->
                                 

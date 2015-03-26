@@ -2,6 +2,8 @@
 
 @section('head')
 <title>IsoConnect | Group </title>
+
+ 
 @stop
 
 @section('body')
@@ -240,8 +242,8 @@
     </div>
     </div>
     </div>
-                <div class="col-md-3">
-                   <div class="well bs-component" >
+                <div class="col-md-3 ">
+                   <div class="well bs-component notice-board">
 
                       <h4>Notice Board</h4>
                   @if($admin)
@@ -345,4 +347,10 @@
           </div> 
 
           @endif
+
+
+<script>
+  $(document).ready(function() { $("#notice-board").bind("click",function(event){ event.preventDefault(); var target = $(this).attr("href"); $("html, body").stop().animate({ scrollLeft: $(target).offset().left, scrollTop: $(target).offset().top }, 1200); }); }); 
+
+</script>
 @stop

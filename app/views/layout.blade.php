@@ -18,6 +18,7 @@
             padding-top: 70px;
             background-image: url({{asset("img/notebook.png")}});
             background-repeat: repeat-y repeat-x;
+            background-attachment: fixed ;
         }
 
         .navbar-xs { min-height:28px; height: 45px; }
@@ -30,6 +31,10 @@
    height: 33px;
    width: 200px; }
 
+.sidebar{
+    margin-top: 15px;
+}
+
 nav {
     word-spacing: 2px;
 }
@@ -37,6 +42,15 @@ nav {
     min-width: 80px;
     max-width: 600px;
 }
+.boder-bold,
+.panel ,
+.list-group,
+.well {
+  border: none;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
 
 /*post with photo*/
 .btn-file {
@@ -69,7 +83,7 @@ input[readonly] {
 </head>
  
  <body>
- <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
 
                 <div class="navbar-header">
@@ -117,9 +131,9 @@ input[readonly] {
 
 
                     ?>                                                                                                                                     
-                              <li><a href="/user/message/show" class="btn btn-success btn-md " >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
-                              <li><a href="/user/notification/show" class="btn btn-success btn-md " >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
-                                <li><a class="btn btn-success dropdown-toggle btn-md " type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
+                              <li><a href="/user/message/show" >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
+                              <li><a href="/user/notification/show"  >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
+                                <li><a class="dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile/edit">Edit Profile</a></li>
@@ -216,9 +230,7 @@ input[readonly] {
         {{HTML::script(asset('assests/js/handlebars-v3.0.0.js'))}}
        @include('javascript')   
   @yield('javascript')
- 
- 
- 
+  
 <?php
 
 //glyphicon glyphicon-thumbs-down
