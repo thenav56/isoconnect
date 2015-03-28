@@ -8,24 +8,21 @@ class UserGroupsTableSeeder extends Seeder {
 	public function run()
 	{
 		$faker = Faker::create();
-
-		foreach(range(1, 5) as $index)
-		{
-			UserGroup::create([
-				'user_id' => $index ,
-				'group_id' =>  1,
-				'active' => 0
-			]);
+		$random = 0 ; //not that random type but just for seeding
+		foreach(range(1, 10) as $value){
+			foreach(range(1, 10) as $index)
+			{
+				UserGroup::create([
+					'user_id' => $index ,
+					'group_id' =>  $value,
+					'active' => ($index != 1 )?$random:1
+				]);
+				$random++ ;
+				if($random>3)	
+					$random = 0 ;
+			}
 		}
-
-		foreach(range(6, 10) as $index)
-		{
-			UserGroup::create([
-				'user_id' => $index ,
-				'group_id' =>  $index-4,
-				'active' => 1
-			]);
-		}
+		 
 	}
 
 }

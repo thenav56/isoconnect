@@ -208,21 +208,60 @@
                     </div>
                     @endif
                    </div>
-                     @endif
                     <div style="margin-left:20px;">
                     <?php  
                           Paginator::setPageName('blockedusers') ;
                           echo  $blockedUsers->appends(Request::except('blockedusers'))->links() 
                           ?>
                     </div>
+                    @endif
                      @if(!$admin)
-                         {{ Form::open(array('url' => 'group/send_request')) }}
-                            <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger btn-sm">
-                            Leave This Group
-                            </button>
-                          <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
-                          <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                        {{ Form::close() }}
+                        <div class="list-group">
+                        
+                        <div class="list-group-item active">
+                          <div class="row">
+                            <div class="col-md-8"> 
+                            Group Active Users
+                            </div>
+                            <div class="col-md-4"> 
+                           {{ Form::open(array('url' => 'group/send_request')) }}
+                              <button type="submit" name="button_submit" value= "cancle" title="Leave This Group ({{$group->name}})" class="btn btn-danger btn-xs">
+                              Leave
+                              </button>
+                            <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                          {{ Form::close() }}
+                          </div>
+                         </div> 
+                        </div>
+                        
+                        @if($activeUsers->count())
+                        @foreach($activeUsers as $users)
+                         <div class="list-group-item">
+                           <div class="row"  style="padding:5px;" > 
+                           <?php $user =  User::find($users->user_id); ?>  
+                                    <div class="col-md-3"> 
+                                            <a href="<?php echo asset('user/'.$user->id) ; ?>" >
+                                            {{ HTML::image('profile_pic/low/crop/'.$user->profile_pic, 'a picture', 
+                                            array('class' => 'img-circle  img-responsive img-center' ,
+                                             
+                                            )) }}</a>
+                                        </div>
+                                        <div class="col-md">
+                                             <strong><a href="/user/<?php echo $user->id ?>">{{$user->name }}</a></strong> 
+                                        </div>
+                            </div>
+                            </div>
+                         @endforeach
+                         @endif
+                         </div>
+
+                         <div style="margin-left:20px;">
+                      <?php  
+                                       Paginator::setPageName('activeusers') ;
+                                       echo  $activeUsers->appends(Request::except('activeusers'))->links() 
+                                       ?>
+                                       </div>
                       @endif
              </div>
           </div>
@@ -265,6 +304,7 @@
     </div>
     </div>
                 <div class="col-md-3 ">
+                    @include('flash_notice')
                    <div class="well bs-component notice-board">
 
                       <h4>Notice Board</h4>
@@ -321,9 +361,11 @@
                           </div>
                         </div>
                       @endforeach
+                    </div>
+                    <div style="margin-left:40px;"> 
                       {{Paginator::setPageName('group_notice')}}
-            {{$notices->appends(Request::except('group_notice'))->links()}}
-                  </div>
+                      {{$notices->appends(Request::except('group_notice'))->links()}}
+                    </div>
                 </div>
                 
                 </div>
@@ -341,6 +383,7 @@
                        
                       @elseif(!$pending)
                         <h2>Join This Group</h2>
+                        
                         {{ Form::open(array('url' => 'group/send_request')) }}
                             <button type="submit" class="btn btn-primary">
                             Send Request
@@ -362,17 +405,14 @@
                         </div>
                         </div>
                       @endif
-                     
-                    
-            
+                      
+                    </div>
+            <div class="col-md-3">
+            @include('flash_notice')
+            </div>
             </div>                    
           </div> 
 
           @endif
-
-
-<script>
-  $(document).ready(function() { $("#notice-board").bind("click",function(event){ event.preventDefault(); var target = $(this).attr("href"); $("html, body").stop().animate({ scrollLeft: $(target).offset().left, scrollTop: $(target).offset().top }, 1200); }); }); 
-
-</script>
+ 
 @stop

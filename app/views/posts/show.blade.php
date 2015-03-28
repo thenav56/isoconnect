@@ -30,14 +30,14 @@ div.new_message {
 
           <div class="container-fluid">
               <div class="row">
-                      <div class="col-md-12 col-md-offset-1">
+                      <div class="col-md-9 col-md-offset-1">
                 @if($active) 
                        <!-- <div class="container"> -->
                                           <div class="row">
 
                                              
 
-                                            <div class="col-md-10">
+                                            <div class="col-md-12">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading boder-bold">
                                                     
@@ -148,15 +148,13 @@ div.new_message {
                                  <div class="well comment_update col-md-10 col-md-offset-1" >
                                     {{ Form::open(array('url' => 'user/comment')) }}
                                     <!-- if there are login errors , show them here -->
-                                    @if (Session::has('flash_error'))
-                                        <div id="flash_error" >{{ Session::get('flash_error') }}</div>
-                                    @endif
-
-                                     <div class="form-group">
-                                                    <tr class="danger">
+                                    @if ($errors->has('user_comment'))
+                                     <div class="form-group alert alert-warning">
+                                                    <tr class="warning">
                                                         {{$errors->first('user_comment')}}
                                                     </tr>
                                             </div>
+                                    @endif
                                     <p>
                                         {{ Form::label('user_comment' , 'Comment!') }}
                                         {{ Form::textarea('user_comment' ,'' ,  array(
@@ -176,9 +174,15 @@ div.new_message {
                         </div>  
                                </div>             	
                         @else
-
-                            You dont have the permission to view this content
+                        <div class="well">
+                            <h2>Sorry</h2> 
+                            <p>You dont have the permission to view this content</p>
+                            <p>Join this Group To View(<a href="/group/{{$groupid}}">{{Group::find($groupid)->name}}</a>)</p>
+                            </div>
                         @endif
+                 <div class="col-md-2">
+                    @include('flash_notice')
+                 </div>
                  </div>
             </div>
 		 

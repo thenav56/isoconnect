@@ -93,7 +93,7 @@ input[readonly] {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><img alt="Isoconnect" class="img-circle" src="{{asset('assests/icon/iso_logo.png')}}" width="30" height="30"></a>
+                    <a class="navbar-brand" title="ISOCONNECT" href="/"><img alt="Isoconnect" class="img-circle" src="{{asset('assests/icon/iso_logo.png')}}" width="30" height="30"></a>
                     <a class="navbar-brand" href="/">IsoConnect</a>
                 </div>
 
@@ -119,20 +119,20 @@ input[readonly] {
                     $messageBadgeColor = 'label-default'  ;
                     $notificationBadgeColor = 'label-default';
                     if($notificationNu)
-                      $notificationBadgeColor = 'label-success';
+                      $notificationBadgeColor = 'label-warning';
                     if($messageNu)
-                      $messageBadgeColor = 'label-success';
+                      $messageBadgeColor = 'label-warning';
                    
                     Session::put('messageNu', $messageNu);
-                    $messageNu = '<span class="label '.$messageBadgeColor.' label-as-badge">'.$messageNu.'</span>' ;
+                    $messageNu = ' <span class="label '.$messageBadgeColor.' label-as-badge">'.$messageNu.'</span>' ;
                     
                     Session::put('notificationNu', $notificationNu);
-                    $notificationNu =  '<span class="label '.$notificationBadgeColor.' label-as-badge">'.$notificationNu.'</span>' ;
+                    $notificationNu =  ' <span class="label '.$notificationBadgeColor.' label-as-badge">'.$notificationNu.'</span>' ;
 
 
                     ?>                                                                                                                                     
-                              <li><a href="/user/message/show" >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
-                              <li><a href="/user/notification/show"  >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
+                              <li><a href="/user/message/show" title="New Message" >Messages<span  id="nav-mess">{{$messageNu}}</span></a></li>
+                              <li><a href="/user/notification/show" title="New Notification" >Notifications<span id="nav-noti" >{{$notificationNu}}</span></a></li> 
                                 <li><a class="dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">{{ Auth::user()->name }}<span class="caret"></span></a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/user/profile">View Profile</a></li>
@@ -160,36 +160,10 @@ input[readonly] {
 
   
 
-         
-     
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                 @if(Session::has('flash_notice'))
-                    <div class="form-group  alert alert-success">
-                                <tr class="danger"><ul>
-                                    <h4><td>{{ Session::get('flash_notice') }}</td></h4>
-                                     
-                                </ul></tr>
-                        </div>
-                    @elseif(Session::has('flash_error'))
-                    <div class="form-group  alert alert-danger">
-                                <tr class="danger"><ul>
-                                    <h4><td>{{ Session::get('flash_error') }}</td></h4>
-                                     
-                                </ul></tr>
-                        </div>
-                    @endif
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         
        
     @yield('body')
-    
     </div>
 
 

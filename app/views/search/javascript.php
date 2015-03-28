@@ -29,28 +29,35 @@
         source: group.ttAdapter() ,
         templates: {
                         empty: [
-                            '<div class="noitems">',
-                            'No Groups Found',
+                            '<div class="list-group">',
+                            '<div class="list-group-item">',
+                            'No Groups found',
+                            '</div>',
                             '</div>'
                         ].join('\n'),
                          suggestion: Handlebars.compile(
-                          "<div class='row'>"
-                          +"<a href='<?php echo asset('user/') ;?>/{{id}}' >"
+                          "<a href='<?php echo asset('group/') ;?>/{{id}}' class='list-group-item'>"
+                          +"<div class='row'>"
                           +"<div class='col-md-4'>"
                           +"<img class='img-circle img-responsive img-center' src='<?php echo asset('profile_pic/low/crop/') ;?>/{{profile_pic}}' >"
                           +"</div>"
                           +"<div class='col-md'>"
-                          +"<strong>{{name}}</strong>"
-                          +"</a>"
+                          +"<h6><strong>{{name}}</strong></h6>"
                           +"<div class='row'>"
-                          +"<div class='col-md'>"
+                          +"<div class='col-md col-md-offset-4'>"
                           +"<h6>{{admin_id}}</h6>"
                           +"</div>" 
                           +"</div>"
                           +"</div>" 
+                          +"</div>" 
+                          +"</a>" 
                           +"</div>"
                           ),
-                         header: Handlebars.compile("<b>  Groups</b>")
+                          header: Handlebars.compile(
+                            '<div class="list-group">'
+                          +'<div class="list-group-item active">'
+                          +'Groups'
+                          +'</div>')
                        
                     }
        });
@@ -65,19 +72,20 @@
         source: user.ttAdapter() ,
         templates: {
                         empty: [
-                            '<div class="noitems">',
+                            '<div class="list-group">',
+                            '<div class="list-group-item">',
                             'No Users Found',
+                            '</div>',
                             '</div>'
                         ].join('\n'),
                          suggestion: Handlebars.compile(
-                          "<div class='row'>"
-                          +"<a href='<?php echo asset('user/') ;?>/{{id}}' >"
+                          "<a href='<?php echo asset('user/') ;?>/{{id}}' class='list-group-item' >"
+                          +"<div class='row'>"
                           +"<div class='col-md-4'>"
                           +"<img class='img-circle img-responsive img-center' src='<?php echo asset('profile_pic/low/crop/') ;?>/{{profile_pic}}' >"
                           +"</div>"
                           +"<div class='col-md'>"
                           +"<strong>{{name}}</strong>"
-                          +"</a>"
                           +"<div class='row'>"
                           +"<div class='col-md'>"
                           +"<h6>{{company}}</h6>"
@@ -85,8 +93,14 @@
                           +"</div>"
                           +"</div>"
                           +"</div>"
+                          +"</a>"
+                          +"</div>"
                           ),
-                         header: Handlebars.compile("<b>Users</b>")
+                         header: Handlebars.compile(
+                          '<div class="list-group">'
+                          +'<div class="list-group-item active">'
+                          +'Users'
+                          +'</div>')
                        
                     }
        });

@@ -8,7 +8,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-md-3">
+            <div class="col-md-3 col-md-3 well">
                 {{ HTML::image('profile_pic/'.Auth::user()->profile_pic, 'a picture', array('class' => 'img-rectangle img-responsive img-center')) }}
                 <h1>Profile</h1> 
                     <ul>

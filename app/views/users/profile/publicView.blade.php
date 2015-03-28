@@ -8,7 +8,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-md-3">
+            <div class="col-md-3 col-md-3 well">
                 {{ HTML::image('profile_pic/'.$user->profile_pic, 'a picture', array('class' => 'img-rectangle img-responsive img-center')) }}
                 <b><h1>PROFILE</h1></b>
                     <ul>
@@ -30,6 +30,8 @@
                     </a></li></p>
                         @endforeach
                     </ul>
+               @else
+                No Joined Group
                @endif
 
             </div>

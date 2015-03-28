@@ -10,7 +10,7 @@
                 <div class="well bs-component">
                         {{ Form::open(array('url' => 'register' , 'class' => 'form-horizontal')) }}
                         <fieldset>
-                                <legend>Register</legend>
+                                <legend>Register </legend>
 
                                 <!-- if there are login errors , show them here -->
 

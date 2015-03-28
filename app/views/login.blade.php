@@ -20,6 +20,9 @@
         array('class' => 'img-responsive img-center' ,)) }}
         <div class="col-md-12 col-md-offset-1">
             <h1><a>Iso</a>lation With <a>Connect</a>ion</h1>
+    <div class="col-md-10">
+    @include('flash_notice')
+</div>
            <!--  <h3>Visit the demo at </h3><h1><a>isoconnect.bugs3.com</a></h1>
             <h4>Feedback at /support</h4>
             <h1><a>isoconnect.tk</a></h1> -->

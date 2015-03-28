@@ -180,7 +180,9 @@
             </div>
             @endif
              
-            <?php  echo  $posts->appends(Request::except('page'))->links() ?>
+            <?php  
+            Paginator::setPageName('page') ;
+            echo  $posts->appends(Request::except('page'))->links() ?>
         </div>
 
 

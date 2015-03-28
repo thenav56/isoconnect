@@ -247,13 +247,17 @@ class GroupsController extends \BaseController {
 
 						if($UserGroups->first()->active){
 							//post related to the groups
-							$GroupPosts = Post::where('group_id' , '=' ,$group_id)->orderBy('id' , 'desc')->simplePaginate(10) ;
+							Paginator::setPageName('page') ;
+							$GroupPosts = Post::where('group_id' , '=' ,$group_id)->orderBy('id' , 'desc')->simplePaginate() ;
+
+							Paginator::setPageName('activeusers') ;
+							$activeUsers = UserGroup::where('group_id' , '=' , $group_id)->where('active',  '=' , '1' )->orderBy('id' , 'desc')->simplePaginate() ;
 
 							$active = true ;
 
 							return View::make('groups.show')->with('group_id' , $group_id)->with('active' , $active )
 							->with('posts',$GroupPosts)->with('pending' , $pending)
-							->with('admin' , $admin )->with('block' , $block) ;
+							->with('admin' , $admin )->with('block' , $block)->with('activeUsers',$activeUsers) ;
 						}else{
 							$pending = true ;
 						}

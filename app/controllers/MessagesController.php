@@ -138,8 +138,13 @@ class MessagesController extends \BaseController {
 				       	  ->where('user_id','=',Input::get('otherUser'))
 				       	  ->orderBy('id','desc')
 				       	  ->first() ;
+				       	  if($message){
 				          $log['last_message'] = $message->id; 
 				          $log['seen'] = $message->seen ;
+				          }else{
+				          $log['last_message'] = 0; 
+				          $log['seen'] = 0 ;
+				          }
 				          break ;
 
 
@@ -151,8 +156,11 @@ class MessagesController extends \BaseController {
 				       	  ->orderBy('id','desc')
 				       	  ->first() ;
 				       
-				          $last_messageRecent = $message->id;
-
+				          if($message){
+					          $last_messageRecent = $message->id;
+						      }else{
+						      	$last_messageRecent = 0 ;	
+						      }
 				          if($last_messageRecent == $last_message){
 				             $log['last_message'] = $last_message;
 				        	

@@ -10,6 +10,59 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 sidebar">
+               
+               <div class="list-group" >
+                    <div class="list-group-item active">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Welcome-Home
+                            </div>
+                            <div class="col-md-6">
+                                <a class="pull-right" href="/user/profile/edit">(Edit Profile)</a> 
+                            </div>
+                        </div>
+                    </div>
+                    <a title="Your Profile" href="<?php echo asset('user/'.Auth::user()->id) ; ?>">
+                        <div class="row">
+                                <div class="col-md-12">
+                                    <div class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ HTML::image('profile_pic/low/crop/'.Auth::user()->profile_pic, 'a picture', 
+                                                array('class' => 'img-center',
+                                                'width'         => '128' ,
+                                                'height'        => '128'
+                                                )) }}
+                                            </div>
+                                            <div class="col-md-6"> 
+                                                {{Auth::user()->name}} 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                                
+                                <div class="col-md-12">
+                                        <div class="list-group-item"> 
+                                            {{(Auth::user()->address)?Auth::user()->address:"Add Your Address"}} 
+                                        </div>
+                                        <div class="list-group-item"> 
+                                            {{(Auth::user()->contact)?Auth::user()->contact:"Add Your contact"}} 
+                                        </div>
+                                        <div class="list-group-item"> 
+                                            {{(Auth::user()->gender)?Auth::user()->gender:"Specify Your gender"}} 
+                                        </div>
+                                        <div class="list-group-item"> 
+                                            {{(Auth::user()->company)?Auth::user()->company:"Add Your company"}} 
+                                        </div>
+                                        <div class="list-group-item"> 
+                                            {{(Auth::user()->dob)?Auth::user()->dob:"Add Your dob"}} 
+                                        </div>
+                                </div>
+                        </div>
+                    </a>
+                </div>  
+                    
                 <div class="list-group" >
                  <a class="list-group-item list-group-item-success">
                     <h5>Your Group</h5>
@@ -89,6 +142,7 @@
     </div>
 </div>
 <div class="col-md-3 sidebar">
+    @include('flash_notice')
     <div class="list-group">
          <a class="list-group-item list-group-item-success">
                     <h5>People You May Know</h5>

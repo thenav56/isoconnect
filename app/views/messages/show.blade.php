@@ -169,7 +169,11 @@ div.new_message {
 				
 				
 				</div>
-		            </div>     
+		            </div>   
+
+		            <div class="col-md-2 col-md-offset-1">
+					    @include('flash_notice') 
+		            </div>  
 		            </div>
          
 

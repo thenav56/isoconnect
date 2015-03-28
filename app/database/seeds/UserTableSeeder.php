@@ -35,11 +35,10 @@ class UserTableSeeder extends Seeder
             ));
 
         foreach(range(1 , 10) as $index){
-            $hell = $faker->name ;
             User::create(array(
-                'name'     => $hell,
+                'name'     => $faker->name,
                 //'username' => 'navin',
-                'email'    => $hell.'@gmail.com',
+                'email'    => $faker->email,
                 'password' => Hash::make('awesome'),
                 'confirmed' => true ,
             ));

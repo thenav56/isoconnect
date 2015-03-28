@@ -199,7 +199,7 @@ class PostsController extends \BaseController {
 			
 			}
 		}
-		return View::make('posts.show')->with('active' , $active) ;	
+		return View::make('posts.show')->with('active' , $active)->with('groupid',$posts->group_id) ;	
 	}
 
 	 

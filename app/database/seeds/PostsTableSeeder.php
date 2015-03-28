@@ -8,28 +8,19 @@ class PostsTableSeeder extends Seeder {
 	public function run()
 	{
 		$faker = Faker::create();
-
-		foreach(range(1, 5) as $index)
-		{
-			Post::create([
-				'user_id'	=> $index ,
-				'post_body' => $faker->text,
-				'like'		=>  $index,
-				'dislike'	=>  $index,
-				'group_id'	=>  1,
-			]);
+		foreach(range(1, 10) as $value){
+			foreach(range(1, 10) as $index)
+			{
+				Post::create([
+					'user_id'	=> $value ,
+					'post_body' => $faker->text,
+					'like'		=>  $index,
+					'dislike'	=>  0,
+					'group_id'	=>  $index,
+				]);
+			}
 		}
-
-		foreach(range(6, 10) as $index)
-		{
-			Post::create([
-				'user_id'	=> $index ,
-				'post_body' => $faker->text,
-				'like'		=>  $index,
-				'dislike'	=>  $index,
-				'group_id'	=>  $index-4,
-			]);
-		}
+ 
 	}
 
 }

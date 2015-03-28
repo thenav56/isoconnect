@@ -13,7 +13,7 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="bg-primary col-md-12" >
-									<label><h4>Recent Conversation</h4></label>	 
+									<br>
 										@foreach($conversations as $conversation)
 							 			 @if(array_key_exists($conversation->id, $messages))
 						           	 <?php $message = $messages[$conversation->id];?>
@@ -43,6 +43,9 @@
 						         <?php  
 								echo  $conversations->appends(Request::except('page'))->links() 
 								?>
+						         </div>
+						         <div class="col-md-4 col-md-offset-2">
+									    @include('flash_notice')
 						         </div>
 						          
 							</div>
