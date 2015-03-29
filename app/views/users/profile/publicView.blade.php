@@ -8,32 +8,8 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 col-md-3 well">
-                {{ HTML::image('profile_pic/'.$user->profile_pic, 'a picture', array('class' => 'img-rectangle img-responsive img-center')) }}
-                <b><h1>PROFILE</h1></b>
-                    <ul>
-                    <li><p>({{ $user->name }})</p></li>
-                    <li><p>{{ $user->email }}</p></li>
-                    <li><p><a href='/user/<?php echo $user->id ?>/profile/info'>{{ 'Profile Info' }}</a></p></li>
-                    <li><p><a href="{{asset('/user/message/'.$user->id)}}">Start Conversation</a></li>
-                    </ul>
-
-                <h1>Joined Group</h1>
-                    <ul>
-                    @if($groups)
-                        @foreach($groups as $value)
-                    <p><li><a href='/group/{{$value->id}}'>
-                    @if($value->admin_id == $user->id)
-                        (Admin)
-                    @endif
-                    {{ e($value->name) }}
-                    </a></li></p>
-                        @endforeach
-                    </ul>
-               @else
-                No Joined Group
-               @endif
-
+            <div class="col-md-3 col-md-3">
+                 @include('users.profile.user_profile_sidebar')
             </div>
       
             <div class="col-md-6 ">

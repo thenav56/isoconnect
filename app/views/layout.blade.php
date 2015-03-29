@@ -32,7 +32,7 @@
    width: 200px; }
 
 .sidebar{
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 nav {

@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
                 'email'    => 'navinayer56@gmail.com',
                 'password' => Hash::make('awesome'),
                 'confirmed' => true ,
+                'profile_pic' => "navin.jpg" ,
             ));
 
          User::create(array(
@@ -24,6 +25,7 @@ class UserTableSeeder extends Seeder
                 'email'    => 'unknown.emlap@gmail.com',
                 'password' => Hash::make('awesome'),
                 'confirmed' => true ,
+                'profile_pic' => "pramod.png" ,
             ));
 
           User::create(array(
@@ -31,6 +33,7 @@ class UserTableSeeder extends Seeder
                 //'username' => 'navin',
                 'email'    => 'prabesh.pathak@hotmail.com',
                 'password' => Hash::make('awesome'),
+                'profile_pic' => "prabesh.jpg" ,
                 'confirmed' => true ,
             ));
 
@@ -41,6 +44,7 @@ class UserTableSeeder extends Seeder
                 'email'    => $faker->email,
                 'password' => Hash::make('awesome'),
                 'confirmed' => true ,
+                'profile_pic' => $index.".jpg" ,
             ));
 
         }

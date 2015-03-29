@@ -191,7 +191,7 @@ class UserController extends BaseController {
 		$user = User::find($id);
 		$photos = Photo::where('user_id','=' , $id)->simplePaginate();
  
-		return View::make('users.profile.showPhoto', compact('user', 'groups','photos'));
+		return View::make('users.profile.showPhoto', compact('groups','photos'));
 	}
 
 	public function setProfilePhoto($photo_id){
