@@ -20,10 +20,15 @@
                                 <h4>{{{$group->name}}}
                                  @if($admin)
                                   (Edit)
-                                @endif</h4>
+                                @endif
+                                </h4>
                               </a>
-                               	<a class="list-group-item"><h5>Created {{$group->created_at->diffForHumans()}} on {{$group->created_at}}</h5></a>
-                                <a href="/user/{{$group->admin_id}}" class="list-group-item" ><h5>Created by: {{ User::where('id','=',$group->admin_id )->first()->name}}</h5></a>
+                                <a href="/user/{{$group->admin_id}}" class="list-group-item" >
+                                <h4 class="list-group-item-heading">Created by</h4>
+                                <h6>{{ User::where('id','=',$group->admin_id )->first()->name}}
+                                <span class="pull-right"><h6>{{$group->created_at->diffForHumans()}} on {{date('F j, Y, g:i a',strtotime($group->created_at))}}</h6></span>
+                                </h6>
+                                </a>
                                 
                                     <a class="list-group-item">
                                       <h4 class="list-group-item-heading">About</h4>
