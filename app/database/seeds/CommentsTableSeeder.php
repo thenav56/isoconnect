@@ -9,7 +9,7 @@ class CommentsTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		foreach (range(1,10) as $value) {
+		foreach (range(1,100) as $value) {
 			foreach(range(1, 10) as $index)
 			{
 				Comment::create([
