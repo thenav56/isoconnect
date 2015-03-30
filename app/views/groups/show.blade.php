@@ -402,7 +402,7 @@
                          
                         {{ Form::open(array('url' => 'group/send_request')) }}
                             <button type="submit" name="button_submit" value= "cancle" class="btn btn-danger">
-                            Cancle Request
+                            Cancel Request
                             </button>
                           <input type='hidden' name='group_id' value="<?php echo $group->id ; ?>">
                           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

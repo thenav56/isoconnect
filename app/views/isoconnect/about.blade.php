@@ -36,6 +36,11 @@
                      
             </div>
             <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/he5g425enhide63/photo_nav.png?dl=0" alt="NavinIR">
+                <h3>Anjesh. K
+                     
+            </div>
+            <div class="col-lg-4 col-sm-6 text-center">
                 <img class="img-circle img-responsive img-center" src="https://dl.dropboxusercontent.com/s/kp9u33634dcbpnv/photo_pro.png?dl=0" alt="">
                 <h3>PramodMn
                     
